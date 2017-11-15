@@ -15,17 +15,35 @@ public class StringGen {
         visitedNodes.add(candidate.getId());
     }
 
+    public StringGen(){
+
+    }
+
     //TODO PROTECTED
-    public String getString(){
-        return stringGeneration(root);
+    public String getString(Node candidate,Node root) {
+        System.out.println("CHECK NODE "+root.getId());
+        reset();
+        this.root = root;
+        visitedNodes.add(candidate.getId());
+        return stringGeneration2(root);
     }
     public String getString2(){
         return stringGeneration2(root);
     }
 
+    public String getSmilesString(Node n){
+        reset();
+        return stringGeneration2(n);
+    }
+
+    private void reset(){
+        visitedNodes = new HashSet<>();
+    }
+
 
     //TODO first get then sort
     private String stringGeneration(Node n){
+
 
         //System.out.println(visitedNodes.size());
         boolean last = true;
@@ -70,11 +88,10 @@ public class StringGen {
     }
 
     private String stringGeneration2(Node n){
-
-        boolean last = true;
         visitedNodes.add(n.getId());
         final String[] nextAtoms = {n.getLabel()};
         List<String> labels = new ArrayList<>();
+
         n.getNeighbours().forEach(node -> {
             if(visitedNodes.add(node.getId())){
                 labels.add(stringGeneration2(node));
@@ -82,16 +99,14 @@ public class StringGen {
         });
 
         if(labels.isEmpty()){
+            System.out.println("in stringGen " + n.getLabel());
             return n.getLabel();
-        }
-
-        else {
+        } else {
             Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
             labels.forEach(node -> {
-                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("[").append((node)).append("]").toString();
-
-
+                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
             });
+            System.out.println("in stringGen "+nextAtoms[0]);
             return nextAtoms[0];
         }
     }

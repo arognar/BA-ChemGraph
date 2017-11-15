@@ -1,9 +1,6 @@
 package model.graph;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Graph {
 
@@ -25,6 +22,8 @@ public class Graph {
     //todo fälle abfangen
     public boolean tryConnect(Node node1,Node node2){
         if(node1.isConnectable() && node2.isConnectable()) {
+            nodes.put(node1.getId(),node1);
+            nodes.put(node2.getId(),node2);
             node1.addNeighbour(node2,"");
             node2.addNeighbour(node1,"");
             return true;
@@ -35,6 +34,14 @@ public class Graph {
 
     public Map<String,Node> getNodes(){
         return nodes;
+    }
+
+    public void printGraph(){
+        System.out.println("PRINTING:");
+        nodes.forEach((s, node) -> {
+            System.out.println(s+":");
+            node.getNeighbours().forEach(node1 -> System.out.println("    "+node1.getId()+" "+node1.getLabel()));
+        });
     }
 
 

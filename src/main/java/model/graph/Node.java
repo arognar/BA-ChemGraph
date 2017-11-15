@@ -1,6 +1,5 @@
 package model.graph;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,8 @@ public class Node {
     private Map<Node,String> neighbours = new HashMap<Node, String>();
     private String id;
     private String label;
-    private int connections = 12;
+    private int connections = 4;
+
 
     public Node(){
         id = UUID.randomUUID().toString();
@@ -31,29 +31,26 @@ public class Node {
     protected void addNeighbour(Node node, String c){
         //System.out.println("added");
         neighbours.put(node,c);
+        connections--;
     }
 
     protected void deleteNeighbour(Node node){
         neighbours.remove(node);
     }
 
-    protected boolean isConnectable(){
-        return neighbours.size() < connections;
+    public boolean isConnectable(){
+        return connections>0;
     }
 
     public ArrayList<Node> getNeighbours(){
         return new ArrayList<Node>(neighbours.keySet());
     }
 
-    //TODO maybe not needed
-    public Node getAsRoot(Node preRoot){
-        Node node = new Node();
-        neighbours.forEach((node1, s) -> {
-            if(node1!=preRoot)node.addNeighbour(node1,s);
-        });
-        node.setLabel(this.getLabel());
-        return node;
+    public int getConnections() {
+        return connections;
     }
 
-
+    public void setConnections(int connections) {
+        this.connections = connections;
+    }
 }

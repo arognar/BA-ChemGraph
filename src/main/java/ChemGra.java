@@ -1,6 +1,8 @@
 import model.GraphFactory;
+import model.MoleculeGenerator;
 import model.StringGen;
 import model.chemGraph.Carbon;
+import model.chemGraph.Molecule;
 import model.chemGraph.Oxygen;
 import model.graph.Graph;
 import model.graph.Node;
@@ -17,7 +19,7 @@ public class ChemGra {
         Graph graph = graphFactory.testMolecule();
 
 
-        Graph m = new Graph();
+        Graph m = new Molecule();
         Node n1 = new Carbon();
         Node n2 = new Carbon();
         Node n3 = new Carbon();
@@ -41,7 +43,7 @@ public class ChemGra {
         m.tryConnect(n3,n5);
         m.tryConnect(n4,n6);
         m.tryConnect(n4,n7);
-        Graph r = new Graph();
+        Graph r = new Molecule();
         r.tryConnect(u1,u2);
         r.tryConnect(u2,u3);
         r.tryConnect(u3,u5);
@@ -51,22 +53,20 @@ public class ChemGra {
 
 
 
-        StringGen stringGen = new StringGen(n1,n2);
-        String str = stringGen.getString();
-        System.out.println(str);
 
-        StringGen stringGen1 = new StringGen(u1,u2);
-        String str2 = stringGen1.getString();
-        System.out.println(str2);
 
-        StringGen stringGen2 = new StringGen(n1,n2);
-        String str3 = stringGen2.getString();
-        System.out.println(str3);
 
-        StringGen stringGen3 = new StringGen(n1,n2);
-        String str4 = stringGen3.getString();
-        System.out.println(str4);
         //System.out.println(n2.getNeighbours().size());
+
+        MoleculeGenerator mGen = new MoleculeGenerator();
+        Molecule molecule = mGen.generate(10);
+        molecule.printMolecule();
+        System.out.println("Candidates");
+        molecule.printCandidates();
+        StringGen stringGen4 = new StringGen();
+        molecule.getNodes().forEach((s, node) -> {
+            System.out.println(stringGen4.getSmilesString(node));
+        });
     }
 
 }
