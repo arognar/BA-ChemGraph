@@ -1,15 +1,13 @@
 package model.graph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Node {
-    private Map<Node,String> neighbours = new HashMap<Node, String>();
+    private LinkedHashMap<Node,String> neighbours = new LinkedHashMap<>();
     private String id;
     private String label;
     private int connections = 4;
+    private int maxConnections = 4;
 
 
     public Node(){
@@ -18,6 +16,9 @@ public class Node {
 
     public String getId(){
         return id;
+    }
+    public void setId(String s){
+        id = s ;
     }
 
     public String getLabel(){
@@ -29,10 +30,13 @@ public class Node {
     }
 
     protected void addNeighbour(Node node, String c){
-        //System.out.println("added");
+        System.out.println("added");
         neighbours.put(node,c);
         connections--;
+
     }
+
+
 
     protected void deleteNeighbour(Node node){
         neighbours.remove(node);
@@ -45,6 +49,9 @@ public class Node {
     public ArrayList<Node> getNeighbours(){
         return new ArrayList<Node>(neighbours.keySet());
     }
+    public LinkedHashMap<Node, String> getNeighbourMap(){
+        return neighbours;
+    }
 
     public int getConnections() {
         return connections;
@@ -52,5 +59,9 @@ public class Node {
 
     public void setConnections(int connections) {
         this.connections = connections;
+    }
+
+    public int getMaxConnections(){
+        return maxConnections;
     }
 }

@@ -4,10 +4,7 @@ import model.StringGen;
 import model.graph.Graph;
 import model.graph.Node;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Molecule extends Graph {
     private Set<Node> candidates = new HashSet<>();
@@ -15,7 +12,7 @@ public class Molecule extends Graph {
     @Override
     public boolean tryConnect(Node node1, Node node2) {
         if(super.tryConnect(node1,node2)) {
-            if((((Atom)node1).getNumberHydrogen() + ((Atom)node1).getConnections()) <= 1) candidates.add(node1);
+            if(((node1).getConnections()) <= 1) candidates.add(node1);
             else candidates.remove(node1);
             return true;
         } else {
@@ -58,5 +55,27 @@ public class Molecule extends Graph {
             }
         });
         return numerChiral[0];
+    }
+
+    public String test(){
+        StringGen stringGen = new StringGen();
+        ArrayList<String> test = new ArrayList<>();
+        getNodes().forEach((s, node) -> {
+            if(node instanceof Carbon){
+                String n = node.getLabel();
+                String c = stringGen.getSmilesString(node);
+                test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
+            }
+
+
+        });
+
+        Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
+        final String[] m = {""};
+        test.forEach(s -> {
+            m[0] = new StringBuilder().append(s).toString();
+        });
+        return m[0];
+
     }
 }

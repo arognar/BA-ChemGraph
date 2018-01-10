@@ -1,5 +1,7 @@
 package model;
 
+import model.chemGraph.Hydrogen;
+import model.chemGraph.StereoAtom;
 import model.graph.Node;
 
 import java.util.*;
@@ -34,6 +36,22 @@ public class StringGen {
     public String getSmilesString(Node n){
         reset();
         return stringGeneration2(n);
+    }
+
+    public String getStereoSmiles(StereoAtom node){
+        ArrayList<String> strings = new ArrayList<>();
+        String[] nextAtoms = {node.getLabel()};
+        node.getNeighbours().forEach(node1 -> {
+            System.out.println("test");
+            strings.add(stringGenStereo(node,(StereoAtom) node1));
+        });
+        Collections.sort(strings, String.CASE_INSENSITIVE_ORDER);
+        strings.forEach(s -> {
+            nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((s)).append(")").toString();
+        });
+
+        return nextAtoms[0];
+
     }
 
     private void reset(){
@@ -94,19 +112,43 @@ public class StringGen {
 
         n.getNeighbours().forEach(node -> {
             if(visitedNodes.add(node.getId())){
-                labels.add(stringGeneration2(node));
+
+                if(!(node instanceof Hydrogen))labels.add(stringGeneration2(node));
             }
         });
 
         if(labels.isEmpty()){
-            System.out.println("in stringGen " + n.getLabel());
+//            System.out.println("in stringGen " + n.getLabel());
             return n.getLabel();
         } else {
             Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
             labels.forEach(node -> {
                 nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
             });
-            System.out.println("in stringGen "+nextAtoms[0]);
+//            System.out.println("in stringGen "+nextAtoms[0]);
+            return nextAtoms[0];
+        }
+    }
+
+    private String stringGenStereo(StereoAtom from,StereoAtom to){
+        //visitedNodes.add(from.getId());
+        final String[] nextAtoms = {to.getLabel()};
+        List<String> labels = new ArrayList<>();
+
+        to.getNeighbourList(from).forEach(node -> {
+            labels.add(stringGenStereo(to,(StereoAtom) node));
+        });
+
+
+        if(labels.isEmpty()){
+//            System.out.println("in stringGen " + n.getLabel());
+            return to.getLabel();
+        } else {
+            Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
+            labels.forEach(node -> {
+                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
+            });
+//            System.out.println("in stringGen "+nextAtoms[0]);
             return nextAtoms[0];
         }
     }

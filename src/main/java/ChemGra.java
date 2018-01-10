@@ -4,6 +4,7 @@ import model.StringGen;
 import model.chemGraph.Carbon;
 import model.chemGraph.Molecule;
 import model.chemGraph.Oxygen;
+import model.chemGraph.StereoAtom;
 import model.graph.Graph;
 import model.graph.Node;
 
@@ -14,7 +15,7 @@ public class ChemGra {
 
 
     public static void main(String[] args){
-        System.out.println("muuuuh");
+        /*System.out.println("muuuuh");
         GraphFactory graphFactory = new GraphFactory();
         Graph graph = graphFactory.testMolecule();
 
@@ -49,7 +50,7 @@ public class ChemGra {
         r.tryConnect(u3,u5);
         r.tryConnect(u2,u4);
         r.tryConnect(u4,u7);
-        r.tryConnect(u4,u6);
+        r.tryConnect(u4,u6);*/
 
 
 
@@ -58,7 +59,7 @@ public class ChemGra {
 
         //System.out.println(n2.getNeighbours().size());
 
-        MoleculeGenerator mGen = new MoleculeGenerator();
+        /*MoleculeGenerator mGen = new MoleculeGenerator();
         Molecule molecule = mGen.generate(10);
         molecule.printMolecule();
         System.out.println("Candidates");
@@ -66,7 +67,36 @@ public class ChemGra {
         StringGen stringGen4 = new StringGen();
         molecule.getNodes().forEach((s, node) -> {
             System.out.println(stringGen4.getSmilesString(node));
-        });
+        });*/
+
+        Graph graph1 = new Graph();
+        StereoAtom s1 = new StereoAtom();
+        s1.setLabel("1");
+        StereoAtom s2 = new StereoAtom();
+        s2.setId("A");
+        s2.setLabel("A");
+        StereoAtom s3 = new StereoAtom();
+        s3.setId("B");
+        s3.setLabel("B");
+        StereoAtom s4 = new StereoAtom();
+        s4.setId("C");
+        s4.setLabel("C");
+        StereoAtom s5 = new StereoAtom();
+        s5.setId("D");
+        s5.setLabel("D");
+        graph1.addNode(s1);
+        graph1.addNode(s2);
+        graph1.addNode(s3);
+        graph1.addNode(s4);
+        graph1.addNode(s5);
+        graph1.tryConnect(s1,s2);
+        graph1.tryConnect(s1,s3);
+        graph1.tryConnect(s1,s4);
+        graph1.tryConnect(s1,s5);
+        s1.print();
+        StringGen stringGen = new StringGen();
+        System.out.println(stringGen.getStereoSmiles(s1));
+        System.out.println(stringGen.getSmilesString(s1));
     }
 
 }
