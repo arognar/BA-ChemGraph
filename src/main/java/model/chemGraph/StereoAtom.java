@@ -25,15 +25,17 @@ public class StereoAtom extends Node{
     }
 
     public void print(){
-        System.out.println(stereoNeighbours.size());
+        System.out.println("Atom "+this.getLabel()+" with ID"+this.getId()+"------------");
+        System.out.println("Neighbours:" +super.getNeighbours().size());
         for(int i = 0; i < stereoNeighbours.size(); i++){
             System.out.println(super.getNeighbours().get(i).getId()+"--------------------");
             stereoNeighbours.get(i).forEach(node -> {
-                if(node != null)System.out.print(node.getId()+" ");
-                else System.out.print("NULL ");
+                if(node != null)System.out.print("AtomSymbol"+node.getLabel()+" ID:"+node.getId()+" ");
+                //else System.out.print("NULL ");
             });
             System.out.println();
         }
+        System.out.println("----- --------- --------- ---------- -------------- -----------");
 
     }
 

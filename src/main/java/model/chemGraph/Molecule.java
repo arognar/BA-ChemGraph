@@ -27,14 +27,11 @@ public class Molecule extends Graph {
     }
 
     public void printMolecule(){
+        System.out.println("Printing: ");
         super.getNodes().forEach((s, node) -> {
+            ((StereoAtom)node).print();
+        });
 
-        });
-        System.out.println("PRINTING:");
-        super.getNodes().forEach((s, node) -> {
-            System.out.println(s+": H:"+((Atom)node).getNumberHydrogen()+"  "+node.getConnections());
-            node.getNeighbours().forEach(node1 -> System.out.println("    "+node1.getId()+" "+node1.getLabel()));
-        });
     }
 
     public int numberOfChiralityAtoms(){

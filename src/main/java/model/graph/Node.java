@@ -30,7 +30,6 @@ public class Node {
     }
 
     protected void addNeighbour(Node node, String c){
-        System.out.println("added");
         neighbours.put(node,c);
         connections--;
 
