@@ -42,8 +42,9 @@ public class StringGen {
         ArrayList<String> strings = new ArrayList<>();
         String[] nextAtoms = {node.getLabel()};
         node.getNeighbours().forEach(node1 -> {
-            System.out.println("test");
-            strings.add(stringGenStereo(node,(StereoAtom) node1));
+            //System.out.println("test");
+            //System.out.println(node1.getLabel());
+            strings.add(stringGenStereoStereoOrder(node,(StereoAtom) node1));
         });
         Collections.sort(strings, String.CASE_INSENSITIVE_ORDER);
         strings.forEach(s -> {
@@ -152,4 +153,43 @@ public class StringGen {
             return nextAtoms[0];
         }
     }
+
+    private String stringGenStereoStereoOrder(StereoAtom from,StereoAtom to){
+        //visitedNodes.add(from.getId());
+        //System.out.println("FROM "+from.getLabel());
+        //System.out.println(to==null);
+        //System.out.println(to.getLabel());
+        //System.out.println("FROM "+from.getLabel());
+        final String[] nextAtoms = {to.getLabel()};
+        ArrayList<String> labels = new ArrayList<>();
+
+        to.getNeighbourList(from).forEach(node -> {
+            labels.add(stringGenStereoStereoOrder(to,(StereoAtom) node));
+        });
+
+
+        if(labels.isEmpty()){
+            //System.out.println(to.getLabel());
+//            System.out.println("in stringGen " + n.getLabel());
+            return to.getLabel();
+        } else {
+            nextAtoms[0]=getCircularMaxString(labels);
+//            System.out.println("in stringGen "+nextAtoms[0]);
+            return nextAtoms[0];
+        }
+    }
+
+
+    public String getCircularMaxString(ArrayList<String> strings){
+        Set<String> candidates = new HashSet<>();
+        for (int i = 0; i < strings.size() ; i++) {
+            String candidat ="";
+            for (int j = 0; j < strings.size(); j++) {
+                candidat+=strings.get((j+i)%strings.size());
+            }
+            candidates.add(candidat);
+        }
+        return Collections.max(candidates);
+    }
+
 }

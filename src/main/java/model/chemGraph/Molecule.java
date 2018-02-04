@@ -75,4 +75,26 @@ public class Molecule extends Graph {
         return m[0];
 
     }
+
+    public String test2(){
+        StringGen stringGen = new StringGen();
+        ArrayList<String> test = new ArrayList<>();
+        getNodes().forEach((s, node) -> {
+            if(node instanceof Carbon){
+                String n = node.getLabel();
+                String c = stringGen.getStereoSmiles((StereoAtom) node);
+                test.add(c);
+            }
+
+
+        });
+
+        Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
+        final String[] m = {""};
+        test.forEach(s -> {
+            m[0] = new StringBuilder().append(m[0]).append(s).toString();
+        });
+        return m[0];
+
+    }
 }

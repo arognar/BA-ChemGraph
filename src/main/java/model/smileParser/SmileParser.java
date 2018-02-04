@@ -3,6 +3,8 @@ package model.smileParser;
 import model.chemGraph.Atom;
 import model.chemGraph.Molecule;
 import model.chemGraph.StereoAtom;
+import model.graph.AbstractPQNode;
+import model.graph.QNode;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -41,6 +43,38 @@ public class SmileParser {
             }
         });
         return molecule;
+    }
+
+    public AbstractPQNode parseSmileToPQTree(String smileString){
+        ArrayList<String> token = tokenize(smileString);
+        final AbstractPQNode[] root = new AbstractPQNode[1];
+        Stack<AbstractPQNode> atomStack = new Stack<>();
+        final String[] bound = {"-"};
+        final boolean[] branchFlag = {false};
+        final boolean[] rootFlag = {true};
+
+        token.forEach(curToken -> {
+            if(curToken.equals("(")) branchFlag[0] = true;
+            else if(curToken.equals(")")) atomStack.pop();
+            else if(curToken.equals("=")) bound[0] = "=";
+            else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
+            else {
+                QNode curAtom = new QNode(curToken);
+                if(rootFlag[0]){
+                    root[0] = curAtom;
+                    rootFlag[0] = false;
+                }
+                if(!atomStack.empty()) {
+                    System.out.println("added");
+                    atomStack.peek().addChild(curAtom);
+                    if(branchFlag[0])branchFlag[0]=false;
+                    else atomStack.pop();
+
+                }
+                atomStack.push(curAtom);
+            }
+        });
+        return root[0];
     }
 
 
