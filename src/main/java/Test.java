@@ -25,6 +25,7 @@ public class Test extends Application {
 
 
         parseSmilePQTreeTest();
+        //testPerm();
         Platform.exit();
 
     }
@@ -82,12 +83,60 @@ public class Test extends Application {
         p6.addChild(p7);
         GraphUtil.print(p);
 
+
+    }
+
+    public void testPerm(){
+        ArrayList<String> s1 = new ArrayList<>();
+        s1.add("A");
+        s1.add("B");
+        s1.add("C");
+        ArrayList<String> s2 = new ArrayList<>();
+        s2.add("A2");
+        s2.add("B2");
+        s2.add("C2");
+        ArrayList<String> s3 = new ArrayList<>();
+        s3.add("A3");
+        s3.add("B3");
+        s3.add("C3");
+        HashSet<String> res = new HashSet<>();
+        ArrayList<ArrayList<String>> all = new ArrayList<>();
+        all.add(s1);
+        all.add(s2);
+        all.add(s3);
+        getPermutations(0,"",all,res);
+        res.forEach(s -> System.out.println(s));
+
+        ArrayList<String> results = new ArrayList<>();
+        permutations(all,0,all.size(),results);
+        results.forEach(s -> {
+            System.out.println(s);
+        });
+    }
+
+    public void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){
+        if(d == strings.size()){
+            results.add(s);
+            return;
+        }
+        for (int i = 0; i < strings.get(d).size(); i++) {
+            getPermutations(d+1,s+strings.get(d).get(i),strings,results);
+        }
     }
 
     public void parseSmilePQTreeTest(){
         SmileParser smileParser = new SmileParser();
+        AbstractPQNode s = smileParser.parseSmileToPQTree("C(Br)(F)(H)(C(H)(H)(H))");
+
         AbstractPQNode root = smileParser.parseSmileToPQTree("C(C(CCH)(C))(C)");
-        GraphUtil.print(root);
+        GraphUtil.print(s);
+        s.getAllSmiles().forEach(s1 -> System.out.println("non reduced "+s1));
+        AbstractPQNode reducedRoot = s.reduce();
+        GraphUtil.print(reducedRoot);
+        ArrayList<String> res = reducedRoot.getAllSmiles();
+        HashSet<String> set = new HashSet<>();
+        res.forEach(s1 -> set.add(s1));
+        set.forEach(s1 -> System.out.println("set "+s1));
     }
 
     public ArrayList<String> permutate(ArrayList<ArrayList<String>> lists){
@@ -148,6 +197,29 @@ public class Test extends Application {
             candidates.add(candidat);
         }
         return Collections.max(candidates);
+    }
+
+    private void permutations(ArrayList<ArrayList<String>> strings,int startIndex,int endIndex,ArrayList<String> results){//todo set ?
+        if(startIndex == endIndex){
+
+            final String[] s = {""};
+            for (int i = 0; i < strings.size(); i++) {
+                strings.get(i).forEach(s1 -> s[0] +=s1);
+            }
+            results.add(s[0]);
+        } else {
+            for (int j = startIndex; j < endIndex; j++) {
+                swap(strings,startIndex,j);
+                permutations(strings,startIndex+1,endIndex,results);
+                swap(strings,startIndex,j);
+            }
+        }
+    }
+
+    private void swap(ArrayList<ArrayList<String>> strings,int i,int x){
+        ArrayList<String> s = strings.get(i);
+        strings.add(i,strings.get(x));
+        strings.add(x,s);
     }
 
 }
