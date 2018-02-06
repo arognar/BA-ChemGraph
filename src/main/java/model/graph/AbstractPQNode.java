@@ -45,8 +45,6 @@ public abstract class AbstractPQNode implements IPrintable,Comparable<AbstractPQ
             ArrayList<AbstractPQNode> reducedChildren = new ArrayList<>();
             children.forEach(abstractPQNode -> reducedChildren.add(abstractPQNode.reduce()));
             children = reducedChildren;
-            reducedChildren.forEach(abstractPQNode -> System.out.println("reduced children "+abstractPQNode.nodeType));
-            System.out.println();
             Collections.sort(children);
             afterRules = enforceRules();
 
@@ -87,7 +85,13 @@ public abstract class AbstractPQNode implements IPrintable,Comparable<AbstractPQ
             if(this instanceof PNode){
                 getPermutations(0,"",child,results);
             }
-            return new ArrayList<>(results);
+
+            ArrayList<String> end = new ArrayList<>(results);
+            for (int i = 0; i < end.size(); i++) {
+                end.set(i,"("+label+end.get(i)+")");
+            }
+
+            return end;
         }
     }
 

@@ -126,7 +126,10 @@ public class Test extends Application {
 
     public void parseSmilePQTreeTest(){
         SmileParser smileParser = new SmileParser();
-        AbstractPQNode s = smileParser.parseSmileToPQTree("C(Br)(F)(H)(C(H)(H)(H))");
+        //AbstractPQNode s = smileParser.parseSmileToPQTree("C(Br)(F)(H)(C(H)(H)(H))");
+        AbstractPQNode s = smileParser.parseSmileToPQTree("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
+        //ArrayList<String> s = smileGenerator.allPermutation("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
+
 
         AbstractPQNode root = smileParser.parseSmileToPQTree("C(C(CCH)(C))(C)");
         GraphUtil.print(s);
