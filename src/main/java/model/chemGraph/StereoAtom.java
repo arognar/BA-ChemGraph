@@ -36,11 +36,21 @@ public class StereoAtom extends Node{
             System.out.println();
         }
         System.out.println("----- --------- --------- ---------- -------------- -----------");
+        System.out.println(this.getLabel());
+        stereoNeighbours.forEach(nodes -> {
+            nodes.forEach(node -> {
+                if(node!=null)System.out.print(node.getLabel());
+            });
+            System.out.println();
+        });
+        System.out.println("----- --------- --------- ---------- -------------- -----------");
 
     }
 
     public List<Node> getNeighbourList(Node node){
-        return stereoNeighbours.get(super.getNeighbours().indexOf(node)).subList(0,getNeighbours().size()-1);
+
+        //return stereoNeighbours.get(super.getNeighbours().indexOf(node)).subList(0,getNeighbours().size()-1);
+        return stereoNeighbours.get(super.getNeighbours().indexOf(node));
     }
 
 }

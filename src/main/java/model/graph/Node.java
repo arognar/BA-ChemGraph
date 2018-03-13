@@ -31,7 +31,7 @@ public class Node {
 
     protected void addNeighbour(Node node, String c){
         if(c.equals(""))neighbours.put(node,"-");
-        else neighbours.put(node,"-");
+        else neighbours.put(node,c);
 
         if(c.equals("")) connections--;
         else if(c.equals("-")) connections--;

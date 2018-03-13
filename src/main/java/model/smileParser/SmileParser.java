@@ -28,19 +28,23 @@ public class SmileParser {
         token.forEach(curToken -> {
             if(curToken.equals("(")) branchFlag[0] = true;
             else if(curToken.equals(")")) atomStack.pop();
-            else if(curToken.equals("=")) bound[0] = "=";
+            else if(curToken.equals("=")) {
+                bound[0] = "=";
+            }
             else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
             else {
                 StereoAtom curAtom = atomFactory.getAtom(curToken);
                 molecule.addNode(curAtom);
                 if(!atomStack.empty()) {
-                    molecule.tryConnect(curAtom,atomStack.peek(),bound[0]);
+                    boolean tryconnect = molecule.tryConnect(curAtom,atomStack.peek(),bound[0]);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 
                 }
                 atomStack.push(curAtom);
+                bound[0] = "-";
             }
+
         });
         return molecule;
     }

@@ -150,12 +150,14 @@ public class StringGen {
     }
 
     private String stringGenStereo(StereoAtom from,StereoAtom to){
+        System.out.println("FROM "+from.getLabel()+" "+to.getLabel());
         //visitedNodes.add(from.getId());
         final String[] nextAtoms = {to.getLabel()};
         List<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node -> {
-            labels.add(to.getBoundingType(node)+stringGenStereo(to,(StereoAtom) node));
+            if(node!=null)System.out.println(to.getLabel()+"  "+node.getLabel());
+            if(node!=null)labels.add(to.getBoundingType(node)+stringGenStereo(to,(StereoAtom) node));
         });
 
 

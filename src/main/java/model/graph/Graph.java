@@ -24,8 +24,8 @@ public class Graph {
         if(node1.isConnectable(boundingType) && node2.isConnectable(boundingType)) {
             nodes.put(node1.getId(),node1);
             nodes.put(node2.getId(),node2);
-            node1.addNeighbour(node2,"");
-            node2.addNeighbour(node1,"");
+            node1.addNeighbour(node2,boundingType);
+            node2.addNeighbour(node1,boundingType);
             return true;
         } else {
             return false;

@@ -12,6 +12,7 @@ public class chemAlgorithm {
         ArrayList<String> test = new ArrayList<>();
         molecule.getNodes().forEach((s, node) -> {
             if(node instanceof Carbon){
+                System.out.println("CarbonFound");
                 String n = node.getLabel();
                 String c = stringGen.getStereoSmiles2((StereoAtom) node);
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());

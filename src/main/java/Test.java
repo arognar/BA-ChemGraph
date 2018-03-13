@@ -25,8 +25,9 @@ public class Test extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        simpleKonstitutionsTest();
-        simpleKonfigurationTest();
+        //simpleKonstitutionsTest();
+        //simpleKonfigurationTest();
+        doubleBoundaryKonstitutionsTest();
 
         //testPerm();
         Platform.exit();
@@ -59,6 +60,21 @@ public class Test extends Application {
         Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
         Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
         String test = chemAlgorithm.konsitutionIso(molecule1);
+        String test2 = chemAlgorithm.konsitutionIso(molecule2);
+        System.out.println(test);
+        System.out.println(test2);
+    }
+    public void doubleBoundaryKonstitutionsTest(){
+        StringGen stringGen = new StringGen();
+        SmileParser smileParser = new SmileParser();
+        Molecule molecule1 = smileParser.parseSmile("C(=C(H)(H))(F)(H)");
+        molecule1.getNodes().forEach((s, node) -> {
+            ((StereoAtom)node).print();
+        });
+
+        Molecule molecule2 = smileParser.parseSmile("C(F)(=C(H)(H))(H)");
+        String test = chemAlgorithm.konsitutionIso(molecule1);
+        System.out.println("-----------------------------");
         String test2 = chemAlgorithm.konsitutionIso(molecule2);
         System.out.println(test);
         System.out.println(test2);
