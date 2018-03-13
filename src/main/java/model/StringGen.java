@@ -55,6 +55,24 @@ public class StringGen {
 
     }
 
+    //ISOMORPHIE
+    public String getStereoSmiles2(StereoAtom node){
+        ArrayList<String> strings = new ArrayList<>();
+        String[] nextAtoms = {node.getLabel()};
+        node.getNeighbours().forEach(node1 -> {
+            //System.out.println("test");
+            //System.out.println(node1.getLabel());
+            strings.add(node.getBoundingType(node1)+stringGenStereo(node,(StereoAtom) node1));
+        });
+        Collections.sort(strings, String.CASE_INSENSITIVE_ORDER);
+        strings.forEach(s -> {
+            nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((s)).append(")").toString();
+        });
+
+        return nextAtoms[0];
+
+    }
+
     private void reset(){
         visitedNodes = new HashSet<>();
     }
@@ -137,7 +155,7 @@ public class StringGen {
         List<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node -> {
-            labels.add(stringGenStereo(to,(StereoAtom) node));
+            labels.add(to.getBoundingType(node)+stringGenStereo(to,(StereoAtom) node));
         });
 
 

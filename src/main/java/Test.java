@@ -3,7 +3,8 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.GraphUtil;
 import model.SmileGenerator;
-import model.chemGraph.Molecule;
+import model.StringGen;
+import model.chemGraph.*;
 import model.graph.AbstractPQNode;
 import model.graph.PNode;
 import model.smileParser.SmileParser;
@@ -24,10 +25,54 @@ public class Test extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        parseSmilePQTreeTest();
+        simpleKonstitutionsTest();
+        simpleKonfigurationTest();
+
         //testPerm();
         Platform.exit();
 
+    }
+
+    public void testStringGen(){
+        StringGen stringGen = new StringGen();
+        Molecule molecule = new Molecule();
+        StereoAtom a1 = new Carbon();
+        StereoAtom a2 = new Hydrogen();
+        StereoAtom a3 = new Hydrogen();
+        StereoAtom a4 = new Hydrogen();
+        StereoAtom a5 = new Hydrogen();
+        molecule.addNode(a1);
+        molecule.addNode(a2);
+        molecule.addNode(a3);
+        molecule.addNode(a4);
+        molecule.addNode(a5);
+        molecule.tryConnect(a1,a2,"");
+        molecule.tryConnect(a1,a3,"");
+        molecule.tryConnect(a1,a4,"");
+        molecule.tryConnect(a1,a5,"");
+        System.out.println(stringGen.getStereoSmiles2(a1));
+    }
+
+    public void simpleKonstitutionsTest(){
+        StringGen stringGen = new StringGen();
+        SmileParser smileParser = new SmileParser();
+        Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
+        Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
+        String test = chemAlgorithm.konsitutionIso(molecule1);
+        String test2 = chemAlgorithm.konsitutionIso(molecule2);
+        System.out.println(test);
+        System.out.println(test2);
+    }
+
+    public void simpleKonfigurationTest(){
+        StringGen stringGen = new StringGen();
+        SmileParser smileParser = new SmileParser();
+        Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
+        Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
+        String test = chemAlgorithm.konfigurationIso(molecule1);
+        String test2 = chemAlgorithm.konfigurationIso(molecule2);
+        System.out.println(test);
+        System.out.println(test2);
     }
 
     public void test1(){

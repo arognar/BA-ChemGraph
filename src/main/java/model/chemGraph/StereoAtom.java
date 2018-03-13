@@ -42,4 +42,5 @@ public class StereoAtom extends Node{
     public List<Node> getNeighbourList(Node node){
         return stereoNeighbours.get(super.getNeighbours().indexOf(node)).subList(0,getNeighbours().size()-1);
     }
+
 }

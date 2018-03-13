@@ -72,17 +72,17 @@ public class MoleculeGenerator {
             if(ran.nextInt(10) < 3) {
                 StereoAtom nextAtom = new Hydrogen();
                 molecule.addNode(nextAtom);
-                molecule.tryConnect(currentAtom,nextAtom);
+                molecule.tryConnect(currentAtom,nextAtom,"-");
                 //System.out.println("Added H to: " + currentAtom.getId());
-                if(currentAtom.isConnectable()) atoms.push(currentAtom);
+                if(currentAtom.isConnectable("")) atoms.push(currentAtom);
             } else {
                 numberOfAtoms++;
                 StereoAtom nextAtom = new Carbon();
                 molecule.addNode(nextAtom);
-                molecule.tryConnect(currentAtom,nextAtom);
+                molecule.tryConnect(currentAtom,nextAtom,"");
                 //System.out.println("Added C to: " + currentAtom.getId());
                 atoms.push(nextAtom);
-                if(currentAtom.isConnectable())atoms.push(currentAtom);
+                if(currentAtom.isConnectable(""))atoms.push(currentAtom);
 
             }
             if(numberOfAtoms >= maxAtoms) break;

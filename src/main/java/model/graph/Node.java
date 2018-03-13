@@ -30,8 +30,13 @@ public class Node {
     }
 
     protected void addNeighbour(Node node, String c){
-        neighbours.put(node,c);
-        connections--;
+        if(c.equals(""))neighbours.put(node,"-");
+        else neighbours.put(node,"-");
+
+        if(c.equals("")) connections--;
+        else if(c.equals("-")) connections--;
+        else if (c.equals("=")) connections-=2;
+        else if(c.equals("#")) connections-=3;
 
     }
 
@@ -41,8 +46,12 @@ public class Node {
         neighbours.remove(node);
     }
 
-    public boolean isConnectable(){
-        return connections>0;
+    public boolean isConnectable(String boundingType){
+        if(boundingType.equals(""))return connections>0;
+        else if(boundingType.equals("-"))return connections>0;
+        else if(boundingType.equals("="))return connections-2>=0;
+        else if(boundingType.equals("#")) return connections-3>=0;
+        else return false;
     }
 
     public ArrayList<Node> getNeighbours(){
@@ -62,5 +71,9 @@ public class Node {
 
     public int getMaxConnections(){
         return maxConnections;
+    }
+
+    public String getBoundingType(Node node){
+        return neighbours.get(node);
     }
 }

@@ -20,8 +20,8 @@ public class Graph {
     }
 
     //todo fälle abfangen
-    public boolean tryConnect(Node node1,Node node2){
-        if(node1.isConnectable() && node2.isConnectable()) {
+    public boolean tryConnect(Node node1,Node node2,String boundingType){
+        if(node1.isConnectable(boundingType) && node2.isConnectable(boundingType)) {
             nodes.put(node1.getId(),node1);
             nodes.put(node2.getId(),node2);
             node1.addNeighbour(node2,"");

@@ -16,8 +16,8 @@ public class GraphFactory {
         testGraph.addNode(n1);
         testGraph.addNode(n2);
         testGraph.addNode(n3);
-        testGraph.tryConnect(n1,n2);
-        testGraph.tryConnect(n2,n3);
+        testGraph.tryConnect(n1,n2,"");
+        testGraph.tryConnect(n2,n3,"");
         return testGraph;
     }
 
@@ -32,12 +32,12 @@ public class GraphFactory {
 
         Node n7 = new Oxygen();
 
-        m.tryConnect(n1,n2);
-        m.tryConnect(n2,n3);
-        m.tryConnect(n2,n4);
-        m.tryConnect(n3,n5);
-        m.tryConnect(n4,n6);
-        m.tryConnect(n4,n7);
+        m.tryConnect(n1,n2,"");
+        m.tryConnect(n2,n3,"");
+        m.tryConnect(n2,n4,"");
+        m.tryConnect(n3,n5,"");
+        m.tryConnect(n4,n6,"");
+        m.tryConnect(n4,n7,"");
 
         return m;
 

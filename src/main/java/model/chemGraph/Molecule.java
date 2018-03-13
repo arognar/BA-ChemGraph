@@ -9,9 +9,8 @@ import java.util.*;
 public class Molecule extends Graph {
     private Set<Node> candidates = new HashSet<>();
 
-    @Override
-    public boolean tryConnect(Node node1, Node node2) {
-        if(super.tryConnect(node1,node2)) {
+    public boolean tryConnect(Node node1, Node node2,String boundingType) {
+        if(super.tryConnect(node1,node2,boundingType)) {
             if(((node1).getConnections()) <= 1) candidates.add(node1);
             else candidates.remove(node1);
             return true;

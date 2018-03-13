@@ -34,7 +34,7 @@ public class SmileParser {
                 StereoAtom curAtom = atomFactory.getAtom(curToken);
                 molecule.addNode(curAtom);
                 if(!atomStack.empty()) {
-                    molecule.tryConnect(curAtom,atomStack.peek());
+                    molecule.tryConnect(curAtom,atomStack.peek(),bound[0]);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 
