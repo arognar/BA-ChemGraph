@@ -7,9 +7,9 @@ import model.StringGen;
 import model.chemGraph.*;
 import model.graph.AbstractPQNode;
 import model.graph.PNode;
+import model.graph.PQTree;
 import model.smileParser.SmileParser;
 
-import java.lang.management.GarbageCollectorMXBean;
 import java.util.*;
 
 import java.util.function.Consumer;
@@ -27,8 +27,9 @@ public class Test extends Application {
 
         //simpleKonstitutionsTest();
         //simpleKonfigurationTest();
-        doubleBoundaryKonstitutionsTest();
-
+        //doubleBoundaryKonstitutionsTest();
+        //printNodeTest();
+        parseSmilePQTreeTest();
         //testPerm();
         Platform.exit();
 
@@ -59,8 +60,8 @@ public class Test extends Application {
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
         Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
-        String test = chemAlgorithm.konsitutionIso(molecule1);
-        String test2 = chemAlgorithm.konsitutionIso(molecule2);
+        String test = ChemAlgorithm.konsitutionIso(molecule1);
+        String test2 = ChemAlgorithm.konsitutionIso(molecule2);
         System.out.println(test);
         System.out.println(test2);
     }
@@ -73,9 +74,9 @@ public class Test extends Application {
         });
 
         Molecule molecule2 = smileParser.parseSmile("C(F)(=C(H)(H))(H)");
-        String test = chemAlgorithm.konsitutionIso(molecule1);
+        String test = ChemAlgorithm.konsitutionIso(molecule1);
         System.out.println("-----------------------------");
-        String test2 = chemAlgorithm.konsitutionIso(molecule2);
+        String test2 = ChemAlgorithm.konsitutionIso(molecule2);
         System.out.println(test);
         System.out.println(test2);
     }
@@ -85,8 +86,8 @@ public class Test extends Application {
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
         Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
-        String test = chemAlgorithm.konfigurationIso(molecule1);
-        String test2 = chemAlgorithm.konfigurationIso(molecule2);
+        String test = ChemAlgorithm.konfigurationIso(molecule1);
+        String test2 = ChemAlgorithm.konfigurationIso(molecule2);
         System.out.println(test);
         System.out.println(test2);
     }
@@ -136,12 +137,12 @@ public class Test extends Application {
         PNode p5 = new PNode("a5");
         PNode p6 = new PNode("a6");
         PNode p7 = new PNode("a7");
-        p.addChild(p2);
-        p.addChild(p3);
-        p2.addChild(p4);
-        p3.addChild(p5);
-        p5.addChild(p6);
-        p6.addChild(p7);
+        p.addChild(p2,"");
+        p.addChild(p3,"");
+        p2.addChild(p4,"");
+        p3.addChild(p5,"");
+        p5.addChild(p6,"");
+        p6.addChild(p7,"");
         GraphUtil.print(p);
 
 
@@ -188,19 +189,23 @@ public class Test extends Application {
     public void parseSmilePQTreeTest(){
         SmileParser smileParser = new SmileParser();
         //AbstractPQNode s = smileParser.parseSmileToPQTree("C(Br)(F)(H)(C(H)(H)(H))");
-        AbstractPQNode s = smileParser.parseSmileToPQTree("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
+        PQTree s = smileParser.parseSmileToPQTree("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
         //ArrayList<String> s = smileGenerator.allPermutation("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
 
-
-        AbstractPQNode root = smileParser.parseSmileToPQTree("C(C(CCH)(C))(C)");
-        GraphUtil.print(s);
-        s.getAllSmiles().forEach(s1 -> System.out.println("non reduced "+s1));
-        AbstractPQNode reducedRoot = s.reduce();
+        s.determineStereocenter();
+        PQTree root = smileParser.parseSmileToPQTree("C(C(CCH)(C))(C)");
+        GraphUtil.print(s.getRoot());
+        //s.getRoot().getAllSmiles().forEach(s1 -> System.out.println("non reduced "+s1));
+        s.determineStereocenter();
+        AbstractPQNode reducedRoot = s.getRoot().reduce();
+        //
+        //
         GraphUtil.print(reducedRoot);
         ArrayList<String> res = reducedRoot.getAllSmiles();
-        HashSet<String> set = new HashSet<>();
-        res.forEach(s1 -> set.add(s1));
-        set.forEach(s1 -> System.out.println("set "+s1));
+        res.forEach(s1 -> System.out.println(s1));
+        //HashSet<String> set = new HashSet<>();
+        //res.forEach(s1 -> set.add(s1));
+        //set.forEach(s1 -> System.out.println("set "+s1));
     }
 
     public ArrayList<String> permutate(ArrayList<ArrayList<String>> lists){

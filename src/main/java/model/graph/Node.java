@@ -29,7 +29,7 @@ public class Node {
         this.label = label;
     }
 
-    protected void addNeighbour(Node node, String c){
+    public void addNeighbour(Node node, String c){
         if(c.equals(""))neighbours.put(node,"-");
         else neighbours.put(node,c);
 

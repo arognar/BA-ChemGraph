@@ -4,6 +4,7 @@ import model.chemGraph.Atom;
 import model.chemGraph.Molecule;
 import model.chemGraph.StereoAtom;
 import model.graph.AbstractPQNode;
+import model.graph.PQTree;
 import model.graph.QNode;
 
 import java.util.ArrayList;
@@ -49,9 +50,11 @@ public class SmileParser {
         return molecule;
     }
 
-    public AbstractPQNode parseSmileToPQTree(String smileString){
+    public PQTree parseSmileToPQTree(String smileString){
+        PQTree pqTree = new PQTree();
         ArrayList<String> token = tokenize(smileString);
         final AbstractPQNode[] root = new AbstractPQNode[1];
+
         Stack<AbstractPQNode> atomStack = new Stack<>();
         final String[] bound = {"-"};
         final boolean[] branchFlag = {false};
@@ -64,21 +67,26 @@ public class SmileParser {
             else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
             else {
                 QNode curAtom = new QNode(curToken);
+                pqTree.add(curAtom);
                 if(rootFlag[0]){
                     root[0] = curAtom;
+                    pqTree.setRoot(curAtom);
                     rootFlag[0] = false;
                 }
                 if(!atomStack.empty()) {
                     System.out.println("added");
-                    atomStack.peek().addChild(curAtom);
+                    atomStack.peek().addChild(curAtom,bound[0]);
+                    curAtom.addNeighbour(curAtom,bound[0]);
+                    curAtom.setBounding(bound[0]);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 
                 }
                 atomStack.push(curAtom);
+                bound[0] = "-";
             }
         });
-        return root[0];
+        return pqTree;
     }
 
 

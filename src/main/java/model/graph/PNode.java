@@ -2,7 +2,7 @@ package model.graph;
 
 import java.util.ArrayList;
 
-public class PNode extends AbstractPQNode implements IPQNode {
+public class PNode extends AbstractPQNode implements IPrintable {
     public PNode(String label) {
         super(label);
         nodeType = "P";
@@ -11,11 +11,6 @@ public class PNode extends AbstractPQNode implements IPQNode {
     @Override
     public AbstractPQNode enforceRules() {
         return null;
-    }
-
-    @Override
-    public void test() {
-
     }
 
 

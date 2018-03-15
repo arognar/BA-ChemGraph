@@ -11,7 +11,7 @@ public class StereoAtom extends Node{
 
 
     @Override
-    protected void addNeighbour(Node node, String c) {
+    public void addNeighbour(Node node, String c) {
         super.addNeighbour(node, c);
         ArrayList<Node> e = new ArrayList();
         for(int i = 0; i < this.getMaxConnections()-1; i++) {

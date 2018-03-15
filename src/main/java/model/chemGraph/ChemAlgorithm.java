@@ -1,11 +1,14 @@
 package model.chemGraph;
 
 import model.StringGen;
+import model.graph.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-public class chemAlgorithm {
+public class ChemAlgorithm {
 
     public static String konsitutionIso(Molecule molecule){
         StringGen stringGen = new StringGen();
@@ -45,6 +48,17 @@ public class chemAlgorithm {
             m[0] = new StringBuilder().append(s).toString();
         });
         return m[0];
+
+    }
+
+    public static boolean isChiral(Node node){
+        StringGen stringGen = new StringGen();
+        Set<String> TODO = new HashSet<>();
+        node.getNeighbours().forEach(node1 -> {
+            TODO.add(stringGen.getString(node,node1));
+        });
+        if (TODO.size()==4) return true;
+        return false;
 
     }
 }

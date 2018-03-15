@@ -23,7 +23,6 @@ public class StringGen {
 
     //TODO PROTECTED
     public String getString(Node candidate,Node root) {
-        System.out.println("CHECK NODE "+root.getId());
         reset();
         this.root = root;
         visitedNodes.add(candidate.getId());

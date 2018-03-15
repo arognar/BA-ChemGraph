@@ -12,29 +12,50 @@ public class QNode extends AbstractPQNode implements IPQNode,IPrintable {
 
     @Override
     public AbstractPQNode enforceRules() {
-        Set<String> test = new HashSet<>();
+        Set<String> test = new HashSet<>(); //todo naming
         children.forEach(abstractPQNode -> test.add(abstractPQNode.childrenInformation));
+        if(getBounding().equals("=")){
+            if(test.size()<2) {
+                return reductionRuleOne();
+            } else {
+                return this;
+            }
+
+        }
         if(test.size()<3){
-            childrenInformation = nodeType+label;
-            children.forEach(abstractPQNode -> {
-                childrenInformation+=abstractPQNode.childrenInformation;
-            });
-            PNode pNode = new PNode(label);
-            pNode.children.addAll(children);
-            pNode.setChildrenInformation();
-            return pNode;
+            return reductionRuleOne();
         }
         else {
-            System.out.println("enfordeRULE");
-            PNode pNode = new PNode(label);
-            pNode.addChild(children.get(0));
-            QNode qNode = new QNode("");
-            qNode.children.addAll(children.subList(1,children.size()));
-            qNode.setChildrenInformation();
-            pNode.addChild(qNode);
-            pNode.setChildrenInformation();
-            return pNode;
+            if(isChiral()){
+                System.out.println("enfordeRULE");
+                System.out.println("is chiral  " +this.isChiral());
+                PNode pNode = new PNode(getLabel());
+                pNode.setLabel(getLabel());
+                pNode.addChild(children.get(0),"");//BOUNDING
+                QNode qNode = new QNode("");
+                qNode.setBounding("");
+                qNode.children.addAll(children.subList(1,children.size()));
+                qNode.setChildrenInformation();
+                pNode.addChild(qNode,"");//bounding
+                pNode.setChildrenInformation();
+                return pNode;
+
+            } else {
+                return reductionRuleOne();
+            }
+
         }
+    }
+
+    private AbstractPQNode reductionRuleOne(){
+        childrenInformation = nodeType+label;
+        children.forEach(abstractPQNode -> {
+            childrenInformation+=abstractPQNode.childrenInformation;
+        });
+        PNode pNode = new PNode(getLabel());
+        pNode.children.addAll(children);
+        pNode.setChildrenInformation();
+        return pNode;
     }
 
     @Override
