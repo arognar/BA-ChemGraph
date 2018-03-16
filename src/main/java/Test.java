@@ -6,6 +6,7 @@ import model.SmileGenerator;
 import model.StringGen;
 import model.chemGraph.*;
 import model.graph.AbstractPQNode;
+import model.graph.Graph;
 import model.graph.PNode;
 import model.graph.PQTree;
 import model.smileParser.SmileParser;
@@ -29,8 +30,14 @@ public class Test extends Application {
         //simpleKonfigurationTest();
         //doubleBoundaryKonstitutionsTest();
         //printNodeTest();
-        parseSmilePQTreeTest();
+        //parseSmilePQTreeTest();
+        //parseSmilePQTreeDoubleTest();
+
         //testPerm();
+        //weinsaeurePQTest();
+        //simplesPQTest();
+        //weinsaeurePQTest();
+        matchingBracketsTest();
         Platform.exit();
 
     }
@@ -206,6 +213,68 @@ public class Test extends Application {
         //HashSet<String> set = new HashSet<>();
         //res.forEach(s1 -> set.add(s1));
         //set.forEach(s1 -> System.out.println("set "+s1));
+    }
+
+    private void parseSmilePQTreeDoubleTest(){
+        SmileParser smileParser = new SmileParser();
+        PQTree s = smileParser.parseSmileToPQTree("(C(H)(H)(=C(H)(H)))");
+
+        GraphUtil.print(s.getRoot());
+        s.determineStereocenter();
+
+        GraphUtil.print(s.getRoot());
+
+
+        AbstractPQNode reducedRoot = s.getRoot().reduce();
+        //
+        //
+        GraphUtil.print(reducedRoot);
+        ArrayList<String> res = reducedRoot.getAllSmiles();
+        res.forEach(s1 -> System.out.println(s1));
+        //HashSet<String> set = new HashSet<>();
+        //res.forEach(s1 -> set.add(s1));
+        //set.forEach(s1 -> System.out.println("set "+s1));
+    }
+
+    public void simplesPQTest(){
+        SmileParser smileParser = new SmileParser();
+        //PQTree pqTree = smileParser.parseSmileToPQTree("(C(=O)(O(H))(H))");
+        PQTree pqTree = smileParser.parseSmileToPQTree("(C(Br)(H)(F)(C(C(=O)(H))(H)(H)))");
+        GraphUtil.print(pqTree.getRoot());
+        pqTree.determineStereocenter();
+        GraphUtil.print(pqTree.getRoot());
+        System.out.println(pqTree.getRoot().isChiral());
+        AbstractPQNode reducedRoot = pqTree.getRoot().reduce();
+        GraphUtil.print(reducedRoot);
+        ArrayList<String> smiles = reducedRoot.getAllSmiles();
+        smiles.forEach(s -> System.out.println(s));
+    }
+
+    public void weinsaeurePQTest(){
+        SmileParser smileParser = new SmileParser();
+        String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H)))))";
+        //String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
+        //String weinsaeure = "(C(H)(O(H))(H))";
+        //String weinsaeure = "(C(O(H)))";
+        PQTree pqTree = smileParser.parseSmileToPQTree(weinsaeure);
+        GraphUtil.print(pqTree.getRoot());
+        pqTree.determineStereocenter();
+        GraphUtil.print(pqTree.getRoot());
+        AbstractPQNode reducedRoot = pqTree.getRoot().reduce();
+        GraphUtil.print(reducedRoot);
+        ArrayList<String> smiles = reducedRoot.getAllSmiles();
+        smiles.forEach(s -> System.out.println(s));
+    }
+
+    public void matchingBracketsTest(){
+        SmileParser smileParser = new SmileParser();
+        String weinsaeure = "(C(((((()";
+        String weinsaeure2 = "(C())))))))))";
+        String weinsaeure3 = "(C)";
+        smileParser.parseSmileToPQTree(weinsaeure);
+        smileParser.parseSmileToPQTree(weinsaeure2);
+        smileParser.parseSmileToPQTree(weinsaeure3);
+
     }
 
     public ArrayList<String> permutate(ArrayList<ArrayList<String>> lists){

@@ -21,6 +21,9 @@ public class SmileParser {
 
     public Molecule parseSmile(String smileString){
         ArrayList<String> token = tokenize(smileString);
+        System.out.println(machtingBrackets(token));
+        if(!machtingBrackets(token)) return null;//TODO CONTROLLER
+
         Molecule molecule = new Molecule();
         Stack<StereoAtom> atomStack = new Stack<>();
         final String[] bound = {"-"};
@@ -53,6 +56,9 @@ public class SmileParser {
     public PQTree parseSmileToPQTree(String smileString){
         PQTree pqTree = new PQTree();
         ArrayList<String> token = tokenize(smileString);
+        System.out.println(machtingBrackets(token));
+        if(!machtingBrackets(token)) return null;//TODO CONTROLLER
+
         final AbstractPQNode[] root = new AbstractPQNode[1];
 
         Stack<AbstractPQNode> atomStack = new Stack<>();
@@ -101,5 +107,20 @@ public class SmileParser {
         }
 
         return token;
+    }
+
+    private boolean machtingBrackets(ArrayList<String> tokens){
+        //TODO CONTROLLER INTERACTION
+        int counter = 0;
+        for (String s : tokens) {
+            if (s.equals("(")) counter++;
+            if (s.equals(")")) counter--;
+            if (counter < 0) {
+                return false;
+            }
+        }
+        if(counter > 0) return false;
+        return true;
+
     }
 }

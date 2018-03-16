@@ -3,7 +3,7 @@ package model.graph;
 import java.util.*;
 
 public class Node {
-    private LinkedHashMap<Node,String> neighbours = new LinkedHashMap<>();
+    protected LinkedHashMap<Node,String> neighbours = new LinkedHashMap<>();
     private String id;
     private String label;
     private int connections = 4;

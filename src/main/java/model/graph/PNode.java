@@ -10,12 +10,13 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
     @Override
     public AbstractPQNode enforceRules() {
-        return null;
+        setChildrenInformation();
+        return this;
     }
 
 
     @Override
     public int compareTo(AbstractPQNode o) {
-        return childrenInformation.compareTo(o.childrenInformation);
+        return getChildrenInformation().compareTo(o.getChildrenInformation());
     }
 }

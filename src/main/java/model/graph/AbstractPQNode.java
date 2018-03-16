@@ -4,29 +4,32 @@ import java.util.*;
 
 public abstract class AbstractPQNode extends Node implements IPrintable,Comparable<AbstractPQNode> {
     ArrayList<AbstractPQNode> children;
+    Map<AbstractPQNode,String> children2;
 
     String bounding="-";
-    String childrenInformation;
-    String label;
-    String nodeType;
+    String childrenInformation="";
+    String label="";
+    String nodeType="";
     boolean chirality = false;//TODO markierung smile
 
     public AbstractPQNode(String label){
         super();
         setLabel(label);
-        childrenInformation = label;
+        setChildrenInformation(label);
         children = new ArrayList<>();
+        children2 = new HashMap<>();
     }
 
     public void addChild(AbstractPQNode child,String bounding){
         addNeighbour(child,bounding);
         children.add(child);
+        children2.put(child,bounding);
     }
 
     @Override
     public void print(String prefix, boolean isTail) {
         //System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+label);
-        System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+bounding+getLabel()+" is NODETYPE  "+nodeType);
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+(isChiral()?"#":"")+bounding+getLabel()+" is NODETYPE  "+nodeType);
         for (int i = 0; i < children.size() - 1; i++) {
             children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
         }
@@ -39,15 +42,28 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
     public AbstractPQNode reduce() {
 
         if(children.isEmpty()){
-            childrenInformation = nodeType+label;
+            String childrenInformations = nodeType+getLabel();
+            setChildrenInformation(childrenInformations);
             return this;
         }
         else {
             AbstractPQNode afterRules;
             ArrayList<AbstractPQNode> reducedChildren = new ArrayList<>();
-            children.forEach(abstractPQNode -> reducedChildren.add(abstractPQNode.reduce()));
+            Map<AbstractPQNode,String> reducedChildren2 = new HashMap<>();
+            children.forEach(abstractPQNode -> {
+
+                AbstractPQNode redNode = abstractPQNode.reduce();
+                reducedChildren.add(redNode);
+                //reducedChildren2.put(redNode,redNode.getBounding());
+                //neighbours.put(redNode,redNode.getBounding());
+            });
             children = reducedChildren;
+            //children.forEach(abstractPQNode -> System.out.println(abstractPQNode.getLabel()));
+
+
+            //children2 = reducedChildren2;
             Collections.sort(children);
+            //this.neighbours = neighbours;//change
             afterRules = enforceRules();
 
             return afterRules;
@@ -56,10 +72,11 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
 
     public void setChildrenInformation(){
         Collections.sort(children);
-        childrenInformation = nodeType+label;
+        final String[] childrenInformation = {getNodeType() + getLabel()};
         children.forEach(abstractPQNode -> {
-            childrenInformation+=abstractPQNode.childrenInformation;
+            childrenInformation[0] +=abstractPQNode.getChildrenInformation();
         });
+        setChildrenInformation(childrenInformation[0]);
     }
 
     private void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){//todo set ?
@@ -148,5 +165,29 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         return chirality;
     }
 
+    public boolean isntRotational(){
+        return(bounding.equals("="));//TODO dreifachbindung
+    }
+
+    public void setChildrenInformation(String childrenInformation) {
+        this.childrenInformation = childrenInformation;
+    }
+
+    public String getChildrenInformation() {
+
+        return childrenInformation;
+    }
+
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+
+
     public abstract AbstractPQNode enforceRules();
+
+    public String getNodeType() {
+        return nodeType;
+    }
 }
