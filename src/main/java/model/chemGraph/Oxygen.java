@@ -1,8 +1,12 @@
 package model.chemGraph;
 
-public class Oxygen extends Atom {
+public class Oxygen extends StereoAtom {
     
     public Oxygen(){
-        setLabel("o");
+
+        setLabel("O");
+        setConnections(2);
+        setAtomicNumber(8);
+
     }
 }

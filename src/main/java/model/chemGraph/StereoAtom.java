@@ -8,6 +8,7 @@ import java.util.List;
 
 public class StereoAtom extends Node{
     private ArrayList<ArrayList<Node>> stereoNeighbours = new ArrayList<>();
+    private int atomicNumber;
 
 
     @Override
@@ -51,6 +52,14 @@ public class StereoAtom extends Node{
 
         //return stereoNeighbours.get(super.getNeighbours().indexOf(node)).subList(0,getNeighbours().size()-1);
         return stereoNeighbours.get(super.getNeighbours().indexOf(node));
+    }
+
+    public int getAtomicNumber(){
+        return atomicNumber;
+    }
+
+    public void setAtomicNumber(int atomicNumber){
+        this.atomicNumber=atomicNumber;
     }
 
 }

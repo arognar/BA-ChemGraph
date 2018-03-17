@@ -37,9 +37,23 @@ public class Test extends Application {
         //weinsaeurePQTest();
         //simplesPQTest();
         //weinsaeurePQTest();
-        matchingBracketsTest();
+        //matchingBracketsTest();
+        RSTestSimple();
         Platform.exit();
 
+    }
+
+    public void RSTestSimple(){
+        SmileParser smileParser = new SmileParser();
+        Molecule m = smileParser.parseSmile("(C(Br)(F)(H)(C(H)(H)(H)))");
+        System.out.println("****************");
+        m.determineChirality();
+        System.out.println("****************");
+
+        m.getChiralAtoms().forEach(node -> {
+            System.out.println("test");
+            ChemAlgorithm.RSDetermination((StereoAtom) node);
+        });
     }
 
     public void testStringGen(){
@@ -252,7 +266,7 @@ public class Test extends Application {
 
     public void weinsaeurePQTest(){
         SmileParser smileParser = new SmileParser();
-        String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H)))))";
+        String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
         //String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
         //String weinsaeure = "(C(H)(O(H))(H))";
         //String weinsaeure = "(C(O(H)))";

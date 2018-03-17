@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Molecule extends Graph {
     private Set<Node> candidates = new HashSet<>();
+    private ArrayList<Node> chiralAtoms = new ArrayList<>();
 
     public boolean tryConnect(Node node1, Node node2,String boundingType) {
         if(super.tryConnect(node1,node2,boundingType)) {
@@ -75,6 +76,14 @@ public class Molecule extends Graph {
 
     }
 
+    public void determineChirality(){
+        getNodes().forEach((s, node) -> {
+            if(node instanceof Carbon) {
+                if(ChemAlgorithm.isChiral(node))chiralAtoms.add(node);
+            }
+        });
+    }
+
     public String test2(){
         StringGen stringGen = new StringGen();
         ArrayList<String> test = new ArrayList<>();
@@ -95,5 +104,9 @@ public class Molecule extends Graph {
         });
         return m[0];
 
+    }
+
+    public ArrayList<Node> getChiralAtoms() {
+        return chiralAtoms;
     }
 }

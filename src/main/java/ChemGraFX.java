@@ -1,5 +1,6 @@
 
 
+import controller.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,16 +10,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import model.Analyzer;
 import model.MoleculeGenerator;
 import model.StringGen;
 import model.chemGraph.Molecule;
 import model.graph.Node;
+import view.MainView;
 
 public class ChemGraFX extends Application {
     private String webSMILES = "http://n2s.openmolecules.org/?name=";
     @Override
     public void start(Stage primaryStage) throws Exception {
-        BorderPane borderPane = new BorderPane();
+        /*BorderPane borderPane = new BorderPane();
         Button generateButton = new Button("generate");
         Button chirality = new Button("chirality");
 
@@ -37,7 +40,7 @@ public class ChemGraFX extends Application {
         borderPane.setCenter(webView);
         borderPane.setTop(hBox);
         generateButton.setOnMouseClicked(event -> {
-            /*vBox.getChildren().clear();
+            vBox.getChildren().clear();
             molecule[0] = moleculeGenerator.generate(5);
             //molecule[0].printMolecule();
             System.out.println("TEST ISOMORPHISM "+molecule[0].test());
@@ -48,7 +51,7 @@ public class ChemGraFX extends Application {
                 b.setOnMouseClicked(event1 -> {
                     webView.getEngine().load(webSMILES+smile);
                 });
-            });*/
+            });
             molecule[0] = moleculeGenerator.generate2(7);
             final Node[] n = new Node[1];
             molecule[0].getNodes().forEach((s, node) -> {
@@ -78,8 +81,11 @@ public class ChemGraFX extends Application {
         System.out.println(Integer.parseInt(Integer.toBinaryString(b[1]),2));
         System.out.println(Integer.parseInt(Integer.toBinaryString(b[2]),2));
 
-
-        Scene scene = new Scene(borderPane,400,400);
+        */
+        MainView view = new MainView();
+        Analyzer analyzer = new Analyzer();
+        Controller controller = new Controller(view,analyzer);
+        Scene scene = new Scene(view,400,400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

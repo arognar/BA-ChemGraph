@@ -4,5 +4,6 @@ public class Bromine extends StereoAtom {
     public Bromine(){
         setLabel("Br");
         setConnections(1);
+        setAtomicNumber(35);
     }
 }

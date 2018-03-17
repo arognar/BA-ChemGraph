@@ -60,7 +60,7 @@ public class StringGen {
         String[] nextAtoms = {node.getLabel()};
         node.getNeighbours().forEach(node1 -> {
             //System.out.println("test");
-            //System.out.println(node1.getLabel());
+
             strings.add(node.getBoundingType(node1)+stringGenStereo(node,(StereoAtom) node1));
         });
         Collections.sort(strings, String.CASE_INSENSITIVE_ORDER);
@@ -127,11 +127,10 @@ public class StringGen {
         visitedNodes.add(n.getId());
         final String[] nextAtoms = {n.getLabel()};
         List<String> labels = new ArrayList<>();
-
         n.getNeighbours().forEach(node -> {
             if(visitedNodes.add(node.getId())){
-
-                if(!(node instanceof Hydrogen))labels.add(stringGeneration2(node));
+                labels.add(stringGeneration2(node));
+                //if(!(node instanceof Hydrogen))labels.add(stringGeneration2(node));
             }
         });
 
@@ -148,14 +147,12 @@ public class StringGen {
         }
     }
 
-    private String stringGenStereo(StereoAtom from,StereoAtom to){
-        System.out.println("FROM "+from.getLabel()+" "+to.getLabel());
+    public String stringGenStereo(StereoAtom from,StereoAtom to){
         //visitedNodes.add(from.getId());
         final String[] nextAtoms = {to.getLabel()};
         List<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node -> {
-            if(node!=null)System.out.println(to.getLabel()+"  "+node.getLabel());
             if(node!=null)labels.add(to.getBoundingType(node)+stringGenStereo(to,(StereoAtom) node));
         });
 
@@ -173,6 +170,33 @@ public class StringGen {
         }
     }
 
+    //for RS
+    public String stringGenStereoAtomicNumber(StereoAtom from,StereoAtom to){
+        //System.out.println("FROM "+from.getLabel()+" "+to.getLabel());
+        //visitedNodes.add(from.getId());
+        char numbertoChar = (char)(to.getAtomicNumber()+33);
+        String label = ""+numbertoChar;
+        final String[] nextAtoms = {""+label};
+        List<String> labels = new ArrayList<>();
+
+        to.getNeighbourList(from).forEach(node ->{
+            if(node!=null)labels.add(to.getBoundingType(node)+stringGenStereoAtomicNumber(to,(StereoAtom) node));//todo boundingtype
+        });
+
+
+        if(labels.isEmpty()){
+//            System.out.println("in stringGen " + n.getLabel());
+
+            return label;
+        } else {
+            Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
+            labels.forEach(node -> {
+                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
+            });
+//            System.out.println("in stringGen "+nextAtoms[0]);
+            return nextAtoms[0];
+        }
+    }
     private String stringGenStereoStereoOrder(StereoAtom from,StereoAtom to){
         //visitedNodes.add(from.getId());
         //System.out.println("FROM "+from.getLabel());
@@ -183,7 +207,8 @@ public class StringGen {
         ArrayList<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node -> {
-            labels.add(stringGenStereoStereoOrder(to,(StereoAtom) node));
+
+            if(node!=null)labels.add(stringGenStereoStereoOrder(to,(StereoAtom) node));
         });
 
 

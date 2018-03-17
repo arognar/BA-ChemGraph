@@ -3,10 +3,7 @@ package model.chemGraph;
 import model.StringGen;
 import model.graph.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ChemAlgorithm {
 
@@ -56,9 +53,32 @@ public class ChemAlgorithm {
         Set<String> TODO = new HashSet<>();
         node.getNeighbours().forEach(node1 -> {
             TODO.add(stringGen.getString(node,node1));
+
         });
         if (TODO.size()==4) return true;
         return false;
 
+    }
+
+
+
+    public static String RSDetermination(StereoAtom atom){
+
+
+        StringGen stringGen = new StringGen();
+        ArrayList<String> test = new ArrayList<>();
+        Map<String,Node> stringNodeMap = new HashMap<>();
+        atom.getNeighbours().forEach(node -> {
+            String smileNumber = stringGen.stringGenStereoAtomicNumber(atom,(StereoAtom)node);
+            test.add(smileNumber);
+            stringNodeMap.put(smileNumber,node);
+        });
+        System.out.println("-----------------");
+        Collections.sort(test);
+        test.forEach(s -> System.out.println(s+"  "+stringNodeMap.get(s).getLabel()));
+
+        atom.getNeighbourList(stringNodeMap.get(test.get(0))).forEach(node -> System.out.println(node.getLabel()));
+        System.out.println("-----------------");
+        return "dummy";
     }
 }
