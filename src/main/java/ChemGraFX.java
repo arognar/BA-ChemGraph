@@ -85,7 +85,7 @@ public class ChemGraFX extends Application {
         MainView view = new MainView();
         Analyzer analyzer = new Analyzer();
         Controller controller = new Controller(view,analyzer);
-        Scene scene = new Scene(view,400,400);
+        Scene scene = new Scene(view,400,444);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
