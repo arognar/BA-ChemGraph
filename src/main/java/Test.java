@@ -6,8 +6,7 @@ import model.SmileGenerator;
 import model.StringGen;
 import model.chemGraph.*;
 import model.graph.AbstractPQNode;
-import model.graph.Graph;
-import model.graph.PNode;
+import model.graph.QNode;
 import model.graph.PQTree;
 import model.smileParser.SmileParser;
 
@@ -36,9 +35,10 @@ public class Test extends Application {
         //testPerm();
         //weinsaeurePQTest();
         //simplesPQTest();
-        //weinsaeurePQTest();
+        weinsaeurePQTest();
         //matchingBracketsTest();
-        RSTestSimple();
+        //RSTestSimple();
+        //testRS();
         Platform.exit();
 
     }
@@ -151,13 +151,13 @@ public class Test extends Application {
     }
 
     public void printNodeTest(){
-        PNode p = new PNode("a");
-        PNode p2 = new PNode("a2");
-        PNode p3 = new PNode("a3");
-        PNode p4 = new PNode("a4");
-        PNode p5 = new PNode("a5");
-        PNode p6 = new PNode("a6");
-        PNode p7 = new PNode("a7");
+        QNode p = new QNode("a");
+        QNode p2 = new QNode("a2");
+        QNode p3 = new QNode("a3");
+        QNode p4 = new QNode("a4");
+        QNode p5 = new QNode("a5");
+        QNode p6 = new QNode("a6");
+        QNode p7 = new QNode("a7");
         p.addChild(p2,"");
         p.addChild(p3,"");
         p2.addChild(p4,"");
@@ -266,8 +266,8 @@ public class Test extends Application {
 
     public void weinsaeurePQTest(){
         SmileParser smileParser = new SmileParser();
-        String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
         //String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
+        String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
         //String weinsaeure = "(C(H)(O(H))(H))";
         //String weinsaeure = "(C(O(H)))";
         PQTree pqTree = smileParser.parseSmileToPQTree(weinsaeure);
@@ -278,6 +278,50 @@ public class Test extends Application {
         GraphUtil.print(reducedRoot);
         ArrayList<String> smiles = reducedRoot.getAllSmiles();
         smiles.forEach(s -> System.out.println(s));
+        System.out.println("muhkuh");
+        ArrayList<Molecule> molecules = new ArrayList<>();
+        smiles.forEach(s -> {
+            System.out.println("-------------------------");
+            System.out.println(s);
+            Molecule molecule = smileParser.parseSmile(s);
+            molecules.add(molecule);
+            molecule.determineChirality();
+            molecule.getChiralAtoms().forEach(node -> ChemAlgorithm.RSDetermination((StereoAtom) node));
+        });
+        Set<String> konstiStrings = new HashSet<>();
+        Set<String> konfiStrings = new HashSet<>();
+        molecules.forEach(molecule -> {
+            System.out.println(ChemAlgorithm.konsitutionIso(molecule));
+            konstiStrings.add(ChemAlgorithm.konsitutionIso(molecule));
+        });
+        System.out.println(konstiStrings.size());
+
+        molecules.forEach(molecule -> {
+            System.out.println(ChemAlgorithm.konfigurationIso(molecule));
+            konfiStrings.add(ChemAlgorithm.konfigurationIso(molecule));
+        });
+        System.out.println(konfiStrings.size());
+    }
+
+    public void testRS(){
+        SmileParser smileParser = new SmileParser();
+        PQTree pqTree = smileParser.parseSmileToPQTree("(C(H)(Br)(F)(O(H)))");
+        pqTree.determineStereocenter();
+        AbstractPQNode abstractPQNode = pqTree.getRoot().reduce();
+        ArrayList<String> smiles = abstractPQNode.getAllSmiles();
+        smiles.forEach(s -> System.out.println(s));
+        ArrayList<Molecule> molecules = new ArrayList<>();
+
+        smiles.forEach(s -> molecules.add(smileParser.parseSmile(s)));
+        molecules.forEach(molecule -> {
+            molecule.determineChirality();
+            molecule.getChiralAtoms().forEach(node -> {
+                ChemAlgorithm.RSDetermination((StereoAtom) node);
+                System.out.println("----------------------");
+            });
+
+        });
+
     }
 
     public void matchingBracketsTest(){

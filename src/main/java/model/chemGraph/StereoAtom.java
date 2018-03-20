@@ -11,7 +11,7 @@ public class StereoAtom extends Node{
     private int atomicNumber;
 
 
-    @Override
+    //@Override
     public void addNeighbour(Node node, String c) {
         super.addNeighbour(node, c);
         ArrayList<Node> e = new ArrayList();
@@ -24,6 +24,23 @@ public class StereoAtom extends Node{
             stereoNeighbours.get(super.getNeighbours().size()-1).set(GraphUtil.boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
         }
     }
+
+    /*@Override
+    public void addNeighbour(Node node, String c) {
+        super.addNeighbour(node, c);
+        ArrayList<Node> e = new ArrayList();
+        for(int i = 0; i < this.getMaxConnections()-1; i++) {
+            e.add(null);
+        }
+        for (int i = 0; i < GraphUtil.boundaryAr.length; i++) {
+            stereoNeighbours.get(i).set(GraphUtil.boundaryAr[i][this.getNeighbours().size()-1],)
+        }
+        stereoNeighbours.add(e);
+        for(int i = 0; i < super.getNeighbours().size()-1;i++){
+            stereoNeighbours.get(i).set(GraphUtil.boundaryAr[super.getNeighbours().size()-1][i],node);
+            stereoNeighbours.get(super.getNeighbours().size()-1).set(GraphUtil.boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
+        }
+    }*/
 
     public void print(){
         System.out.println("Atom "+this.getLabel()+" with ID"+this.getId()+"------------");

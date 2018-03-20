@@ -1,11 +1,8 @@
 package model.graph;
 
-import model.StringGen;
 import model.chemGraph.ChemAlgorithm;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PQTree {
     ArrayList<AbstractPQNode> nodes = new ArrayList<>();
@@ -28,7 +25,7 @@ public class PQTree {
     }
 
 
-    public void add(QNode curAtom) {
+    public void add(PNode curAtom) {
         nodes.add(curAtom);
     }
 

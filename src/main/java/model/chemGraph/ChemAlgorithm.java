@@ -12,9 +12,10 @@ public class ChemAlgorithm {
         ArrayList<String> test = new ArrayList<>();
         molecule.getNodes().forEach((s, node) -> {
             if(node instanceof Carbon){
-                System.out.println("CarbonFound");
+                //System.out.println("CarbonFound");
                 String n = node.getLabel();
                 String c = stringGen.getStereoSmiles2((StereoAtom) node);
+                //System.out.println(c);
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
         });
@@ -22,8 +23,9 @@ public class ChemAlgorithm {
         Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
         final String[] m = {""};
         test.forEach(s -> {
-            m[0] = new StringBuilder().append(s).toString();
+            m[0] = new StringBuilder().append(m[0]).append(s).toString();
         });
+        //System.out.println(m[0]);
         return m[0];
 
     }
@@ -35,6 +37,7 @@ public class ChemAlgorithm {
             if(node instanceof Carbon){
                 String n = node.getLabel();
                 String c = stringGen.getStereoSmiles((StereoAtom) node);
+                //System.out.println(c);
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
         });
@@ -42,7 +45,7 @@ public class ChemAlgorithm {
         Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
         final String[] m = {""};
         test.forEach(s -> {
-            m[0] = new StringBuilder().append(s).toString();
+            m[0] = new StringBuilder().append(m[0]).append(s).toString();
         });
         return m[0];
 
@@ -63,22 +66,25 @@ public class ChemAlgorithm {
 
 
     public static String RSDetermination(StereoAtom atom){
-
-
         StringGen stringGen = new StringGen();
         ArrayList<String> test = new ArrayList<>();
         Map<String,Node> stringNodeMap = new HashMap<>();
+        Map<Node,String> nodeStringMap = new HashMap<>();
         atom.getNeighbours().forEach(node -> {
             String smileNumber = stringGen.stringGenStereoAtomicNumber(atom,(StereoAtom)node);
             test.add(smileNumber);
             stringNodeMap.put(smileNumber,node);
+            nodeStringMap.put(node,smileNumber);
         });
-        System.out.println("-----------------");
         Collections.sort(test);
-        test.forEach(s -> System.out.println(s+"  "+stringNodeMap.get(s).getLabel()));
-
-        atom.getNeighbourList(stringNodeMap.get(test.get(0))).forEach(node -> System.out.println(node.getLabel()));
-        System.out.println("-----------------");
+        List<Node> nodesList = atom.getNeighbourList(stringNodeMap.get(test.get(0)));
+        for (int i = 0; i < nodesList.size(); i++) {
+            if(nodesList.get(i) == stringNodeMap.get(test.get(3))) {
+                if(nodeStringMap.get(nodesList.get((i+1)%nodesList.size())).compareTo(nodeStringMap.get(nodesList.get(Math.floorMod(i-1,nodesList.size())))) < 0)
+                    System.out.println("R");
+                else System.out.println("S");
+            }
+        }
         return "dummy";
     }
 }

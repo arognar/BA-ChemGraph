@@ -1,11 +1,10 @@
 package model.smileParser;
 
-import model.chemGraph.Atom;
 import model.chemGraph.Molecule;
 import model.chemGraph.StereoAtom;
 import model.graph.AbstractPQNode;
 import model.graph.PQTree;
-import model.graph.QNode;
+import model.graph.PNode;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -32,6 +31,8 @@ public class SmileParser {
         token.forEach(curToken -> {
             if(curToken.equals("(")) branchFlag[0] = true;
             else if(curToken.equals(")")) atomStack.pop();
+            else if(curToken.equals("P")) atomStack.push(atomStack.peek());
+            else if(curToken.equals("@")) ;
             else if(curToken.equals("=")) {
                 bound[0] = "=";
             }
@@ -72,7 +73,7 @@ public class SmileParser {
             else if(curToken.equals("=")) bound[0] = "=";
             else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
             else {
-                QNode curAtom = new QNode(curToken);
+                PNode curAtom = new PNode(curToken);
                 pqTree.add(curAtom);
                 if(rootFlag[0]){
                     root[0] = curAtom;
@@ -98,7 +99,7 @@ public class SmileParser {
 
     private ArrayList<String> tokenize(String smileString){
         //todo whitespace trim
-        String regex = "([A-Z][a-z]*)|[()=-]";
+        String regex = "([A-Z][a-z]*)|[()=-@#]";
         Pattern pattern = Pattern.compile(regex);
         ArrayList<String> token = new ArrayList<>();
         Matcher matcher = pattern.matcher(smileString);

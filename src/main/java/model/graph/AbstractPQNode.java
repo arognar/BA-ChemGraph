@@ -98,10 +98,10 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
             ArrayList<ArrayList<String>> child = new ArrayList<>();
             children.forEach(abstractPQNode -> child.add(abstractPQNode.getAllSmiles()));
             Set<String> results = new HashSet<>();
-            if(this instanceof QNode){
+            if(this instanceof PNode){
                 getPermutationsQ(0,"",child,results);
             }
-            if(this instanceof PNode){
+            if(this instanceof QNode){
                 getPermutations(0,"",child,results);
             }
 

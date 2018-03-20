@@ -180,7 +180,7 @@ public class StringGen {
         List<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node ->{
-            if(node!=null)labels.add(to.getBoundingType(node)+stringGenStereoAtomicNumber(to,(StereoAtom) node));//todo boundingtype
+            if(node!=null)labels.add(stringGenStereoAtomicNumber(to,(StereoAtom) node));//todo boundingtype
         });
 
 
@@ -191,13 +191,13 @@ public class StringGen {
         } else {
             Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
             labels.forEach(node -> {
-                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
+                nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append((node)).toString();
             });
 //            System.out.println("in stringGen "+nextAtoms[0]);
             return nextAtoms[0];
         }
     }
-    private String stringGenStereoStereoOrder(StereoAtom from,StereoAtom to){
+    public String stringGenStereoStereoOrder(StereoAtom from,StereoAtom to){
         //visitedNodes.add(from.getId());
         //System.out.println("FROM "+from.getLabel());
         //System.out.println(to==null);
@@ -208,7 +208,7 @@ public class StringGen {
 
         to.getNeighbourList(from).forEach(node -> {
 
-            if(node!=null)labels.add(stringGenStereoStereoOrder(to,(StereoAtom) node));
+            if(node!=null)labels.add(to.getBoundingType(node)+stringGenStereoStereoOrder(to,(StereoAtom) node));
         });
 
 
@@ -217,7 +217,8 @@ public class StringGen {
 //            System.out.println("in stringGen " + n.getLabel());
             return to.getLabel();
         } else {
-            nextAtoms[0]=getCircularMaxString(labels);
+            nextAtoms[0]= new StringBuilder().append(nextAtoms[0]).append(getCircularMaxString(labels)).toString();
+
 //            System.out.println("in stringGen "+nextAtoms[0]);
             return nextAtoms[0];
         }
@@ -229,7 +230,7 @@ public class StringGen {
         for (int i = 0; i < strings.size() ; i++) {
             String candidat ="";
             for (int j = 0; j < strings.size(); j++) {
-                candidat+=strings.get((j+i)%strings.size());
+                candidat+="("+strings.get((j+i)%strings.size())+")";
             }
             candidates.add(candidat);
         }
