@@ -35,10 +35,11 @@ public class Test extends Application {
         //testPerm();
         //weinsaeurePQTest();
         //simplesPQTest();
-        weinsaeurePQTest();
+        //weinsaeurePQTest();
         //matchingBracketsTest();
         //RSTestSimple();
         //testRS();
+        testButendisäure();
         Platform.exit();
 
     }
@@ -169,44 +170,6 @@ public class Test extends Application {
 
     }
 
-    public void testPerm(){
-        ArrayList<String> s1 = new ArrayList<>();
-        s1.add("A");
-        s1.add("B");
-        s1.add("C");
-        ArrayList<String> s2 = new ArrayList<>();
-        s2.add("A2");
-        s2.add("B2");
-        s2.add("C2");
-        ArrayList<String> s3 = new ArrayList<>();
-        s3.add("A3");
-        s3.add("B3");
-        s3.add("C3");
-        HashSet<String> res = new HashSet<>();
-        ArrayList<ArrayList<String>> all = new ArrayList<>();
-        all.add(s1);
-        all.add(s2);
-        all.add(s3);
-        getPermutations(0,"",all,res);
-        res.forEach(s -> System.out.println(s));
-
-        ArrayList<String> results = new ArrayList<>();
-        permutations(all,0,all.size(),results);
-        results.forEach(s -> {
-            System.out.println(s);
-        });
-    }
-
-    public void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){
-        if(d == strings.size()){
-            results.add(s);
-            return;
-        }
-        for (int i = 0; i < strings.get(d).size(); i++) {
-            getPermutations(d+1,s+strings.get(d).get(i),strings,results);
-        }
-    }
-
     public void parseSmilePQTreeTest(){
         SmileParser smileParser = new SmileParser();
         //AbstractPQNode s = smileParser.parseSmileToPQTree("C(Br)(F)(H)(C(H)(H)(H))");
@@ -278,7 +241,6 @@ public class Test extends Application {
         GraphUtil.print(reducedRoot);
         ArrayList<String> smiles = reducedRoot.getAllSmiles();
         smiles.forEach(s -> System.out.println(s));
-        System.out.println("muhkuh");
         ArrayList<Molecule> molecules = new ArrayList<>();
         smiles.forEach(s -> {
             System.out.println("-------------------------");
@@ -292,16 +254,63 @@ public class Test extends Application {
         Set<String> konfiStrings = new HashSet<>();
         molecules.forEach(molecule -> {
             System.out.println(ChemAlgorithm.konsitutionIso(molecule));
-            konstiStrings.add(ChemAlgorithm.konsitutionIso(molecule));
+            System.out.println("*******************");
+            System.out.println(konstiStrings.add(ChemAlgorithm.konsitutionIso(molecule)));
         });
         System.out.println(konstiStrings.size());
 
         molecules.forEach(molecule -> {
             System.out.println(ChemAlgorithm.konfigurationIso(molecule));
-            konfiStrings.add(ChemAlgorithm.konfigurationIso(molecule));
+            System.out.println(konfiStrings.add(ChemAlgorithm.konfigurationIso(molecule)));
         });
+
+        Set<String> test = new HashSet<>();
+        System.out.println(test.add(ChemAlgorithm.konfigurationIso(molecules.get(0))));
+        System.out.println(test.add(ChemAlgorithm.konfigurationIso(molecules.get(3))));
+        System.out.println(konstiStrings.size());
         System.out.println(konfiStrings.size());
+       // molecules.get(3).getDoubleBounds().forEach(doubleBoundWrapper -> System.out.println(doubleBoundWrapper.getStereoAtomOne().getLabel()+" "+doubleBoundWrapper.getStereoAtomTwo().getLabel()));
+        //molecules.get(3).determineChiralityDoubleBound();
+        //System.out.println(molecules.get(3).getChiralDoubleBounds().size());
+
+
     }
+
+    public void testButendisäure(){
+        SmileParser smileParser = new SmileParser();
+        //String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
+        String weinsaeure = "(C(=O)(O(H))(C(H)(=C(H)(C(=O)(O(H))))))";
+        //String weinsaeure = "(C(H)(O(H))(H))";
+        //String weinsaeure = "(C(O(H)))";
+        PQTree pqTree = smileParser.parseSmileToPQTree(weinsaeure);
+        GraphUtil.print(pqTree.getRoot());
+        pqTree.determineStereocenter();
+        GraphUtil.print(pqTree.getRoot());
+        AbstractPQNode reducedRoot = pqTree.getRoot().reduce();
+        GraphUtil.print(reducedRoot);
+        ArrayList<String> strings = reducedRoot.getAllSmiles();
+        strings.forEach(s -> System.out.println(s));
+        Set<String> set = new HashSet<>();
+        Set<String> set2 = new HashSet<>();
+        Molecule molecule1 = smileParser.parseSmile(strings.get(0));
+        Molecule molecule2 = smileParser.parseSmile(strings.get(1));
+        set.add(ChemAlgorithm.konsitutionIso(molecule1));
+        set.add(ChemAlgorithm.konsitutionIso(molecule2));
+        set2.add(ChemAlgorithm.konfigurationIso(molecule1));
+        set2.add(ChemAlgorithm.konfigurationIso(molecule2));
+        System.out.println(set.size());
+        System.out.println(set2.size());
+        /*molecule1.determineChiralityDoubleBound();
+        molecule1.getChiralDoubleBounds().forEach(doubleBoundWrapper -> System.out.println("test"));
+        molecule1.getChiralDoubleBounds().forEach(doubleBoundWrapper -> ChemAlgorithm.cisTrans(doubleBoundWrapper));
+
+        molecule2.determineChiralityDoubleBound();
+        molecule2.getChiralDoubleBounds().forEach(doubleBoundWrapper -> System.out.println("test"));
+        molecule2.getChiralDoubleBounds().forEach(doubleBoundWrapper -> ChemAlgorithm.cisTrans(doubleBoundWrapper));
+        */
+    }
+
+
 
     public void testRS(){
         SmileParser smileParser = new SmileParser();
@@ -335,87 +344,6 @@ public class Test extends Application {
 
     }
 
-    public ArrayList<String> permutate(ArrayList<ArrayList<String>> lists){
-        ArrayList<String> permutatedList = new ArrayList<>();
-        int newListIndex = 0;
 
-        for(int i = 0; i < lists.size();i++){
-            for(int j = 0; j < lists.get(i).size();j++){
-                String s = lists.get(i).get(j);
-
-                for(int k = j+1;k < lists.size()+j;k++){
-                    for(int h = 0; h < lists.get(k%lists.size()).size();h++){
-                        System.out.println(lists.get(k%lists.size()).get(h));
-                        s+=lists.get(k%lists.size()).get(h);
-                    }
-                }
-                permutatedList.add(s);
-                newListIndex++;
-            }
-        }
-
-        return permutatedList;
-    }
-
-    public void perm(ArrayList<ArrayList<String>> lists, final Consumer<List<String>> consumer){
-        final int[] index_pos = new int[lists.size()];
-        final int last_index = lists.size() -1;
-        //final Set<String>
-        final List<String> permuted = new ArrayList<>(lists.size());
-
-        for(int i = 0; i < lists.size();i++){
-            permuted.add(null);
-        }
-
-        while (index_pos[last_index] < lists.get(last_index).size()){
-            for(int i = 0 ; i < lists.size(); i++){
-                permuted.set(i,lists.get(i).get(index_pos[i]));
-            }
-            consumer.accept(permuted);
-        }
-        for(int i = 0; i < lists.size();i++){
-            ++index_pos[i];
-            if(index_pos[i] < lists.get(i).size()){
-                break;
-            } else if(i < last_index){
-                index_pos[0] = 0;
-            }
-        }
-    }
-
-    public String getCircularMaxString(ArrayList<String> strings){
-        Set<String> candidates = new HashSet<>();
-        for (int i = 0; i < strings.size() ; i++) {
-            String candidat ="";
-            for (int j = 0; j < strings.size(); j++) {
-                candidat+=strings.get((j+i)%strings.size());
-            }
-            candidates.add(candidat);
-        }
-        return Collections.max(candidates);
-    }
-
-    private void permutations(ArrayList<ArrayList<String>> strings,int startIndex,int endIndex,ArrayList<String> results){//todo set ?
-        if(startIndex == endIndex){
-
-            final String[] s = {""};
-            for (int i = 0; i < strings.size(); i++) {
-                strings.get(i).forEach(s1 -> s[0] +=s1);
-            }
-            results.add(s[0]);
-        } else {
-            for (int j = startIndex; j < endIndex; j++) {
-                swap(strings,startIndex,j);
-                permutations(strings,startIndex+1,endIndex,results);
-                swap(strings,startIndex,j);
-            }
-        }
-    }
-
-    private void swap(ArrayList<ArrayList<String>> strings,int i,int x){
-        ArrayList<String> s = strings.get(i);
-        strings.add(i,strings.get(x));
-        strings.add(x,s);
-    }
 
 }

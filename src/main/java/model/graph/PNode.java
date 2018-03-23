@@ -11,19 +11,15 @@ public class PNode extends AbstractPQNode implements IPQNode,IPrintable {
 
     @Override
     public AbstractPQNode enforceRules() {
-        System.out.println("CHIRALITY "+isChiral()+"  "+getLabel());
         Set<String> test = new HashSet<>(); //todo naming
         children.forEach(abstractPQNode -> {
-            System.out.println(abstractPQNode.getChildrenInformation());
             test.add(abstractPQNode.getChildrenInformation());
         });
-        System.out.println("------------------------------");
         if(isntRotational()){
             System.out.println("not rotational");
             if(test.size()<2) {
                 return reductionRuleQToP();
             } else {
-                System.out.println("testtttt");
                 return this;
             }
 

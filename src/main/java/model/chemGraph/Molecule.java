@@ -9,6 +9,8 @@ import java.util.*;
 public class Molecule extends Graph {
     private Set<Node> candidates = new HashSet<>();
     private ArrayList<Node> chiralAtoms = new ArrayList<>();
+    private ArrayList<DoubleBoundWrapper> doubleBounds = new ArrayList<>();
+    private ArrayList<DoubleBoundWrapper> chiralDoubleBounds = new ArrayList<>();
 
     public boolean tryConnect(Node node1, Node node2,String boundingType) {
         if(super.tryConnect(node1,node2,boundingType)) {
@@ -18,6 +20,10 @@ public class Molecule extends Graph {
         } else {
             return false;
         }
+    }
+
+    public void addDoubleBound(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
+        doubleBounds.add(new DoubleBoundWrapper(stereoAtomOne,stereoAtomTwo));
     }
 
     public void printCandidates(){
@@ -84,6 +90,12 @@ public class Molecule extends Graph {
         });
     }
 
+    public void determineChiralityDoubleBound(){
+        getDoubleBounds().forEach(doubleBoundWrapper -> {
+            if(ChemAlgorithm.isChiralDoubleBound(doubleBoundWrapper)) chiralDoubleBounds.add(doubleBoundWrapper);
+        });
+    }
+
     public String test2(){
         StringGen stringGen = new StringGen();
         ArrayList<String> test = new ArrayList<>();
@@ -108,5 +120,13 @@ public class Molecule extends Graph {
 
     public ArrayList<Node> getChiralAtoms() {
         return chiralAtoms;
+    }
+
+    public ArrayList<DoubleBoundWrapper> getDoubleBounds() {
+        return doubleBounds;
+    }
+
+    public ArrayList<DoubleBoundWrapper> getChiralDoubleBounds() {
+        return chiralDoubleBounds;
     }
 }

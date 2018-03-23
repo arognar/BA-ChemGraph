@@ -87,4 +87,54 @@ public class ChemAlgorithm {
         }
         return "dummy";
     }
+
+    public static boolean isChiralDoubleBound(DoubleBoundWrapper doubleBoundWrapper){
+        StringGen stringGen = new StringGen();
+        StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
+        StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
+        if((first.getNeighbours().size()<3) || second.getNeighbours().size()<3) return false;
+
+        Set<String> neighboursFirst = new HashSet<>();
+        first.getNeighbourList(second).forEach(node -> {
+            if(node!=null)neighboursFirst.add(stringGen.stringGenStereo(first,(StereoAtom)node));
+        });
+        if(neighboursFirst.size()<2) return false;
+
+        Set<String> neighboursSecond = new HashSet<>();
+        second.getNeighbourList(first).forEach(node -> {
+            if(node!=null)neighboursSecond.add(stringGen.stringGenStereo(second,(StereoAtom)node));
+        });
+        if(neighboursSecond.size()<2) return false;
+
+        return true;
+    }
+
+    public static String cisTrans(DoubleBoundWrapper doubleBoundWrapper){
+        StringGen stringGen = new StringGen();
+        StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
+        StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
+        ArrayList<String> firstNeighboursPrio = new ArrayList<>();
+        ArrayList<String> secondNeighboursPrio = new ArrayList<>();
+        first.getNeighbourList(second).forEach(node -> {
+            if(node!=null) firstNeighboursPrio.add(stringGen.stringGenStereoAtomicNumber(first,(StereoAtom) node));
+        });
+        second.getNeighbourList(first).forEach(node -> {
+            if(node!=null) secondNeighboursPrio.add(stringGen.stringGenStereoAtomicNumber(second,(StereoAtom) node));
+        });
+
+        firstNeighboursPrio.forEach(s -> System.out.println(s));
+        secondNeighboursPrio.forEach(s -> System.out.println(s));
+        if(firstNeighboursPrio.get(0).compareTo(firstNeighboursPrio.get(1))<0 && secondNeighboursPrio.get(0).compareTo(secondNeighboursPrio.get(1))<0) {
+            System.out.println("cis Z");
+            return "Z";
+        }
+        if(firstNeighboursPrio.get(0).compareTo(firstNeighboursPrio.get(1))>0 && secondNeighboursPrio.get(0).compareTo(secondNeighboursPrio.get(1))>0) {
+            System.out.println("cis Z");
+            return "Z";
+        }
+
+        System.out.println("trans");
+
+        return "dummy";
+    }
 }

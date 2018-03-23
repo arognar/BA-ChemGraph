@@ -42,6 +42,7 @@ public class SmileParser {
                 molecule.addNode(curAtom);
                 if(!atomStack.empty()) {
                     boolean tryconnect = molecule.tryConnect(curAtom,atomStack.peek(),bound[0]);
+                    if(bound[0].equals("=")) molecule.addDoubleBound(atomStack.peek(),curAtom);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 

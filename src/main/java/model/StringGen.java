@@ -149,7 +149,7 @@ public class StringGen {
 
     public String stringGenStereo(StereoAtom from,StereoAtom to){
         //visitedNodes.add(from.getId());
-        final String[] nextAtoms = {to.getLabel()};
+        final String[] nextAtoms = {from.getBoundingType(to)+to.getLabel()};
         List<String> labels = new ArrayList<>();
 
         to.getNeighbourList(from).forEach(node -> {
@@ -158,9 +158,9 @@ public class StringGen {
 
 
         if(labels.isEmpty()){
-//            System.out.println("in stringGen " + n.getLabel());
             return to.getLabel();
         } else {
+
             Collections.sort(labels, String.CASE_INSENSITIVE_ORDER);
             labels.forEach(node -> {
                 nextAtoms[0] = new StringBuilder().append(nextAtoms[0]).append("(").append((node)).append(")").toString();
@@ -217,7 +217,12 @@ public class StringGen {
 //            System.out.println("in stringGen " + n.getLabel());
             return to.getLabel();
         } else {
-            nextAtoms[0]= new StringBuilder().append(nextAtoms[0]).append(getCircularMaxString(labels)).toString();
+            if(from.getBoundingType(to).equals("=")) {
+                nextAtoms[0]= new StringBuilder().append(nextAtoms[0]).append(getSimpleList(labels)).toString();
+            } else {
+                nextAtoms[0]= new StringBuilder().append(nextAtoms[0]).append(getCircularMaxString(labels)).toString();
+            }
+
 
 //            System.out.println("in stringGen "+nextAtoms[0]);
             return nextAtoms[0];
@@ -235,6 +240,14 @@ public class StringGen {
             candidates.add(candidat);
         }
         return Collections.max(candidates);
+    }
+
+    public String getSimpleList(ArrayList<String> strings){
+        String candidat ="";
+        for (int i = 0; i < strings.size() ; i++) {
+            candidat+="("+strings.get(i)+")";
+        }
+        return candidat;
     }
 
 }
