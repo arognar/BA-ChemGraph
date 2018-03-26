@@ -35,11 +35,11 @@ public class Test extends Application {
         //testPerm();
         //weinsaeurePQTest();
         //simplesPQTest();
-        //weinsaeurePQTest();
+        weinsaeurePQTest();
         //matchingBracketsTest();
         //RSTestSimple();
         //testRS();
-        testButendisäure();
+        //testButendisäure();
         Platform.exit();
 
     }
@@ -136,9 +136,7 @@ public class Test extends Application {
         discString.forEach(s1 -> molecules.add(smileParser.parseSmile(s1)));
         System.out.println("-----------------------------------");
         Set<String> stereoDisc = new HashSet<>();
-        molecules.forEach(molecule1 -> {
-            stereoDisc.add(molecule1.test2());
-        });
+
         stereoDisc.forEach(s1 -> System.out.println(s1));
         long used = System.currentTimeMillis() - cur;
         System.out.println("time: "+ used);

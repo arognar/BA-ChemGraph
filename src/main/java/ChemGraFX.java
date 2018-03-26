@@ -3,18 +3,8 @@
 import controller.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import model.Analyzer;
-import model.MoleculeGenerator;
-import model.StringGen;
-import model.chemGraph.Molecule;
-import model.graph.Node;
 import view.MainView;
 
 public class ChemGraFX extends Application {

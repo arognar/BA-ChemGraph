@@ -7,11 +7,13 @@ import model.graph.PQTree;
 import model.graph.PNode;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SmileParser {
+    private String errorMessage;
     private AtomFactory atomFactory;
 
     public SmileParser(){
@@ -20,8 +22,14 @@ public class SmileParser {
 
     public Molecule parseSmile(String smileString){
         ArrayList<String> token = tokenize(smileString);
-        System.out.println(machtingBrackets(token));
-        if(!machtingBrackets(token)) return null;//TODO CONTROLLER
+        if(token.isEmpty()) {
+            errorMessage = "Fehler beim parsen";
+            return null;
+        }
+        if(!machtingBrackets(token)){
+            errorMessage = "Fehler bei der überprüfung der Klammerung";
+            return null;
+        }
 
         Molecule molecule = new Molecule();
         Stack<StereoAtom> atomStack = new Stack<>();
@@ -30,19 +38,27 @@ public class SmileParser {
 
         token.forEach(curToken -> {
             if(curToken.equals("(")) branchFlag[0] = true;
-            else if(curToken.equals(")")) atomStack.pop();
+            else if(curToken.equals(")")) {
+                try{
+                    atomStack.pop();
+                } catch(EmptyStackException e){
+                    errorMessage = "Fehler beim Parsen. Mögliche Fehler sind Klammerung oder falsches Symbol";
+                    return;
+
+                }
+
+            }
             else if(curToken.equals("P")) atomStack.push(atomStack.peek());
-            else if(curToken.equals("@")) ;
             else if(curToken.equals("=")) {
                 bound[0] = "=";
             }
-            else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
+            else if(curToken.equals("-")) bound[0] = "-";
             else {
                 StereoAtom curAtom = atomFactory.getAtom(curToken);
                 molecule.addNode(curAtom);
                 if(!atomStack.empty()) {
                     boolean tryconnect = molecule.tryConnect(curAtom,atomStack.peek(),bound[0]);
-                    if(bound[0].equals("=")) molecule.addDoubleBound(atomStack.peek(),curAtom);
+                    if(bound[0].equals("=")) molecule.addDoubleBond(atomStack.peek(),curAtom);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 
@@ -56,9 +72,12 @@ public class SmileParser {
     }
 
     public PQTree parseSmileToPQTree(String smileString){
-        PQTree pqTree = new PQTree();
+        final PQTree[] pqTree = {new PQTree()};
         ArrayList<String> token = tokenize(smileString);
-        System.out.println(machtingBrackets(token));
+        if(token.isEmpty()) {
+            errorMessage = "Fehler beim parsen";
+            return null;
+        }
         if(!machtingBrackets(token)) return null;//TODO CONTROLLER
 
         final AbstractPQNode[] root = new AbstractPQNode[1];
@@ -70,15 +89,25 @@ public class SmileParser {
 
         token.forEach(curToken -> {
             if(curToken.equals("(")) branchFlag[0] = true;
-            else if(curToken.equals(")")) atomStack.pop();
+            else if(curToken.equals(")")) {
+                try{
+                    atomStack.pop();
+                } catch(EmptyStackException e){
+                    errorMessage = "Fehler beim Parsen. Mögliche Fehler sind Klammerung oder falsches Symbol";
+                    pqTree[0] = null;
+                    return;
+
+                }
+
+            }
             else if(curToken.equals("=")) bound[0] = "=";
-            else if(curToken.equals("-")) bound[0] = "-"; //todo more bounds
+            else if(curToken.equals("-")) bound[0] = "-";
             else {
                 PNode curAtom = new PNode(curToken);
-                pqTree.add(curAtom);
+                pqTree[0].add(curAtom);
                 if(rootFlag[0]){
                     root[0] = curAtom;
-                    pqTree.setRoot(curAtom);
+                    pqTree[0].setRoot(curAtom);
                     rootFlag[0] = false;
                 }
                 if(!atomStack.empty()) {
@@ -94,13 +123,13 @@ public class SmileParser {
                 bound[0] = "-";
             }
         });
-        return pqTree;
+        return pqTree[0];
     }
 
 
     private ArrayList<String> tokenize(String smileString){
         //todo whitespace trim
-        String regex = "([A-Z][a-z]*)|[()=-@#]";
+        String regex = "([A-Z][a-z]*)|[()=-]";
         Pattern pattern = Pattern.compile(regex);
         ArrayList<String> token = new ArrayList<>();
         Matcher matcher = pattern.matcher(smileString);
@@ -112,7 +141,6 @@ public class SmileParser {
     }
 
     private boolean machtingBrackets(ArrayList<String> tokens){
-        //TODO CONTROLLER INTERACTION
         int counter = 0;
         for (String s : tokens) {
             if (s.equals("(")) counter++;
@@ -124,5 +152,9 @@ public class SmileParser {
         if(counter > 0) return false;
         return true;
 
+    }
+
+    public String getErrorMessage(){
+        return errorMessage;
     }
 }

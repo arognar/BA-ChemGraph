@@ -15,11 +15,27 @@ public class Controller implements Observer {
         this.analyzer = analyzer;
 
         analyzer.addObserver(this);
+        this.view.testButton.setOnMouseClicked(event -> {
+            String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
+            analyzer.analyze(weinsaeure);
+        });
+
+        initButtons();
+    }
+
+    private void initButtons() {
+        view.getGenerateButton().setOnMouseClicked(event -> {
+            if(view.getTextField().getText().trim().isEmpty()) {
+                view.addToTextflow("Bitte SMILES eingeben");
+                return;
+            }
+            analyzer.analyze(view.getTextField().getText());
+        });
     }
 
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println((String) arg);
+        view.addToTextflow((String)arg);
     }
 }

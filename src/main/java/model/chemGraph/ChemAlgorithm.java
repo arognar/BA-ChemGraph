@@ -2,8 +2,8 @@ package model.chemGraph;
 
 import model.StringGen;
 import model.graph.Node;
-
 import java.util.*;
+
 
 public class ChemAlgorithm {
 
@@ -81,14 +81,14 @@ public class ChemAlgorithm {
         for (int i = 0; i < nodesList.size(); i++) {
             if(nodesList.get(i) == stringNodeMap.get(test.get(3))) {
                 if(nodeStringMap.get(nodesList.get((i+1)%nodesList.size())).compareTo(nodeStringMap.get(nodesList.get(Math.floorMod(i-1,nodesList.size())))) < 0)
-                    System.out.println("R");
-                else System.out.println("S");
+                    return "R";
+                else return "S";
             }
         }
         return "dummy";
     }
 
-    public static boolean isChiralDoubleBound(DoubleBoundWrapper doubleBoundWrapper){
+    public static boolean isChiralDoubleBound(DoubleBondWrapper doubleBoundWrapper){
         StringGen stringGen = new StringGen();
         StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
         StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
@@ -109,7 +109,7 @@ public class ChemAlgorithm {
         return true;
     }
 
-    public static String cisTrans(DoubleBoundWrapper doubleBoundWrapper){
+    public static String cisTrans(DoubleBondWrapper doubleBoundWrapper){
         StringGen stringGen = new StringGen();
         StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
         StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();

@@ -1,11 +1,13 @@
 package model.chemGraph;
 
-
-public class DoubleBoundWrapper {
+/**
+ * Speichert die beiden Atome einer Doppelbindung.
+ */
+public class DoubleBondWrapper {
     private StereoAtom stereoAtomOne;
     private StereoAtom stereoAtomTwo;
 
-    public DoubleBoundWrapper(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
+    public DoubleBondWrapper(StereoAtom stereoAtomOne, StereoAtom stereoAtomTwo){
         this.stereoAtomOne = stereoAtomOne;
         this.stereoAtomTwo = stereoAtomTwo;
     }

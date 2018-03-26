@@ -1,15 +1,6 @@
-import model.GraphFactory;
-import model.MoleculeGenerator;
 import model.StringGen;
-import model.chemGraph.Carbon;
-import model.chemGraph.Molecule;
-import model.chemGraph.Oxygen;
 import model.chemGraph.StereoAtom;
 import model.graph.Graph;
-import model.graph.Node;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class ChemGra {
 

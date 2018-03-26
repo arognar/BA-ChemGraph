@@ -1,132 +1,66 @@
 package model.chemGraph;
 
-import model.StringGen;
 import model.graph.Graph;
 import model.graph.Node;
 
 import java.util.*;
 
+/**
+ * Repräsentiert den chemischen Graphen.
+ */
 public class Molecule extends Graph {
-    private Set<Node> candidates = new HashSet<>();
+
+    /**
+     * Liste aller chiraler Atome.
+     */
     private ArrayList<Node> chiralAtoms = new ArrayList<>();
-    private ArrayList<DoubleBoundWrapper> doubleBounds = new ArrayList<>();
-    private ArrayList<DoubleBoundWrapper> chiralDoubleBounds = new ArrayList<>();
+    /**
+     * Liste aller Doppelbindungen.
+     */
+    private ArrayList<DoubleBondWrapper> doubleBonds = new ArrayList<>();
+    /**
+     * Liste aller chiralen Doppelbindungen.
+     */
+    private ArrayList<DoubleBondWrapper> chiralDoubleBonds = new ArrayList<>();
 
-    public boolean tryConnect(Node node1, Node node2,String boundingType) {
-        if(super.tryConnect(node1,node2,boundingType)) {
-            if(((node1).getConnections()) <= 1) candidates.add(node1);
-            else candidates.remove(node1);
-            return true;
-        } else {
-            return false;
-        }
+
+    public void addDoubleBond(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
+        doubleBonds.add(new DoubleBondWrapper(stereoAtomOne,stereoAtomTwo));
     }
 
-    public void addDoubleBound(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
-        doubleBounds.add(new DoubleBoundWrapper(stereoAtomOne,stereoAtomTwo));
-    }
-
-    public void printCandidates(){
-        candidates.forEach(node -> {
-            if(((Atom)node).getNumberHydrogen()<=1) System.out.println(node.getId());
-        });
-    }
-
-    public void printMolecule(){
-        System.out.println("Printing: ");
-        super.getNodes().forEach((s, node) -> {
-            ((StereoAtom)node).print();
-        });
-
-    }
-
-    public int numberOfChiralityAtoms(){
-
-        final int[] numerChiral = {0};
-        candidates.forEach(candidate -> {
-            System.out.println("NEW CHECK FOR CHIRALITY------------------------------------");
-            Set<String> cCheck = new HashSet<>();
-            StringGen stringGen = new StringGen();
-            final boolean[] chiral = {true};
-            candidate.getNeighbours().forEach(node1 -> {
-                //System.out.println("in candidate "+stringGen.getString(candidate, node1));
-                if(!cCheck.add(stringGen.getString(candidate,node1))) chiral[0] =false;
-            });
-            if(chiral[0]) {
-                System.out.println("FOUND CHIRAL ATOM");
-                numerChiral[0]++;
-            }
-        });
-        return numerChiral[0];
-    }
-
-    public String test(){
-        StringGen stringGen = new StringGen();
-        ArrayList<String> test = new ArrayList<>();
-        getNodes().forEach((s, node) -> {
-            if(node instanceof Carbon){
-                String n = node.getLabel();
-                String c = stringGen.getSmilesString(node);
-                test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
-            }
-
-
-        });
-
-        Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
-        final String[] m = {""};
-        test.forEach(s -> {
-            m[0] = new StringBuilder().append(s).toString();
-        });
-        return m[0];
-
-    }
-
+    /**
+     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt dieser der Liste aller chiralen Atome hinzu.
+     */
     public void determineChirality(){
         getNodes().forEach((s, node) -> {
             if(node instanceof Carbon) {
-                if(ChemAlgorithm.isChiral(node))chiralAtoms.add(node);
+                if(ChemAlgorithm.isChiral(node)){
+                    chiralAtoms.add(node);
+                }
             }
         });
     }
 
+    /**
+     * Untersucht die Chiralität jeder Doppelbindung und fügt diese der Liste aller chiralen Doppelbindungen hinzu.
+     */
     public void determineChiralityDoubleBound(){
-        getDoubleBounds().forEach(doubleBoundWrapper -> {
-            if(ChemAlgorithm.isChiralDoubleBound(doubleBoundWrapper)) chiralDoubleBounds.add(doubleBoundWrapper);
-        });
-    }
-
-    public String test2(){
-        StringGen stringGen = new StringGen();
-        ArrayList<String> test = new ArrayList<>();
-        getNodes().forEach((s, node) -> {
-            if(node instanceof Carbon){
-                String n = node.getLabel();
-                String c = stringGen.getStereoSmiles((StereoAtom) node);
-                test.add(c);
+        getDoubleBonds().forEach(doubleBoundWrapper -> {
+            if(ChemAlgorithm.isChiralDoubleBound(doubleBoundWrapper)){
+                chiralDoubleBonds.add(doubleBoundWrapper);
             }
-
-
         });
-
-        Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
-        final String[] m = {""};
-        test.forEach(s -> {
-            m[0] = new StringBuilder().append(m[0]).append(s).toString();
-        });
-        return m[0];
-
     }
 
     public ArrayList<Node> getChiralAtoms() {
         return chiralAtoms;
     }
 
-    public ArrayList<DoubleBoundWrapper> getDoubleBounds() {
-        return doubleBounds;
+    public ArrayList<DoubleBondWrapper> getDoubleBonds() {
+        return doubleBonds;
     }
 
-    public ArrayList<DoubleBoundWrapper> getChiralDoubleBounds() {
-        return chiralDoubleBounds;
+    public ArrayList<DoubleBondWrapper> getChiralDoubleBonds() {
+        return chiralDoubleBonds;
     }
 }

@@ -9,19 +9,25 @@ public class PQTree {
     AbstractPQNode root;
 
 
+    //todo muh
     public void reduce(){
-        root.reduce();
+        root = root.reduce();
     }
 
     //todo maybe chemPQTree  ?
-    public void determineStereocenter(){
-        System.out.println("DETERMINE STEREOCENTER");
+    public int determineStereocenter(){
+        final int[] numberOfChiralAtoms = {0};
         nodes.forEach(abstractPQNode -> {
             if(abstractPQNode.getLabel().equals("C") && abstractPQNode.getNeighbours().size()==4) {
                 abstractPQNode.setChirality(ChemAlgorithm.isChiral(abstractPQNode));
+                if(abstractPQNode.isChiral()) {
+                    System.out.println("CHIRAL -----------------------------");
+                    numberOfChiralAtoms[0]++;
+                }
             }
-            //chem bestimmen und markieren
         });
+        System.out.println(numberOfChiralAtoms[0]);
+        return numberOfChiralAtoms[0];
     }
 
 
