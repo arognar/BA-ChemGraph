@@ -12,10 +12,9 @@ public class ChemAlgorithm {
         ArrayList<String> test = new ArrayList<>();
         molecule.getNodes().forEach((s, node) -> {
             if(node instanceof Carbon){
-                //System.out.println("CarbonFound");
                 String n = node.getLabel();
                 String c = stringGen.getStereoSmiles2((StereoAtom) node);
-                //System.out.println(c);
+
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
         });
@@ -25,7 +24,7 @@ public class ChemAlgorithm {
         test.forEach(s -> {
             m[0] = new StringBuilder().append(m[0]).append(s).toString();
         });
-        //System.out.println(m[0]);
+
         return m[0];
 
     }
@@ -37,7 +36,7 @@ public class ChemAlgorithm {
             if(node instanceof Carbon){
                 String n = node.getLabel();
                 String c = stringGen.getStereoSmiles((StereoAtom) node);
-                //System.out.println(c);
+
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
         });
@@ -60,7 +59,6 @@ public class ChemAlgorithm {
         });
         if (TODO.size()==4) return true;
         return false;
-
     }
 
 
@@ -92,12 +90,14 @@ public class ChemAlgorithm {
         StringGen stringGen = new StringGen();
         StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
         StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
+
         if((first.getNeighbours().size()<3) || second.getNeighbours().size()<3) return false;
 
         Set<String> neighboursFirst = new HashSet<>();
         first.getNeighbourList(second).forEach(node -> {
             if(node!=null)neighboursFirst.add(stringGen.stringGenStereo(first,(StereoAtom)node));
         });
+
         if(neighboursFirst.size()<2) return false;
 
         Set<String> neighboursSecond = new HashSet<>();
@@ -121,20 +121,13 @@ public class ChemAlgorithm {
         second.getNeighbourList(first).forEach(node -> {
             if(node!=null) secondNeighboursPrio.add(stringGen.stringGenStereoAtomicNumber(second,(StereoAtom) node));
         });
-
-        firstNeighboursPrio.forEach(s -> System.out.println(s));
-        secondNeighboursPrio.forEach(s -> System.out.println(s));
         if(firstNeighboursPrio.get(0).compareTo(firstNeighboursPrio.get(1))<0 && secondNeighboursPrio.get(0).compareTo(secondNeighboursPrio.get(1))<0) {
-            System.out.println("cis Z");
             return "Z";
         }
         if(firstNeighboursPrio.get(0).compareTo(firstNeighboursPrio.get(1))>0 && secondNeighboursPrio.get(0).compareTo(secondNeighboursPrio.get(1))>0) {
-            System.out.println("cis Z");
             return "Z";
         }
 
-        System.out.println("trans");
-
-        return "dummy";
+        return "E";
     }
 }

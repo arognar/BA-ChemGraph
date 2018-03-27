@@ -15,6 +15,8 @@ public class MainView extends Region {
     private TextField textField = new TextField();
     private Button generateButton;
     private Button clearButton;
+    private Button weinSButton;
+    private Button butenDiButton;
     private Text testCaseText;
 
 
@@ -22,6 +24,7 @@ public class MainView extends Region {
     ScrollPane scrollPane = new ScrollPane();
     private VBox controllsContainer;
     private HBox mainInputContainer;
+    private HBox testCaseContainer;
     private HBox utilityContainer = new HBox();
 
     public Button testButton;
@@ -32,6 +35,27 @@ public class MainView extends Region {
 
         initContainer();
         initFieldsAndButtons();
+        initLayout();
+
+    }
+
+    private void initLayout() {
+        scrollPane.setContent(textFlow);
+        this.getChildren().add(controllsContainer);
+
+
+        controllsContainer.getChildren().add(mainInputContainer);
+        controllsContainer.getChildren().add(scrollPane);
+        controllsContainer.getChildren().add(utilityContainer);
+
+
+        utilityContainer.getChildren().add(clearButton);
+        mainInputContainer.getChildren().add(textField);
+        mainInputContainer.getChildren().add(generateButton);
+        controllsContainer.getChildren().add(testCaseText);
+        controllsContainer.getChildren().add(testCaseContainer);
+        testCaseContainer.getChildren().add(weinSButton);
+        testCaseContainer.getChildren().add(butenDiButton);
 
     }
 
@@ -39,23 +63,20 @@ public class MainView extends Region {
         controllsContainer = new VBox();
         scrollPane = new ScrollPane();
         mainInputContainer = new HBox();
+        testCaseContainer = new HBox();
         utilityContainer = new HBox();
 
-        scrollPane.setContent(textFlow);
+
         scrollPane.setPrefWidth(400);
         scrollPane.setPrefHeight(200);
 
 
 
 
-        this.getChildren().add(controllsContainer);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        controllsContainer.getChildren().add(mainInputContainer);
+
 
         HBox.setHgrow(textField, Priority.ALWAYS);
-
-        controllsContainer.getChildren().add(scrollPane);
-        controllsContainer.getChildren().add(utilityContainer);
 
     }
 
@@ -67,22 +88,29 @@ public class MainView extends Region {
         textField = new TextField();
         testCaseText = new Text("Beispiele:");
 
+        weinSButton = new Button("Weinsäure");
+        butenDiButton = new Button("Butendisäure");
+
         textField.setPromptText("Bitte SMILES eingeben");
         textField.setFocusTraversable(false);
 
 
-        utilityContainer.getChildren().add(clearButton);
+
         clearButton.setOnMouseClicked(event -> textFlow.getChildren().clear());
 
-        mainInputContainer.getChildren().add(textField);
-        mainInputContainer.getChildren().add(generateButton);
-        controllsContainer.getChildren().add(testCaseText);
-        controllsContainer.getChildren().add(testButton);
     }
 
 
     public Button getGenerateButton() {
         return generateButton;
+    }
+
+    public Button getWeinSButton() {
+        return weinSButton;
+    }
+
+    public Button getButenDiButton() {
+        return butenDiButton;
     }
 
     public TextField getTextField() {

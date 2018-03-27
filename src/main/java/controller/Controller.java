@@ -31,6 +31,19 @@ public class Controller implements Observer {
             }
             analyzer.analyze(view.getTextField().getText());
         });
+
+
+
+        view.getButenDiButton().setOnMouseClicked(event -> {
+            String butendisäure = "(C(=O)(O(H))(C(H)(=C(H)(C(=O)(O(H))))))";
+            analyzer.analyze(butendisäure);
+
+        });
+
+        view.getWeinSButton().setOnMouseClicked(event -> {
+            String weinsaeure = "(C(=O)(O(H))(C(O(H))(H)(C(H)(O(H))(C(=O)(O(H))))))";
+            analyzer.analyze(weinsaeure);
+        });
     }
 
 

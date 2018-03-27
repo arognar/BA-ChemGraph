@@ -24,12 +24,10 @@ public class Molecule extends Graph {
     private ArrayList<DoubleBondWrapper> chiralDoubleBonds = new ArrayList<>();
 
 
-    public void addDoubleBond(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
-        doubleBonds.add(new DoubleBondWrapper(stereoAtomOne,stereoAtomTwo));
-    }
+
 
     /**
-     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt dieser der Liste aller chiralen Atome hinzu.
+     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt dieses der Liste aller chiralen Atome hinzu.
      */
     public void determineChirality(){
         getNodes().forEach((s, node) -> {
@@ -52,8 +50,14 @@ public class Molecule extends Graph {
         });
     }
 
+
+
     public ArrayList<Node> getChiralAtoms() {
         return chiralAtoms;
+    }
+
+    public void addDoubleBond(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
+        doubleBonds.add(new DoubleBondWrapper(stereoAtomOne,stereoAtomTwo));
     }
 
     public ArrayList<DoubleBondWrapper> getDoubleBonds() {

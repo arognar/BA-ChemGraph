@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.GraphUtil;
-import model.SmileGenerator;
 import model.StringGen;
 import model.chemGraph.*;
 import model.graph.AbstractPQNode;
@@ -11,8 +10,6 @@ import model.graph.PQTree;
 import model.smileParser.SmileParser;
 
 import java.util.*;
-
-import java.util.function.Consumer;
 
 public class Test extends Application {
 
@@ -112,40 +109,7 @@ public class Test extends Application {
         System.out.println(test2);
     }
 
-    public void test1(){
-        SmileParser smileParser = new SmileParser();
-        Molecule molecule = smileParser.parseSmile("C(C(CCH)(C))(C)");
-        //molecule.printMolecule();
 
-        SmileGenerator smileGenerator = new SmileGenerator();
-        long cur = System.currentTimeMillis();
-        //ArrayList<String> s = smileGenerator.allPermutation("C(C(C))(C)(C)(H)");
-        //ArrayList<String> s = smileGenerator.allPermutation("C(C(C(H)(H)(H))(H)(H))(C(H)(H)(H))(H)(C(C(H)(H)(H))(C(H)(H)(H))(H))");
-        ArrayList<String> s = smileGenerator.allPermutation("C(Br)(F)(H)(C(H)(H)(H))");
-        System.out.println("C(Br)(F)(H)(C(H)(H)(H))");
-        //s.forEach(s1 -> System.out.println(s1));
-        System.out.println("LIST SIZE "+ s.size());
-        //s.forEach(s1 -> System.out.println(s1));
-        Set<String> discString = new HashSet<>();
-        s.forEach(s1 -> discString.add(s1));
-        System.out.println(" SET SIZE "+discString.size());
-        discString.forEach(s1 -> System.out.println(s1));
-        ArrayList<Molecule> molecules = new ArrayList<>();
-        discString.forEach(s1 -> molecules.add(smileParser.parseSmile(s1)));
-        System.out.println("-----------------------------------");
-        Set<String> stereoDisc = new HashSet<>();
-
-        stereoDisc.forEach(s1 -> System.out.println(s1));
-        long used = System.currentTimeMillis() - cur;
-        System.out.println("time: "+ used);
-
-        Runtime runtime = Runtime.getRuntime();
-        long memory = runtime.freeMemory();
-
-        System.out.println("Used memory: "+bytesToMegabyte(runtime.totalMemory()-memory));
-        System.out.println("Total memory "+bytesToMegabyte(runtime.totalMemory()));
-        System.out.println("Free memory: "+bytesToMegabyte(runtime.freeMemory()));;
-    }
 
     public void printNodeTest(){
         QNode p = new QNode("a");

@@ -78,8 +78,10 @@ public class SmileParser {
             errorMessage = "Fehler beim parsen";
             return null;
         }
-        if(!machtingBrackets(token)) return null;//TODO CONTROLLER
-
+        if(!machtingBrackets(token)){
+            errorMessage = "Fehler bei der überprüfung der Klammerung";
+            return null;
+        }
         final AbstractPQNode[] root = new AbstractPQNode[1];
 
         Stack<AbstractPQNode> atomStack = new Stack<>();
