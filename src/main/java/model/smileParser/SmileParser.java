@@ -114,7 +114,7 @@ public class SmileParser {
                     System.out.println("added");
                     atomStack.peek().addChild(curAtom,bound[0]);
                     curAtom.addNeighbour(curAtom,bound[0]);
-                    curAtom.setBounding(bound[0]);
+                    curAtom.setBonding(bound[0]);
                     if(branchFlag[0])branchFlag[0]=false;
                     else atomStack.pop();
 

@@ -4,10 +4,12 @@ import java.util.*;
 
 public class Graph {
 
+    /**
+     * Alle Knoten und ihre IDs.
+     */
     private Map<String,Node> nodes = new HashMap<String, Node>();
 
     public Graph(){
-
     }
 
     public boolean addNode(Node node){
@@ -36,13 +38,7 @@ public class Graph {
         return nodes;
     }
 
-    public void printGraph(){
-        System.out.println("PRINTING:");
-        nodes.forEach((s, node) -> {
-            System.out.println(s+":");
-            node.getNeighbours().forEach(node1 -> System.out.println("    "+node1.getId()+" "+node1.getLabel()));
-        });
-    }
+
 
 
 

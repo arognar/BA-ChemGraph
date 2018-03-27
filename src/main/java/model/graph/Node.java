@@ -36,22 +36,22 @@ public class Node {
         if(c.equals("")) connections--;
         else if(c.equals("-")) connections--;
         else if (c.equals("=")) connections-=2;
-        else if(c.equals("#")) connections-=3;
-
     }
 
 
 
-    protected void deleteNeighbour(Node node){
-        neighbours.remove(node);
-    }
+
 
     public boolean isConnectable(String boundingType){
-        if(boundingType.equals(""))return connections>0;
-        else if(boundingType.equals("-"))return connections>0;
-        else if(boundingType.equals("="))return connections-2>=0;
-        else if(boundingType.equals("#")) return connections-3>=0;
-        else return false;
+        if(boundingType.equals("")) {
+            return connections>0;
+        } else if(boundingType.equals("-")) {
+            return connections>0;
+        } else if(boundingType.equals("=")) {
+            return connections-2>=0;
+        } else {
+            return false;
+        }
     }
 
     public ArrayList<Node> getNeighbours(){
@@ -59,6 +59,10 @@ public class Node {
     }
     public LinkedHashMap<Node, String> getNeighbourMap(){
         return neighbours;
+    }
+
+    protected void deleteNeighbour(Node node){
+        neighbours.remove(node);
     }
 
     public int getConnections() {

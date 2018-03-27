@@ -84,7 +84,7 @@ public class ChemGra {
         graph1.tryConnect(s1,s3,"");
         graph1.tryConnect(s1,s4,"");
         graph1.tryConnect(s1,s5,"");
-        s1.print();
+
         StringGen stringGen = new StringGen();
         System.out.println(stringGen.getStereoSmiles(s1));
         System.out.println(stringGen.getSmilesString(s1));

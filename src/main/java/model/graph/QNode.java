@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class QNode extends AbstractPQNode implements IPrintable {
     public QNode(String label) {
         super(label);
-        nodeType = "Q";
+        setNodeType("Q");
     }
 
     @Override

@@ -2,34 +2,59 @@ package model.graph;
 
 import java.util.*;
 
+/**
+ * Generischer Knoten im PQ-Baum
+ */
 public abstract class AbstractPQNode extends Node implements IPrintable,Comparable<AbstractPQNode> {
-    ArrayList<AbstractPQNode> children;
-    Map<AbstractPQNode,String> children2;
+    /**
+     * Liste aller Kindknoten.
+     */
+    private ArrayList<AbstractPQNode> children;
 
-    String bounding="-";
-    String childrenInformation="";
-    String label="";
-    String nodeType="";
-    boolean chirality = false;//TODO markierung smile
 
+    /**
+     * Art der Bindung. Standardbindung ist die Einzelbindung.
+     */
+    private String bonding ="-";
+    /**
+     * Informationen über alle Kinder.
+     */
+    private String childrenInformation="";
+    /**
+     * Markierung des Knotens. Art des Atoms.
+     */
+    private String label="";
+    /**
+     * Typ des Knoten. P oder Q .
+     */
+    private String nodeType="";
+    /**
+     * Ob der Knoten als chiral erkannt wurde.
+     */
+    private boolean chirality = false;
+
+
+    /**
+     * KOnstruktor eines abstrakten PQ-Knotens
+     * @param label
+     */
     public AbstractPQNode(String label){
         super();
         setLabel(label);
         setChildrenInformation(label);
         children = new ArrayList<>();
-        children2 = new HashMap<>();
     }
 
-    public void addChild(AbstractPQNode child,String bounding){
-        addNeighbour(child,bounding);
+
+    public void addChild(AbstractPQNode child,String bonding){
+        addNeighbour(child,bonding);
         children.add(child);
-        children2.put(child,bounding);
     }
 
     @Override
     public void print(String prefix, boolean isTail) {
         //System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+label);
-        System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+(isChiral()?"#":"")+bounding+getLabel()+" is NODETYPE  "+nodeType);
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + nodeType+(isChiral()?"#":"")+ bonding +getLabel()+" is NODETYPE  "+nodeType);
         for (int i = 0; i < children.size() - 1; i++) {
             children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
         }
@@ -39,37 +64,40 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         }
     }
 
+    /**
+     * Reduziert den PQ-Baum.
+     * Ausgehend von dem Knoten an dem reduce ausgeführt wurde.
+     * @return
+     */
     public AbstractPQNode reduce() {
 
+        //Keine weiteren Kinder. Keine Reduktion möglich.
         if(children.isEmpty()){
             String childrenInformations = nodeType+getLabel();
             setChildrenInformation(childrenInformations);
             return this;
         }
         else {
+            //Reduktion aller Kinder und dieses Knotens.
             AbstractPQNode afterRules;
             ArrayList<AbstractPQNode> reducedChildren = new ArrayList<>();
-            Map<AbstractPQNode,String> reducedChildren2 = new HashMap<>();
             children.forEach(abstractPQNode -> {
-
                 AbstractPQNode redNode = abstractPQNode.reduce();
                 reducedChildren.add(redNode);
-                //reducedChildren2.put(redNode,redNode.getBounding());
-                //neighbours.put(redNode,redNode.getBounding());
             });
             children = reducedChildren;
-            //children.forEach(abstractPQNode -> System.out.println(abstractPQNode.getLabel()));
-
-
-            //children2 = reducedChildren2;
             Collections.sort(children);
-            //this.neighbours = neighbours;//change
+
+            //Reduktion dieses Knotens je nach Typ des Knotens.
             afterRules = enforceRules();
 
             return afterRules;
         }
     }
 
+    /**
+     * Setzt die Informationen der Kinder in sortierter Reihung.
+     */
     public void setChildrenInformation(){
         Collections.sort(children);
         final String[] childrenInformation = {getNodeType() + getLabel()};
@@ -79,7 +107,15 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         setChildrenInformation(childrenInformation[0]);
     }
 
-    private void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){//todo set ?
+
+    /**
+     *
+     * @param d
+     * @param s
+     * @param strings
+     * @param results
+     */
+    private void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){
         if(d == strings.size()){
             results.add(s);
             return;
@@ -89,17 +125,18 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         }
     }
 
+
     public ArrayList<String> getAllSmiles(){
         ArrayList<String> smiles = new ArrayList<>();
         if(children.isEmpty()) {
-            smiles.add("("+getBounding()+getLabel()+")"); //todo bindungen
+            smiles.add("("+ getBonding()+getLabel()+")");
             return smiles;
         } else {
             ArrayList<ArrayList<String>> child = new ArrayList<>();
             children.forEach(abstractPQNode -> child.add(abstractPQNode.getAllSmiles()));
             Set<String> results = new HashSet<>();
             if(this instanceof PNode){
-                getPermutationsQ(0,"",child,results);
+                getPermutationsP(0,"",child,results);
             }
             if(this instanceof QNode){
                 getPermutations(0,"",child,results);
@@ -107,7 +144,7 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
 
             ArrayList<String> end = new ArrayList<>(results);
             for (int i = 0; i < end.size(); i++) {
-                end.set(i,"("+getBounding()+getLabel()+end.get(i)+")");
+                end.set(i,"("+ getBonding()+getLabel()+end.get(i)+")");
             }
 
             return end;
@@ -116,14 +153,14 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
 
 
 
-    public void getPermutationsQ(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){
+    public void getPermutationsP(int d, String s, ArrayList<ArrayList<String>> strings, Set<String> results){
         if(d == strings.size()){
             String str[] = s.substring(0,s.length()-1).split(",");
             permutations(str,0,str.length,results);
             return;
         }
         for (int i = 0; i < strings.get(d).size(); i++) {
-            getPermutationsQ(d+1,s+strings.get(d).get(i)+",",strings,results);
+            getPermutationsP(d+1,s+strings.get(d).get(i)+",",strings,results);
         }
     }
 
@@ -149,12 +186,12 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         strings[x] = s;
     }
 
-    public void setBounding(String bounding) {
-        this.bounding = bounding;
+    public void setBonding(String bonding) {
+        this.bonding = bonding;
     }
 
-    public String getBounding() {
-        return bounding;
+    public String getBonding() {
+        return bonding;
     }
 
     public void setChirality(boolean chirality) {
@@ -166,7 +203,7 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
     }
 
     public boolean isntRotational(){
-        return(bounding.equals("="));//TODO dreifachbindung
+        return(bonding.equals("="));
     }
 
     public void setChildrenInformation(String childrenInformation) {
@@ -174,20 +211,20 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
     }
 
     public String getChildrenInformation() {
-
         return childrenInformation;
     }
-
 
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
     }
 
-
-
     public abstract AbstractPQNode enforceRules();
 
     public String getNodeType() {
         return nodeType;
+    }
+
+    public ArrayList<AbstractPQNode> getChildren() {
+        return children;
     }
 }

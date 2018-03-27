@@ -2,16 +2,29 @@ package model.chemGraph;
 
 import model.GraphUtil;
 import model.graph.Node;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Node in einem Graphen mit stereochemischen Informationen.
+ */
 public class StereoAtom extends Node{
+    /**
+     * Alle zyklischen Listen.
+     * Blick eines Atoms auf dieses Atom.
+     */
     private ArrayList<ArrayList<Node>> stereoNeighbours = new ArrayList<>();
+    /**
+     * Spezifische Ordnungszahl für die Priorität nach CIS.
+     */
     private int atomicNumber;
 
 
-    //@Override
+    /**
+     * Fügt ein Atom hinzu und ordnet es und alle vorherigen Nachbaratome in die passende Liste ein.
+     * @param node Atom das hinzugefügt wird.
+     * @param c Art der Bindung.
+     */
     public void addNeighbour(Node node, String c) {
         super.addNeighbour(node, c);
         ArrayList<Node> e = new ArrayList();
@@ -19,62 +32,26 @@ public class StereoAtom extends Node{
             e.add(null);
         }
         stereoNeighbours.add(e);
+        //Fügt das Atom in die Listen und die vorherigen Atome in die Liste des Atoms aktuellen Atoms
         for(int i = 0; i < super.getNeighbours().size()-1;i++){
             stereoNeighbours.get(i).set(GraphUtil.boundaryAr[super.getNeighbours().size()-1][i],node);
             stereoNeighbours.get(super.getNeighbours().size()-1).set(GraphUtil.boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
         }
     }
 
-    /*@Override
-    public void addNeighbour(Node node, String c) {
-        super.addNeighbour(node, c);
-        ArrayList<Node> e = new ArrayList();
-        for(int i = 0; i < this.getMaxConnections()-1; i++) {
-            e.add(null);
-        }
-        for (int i = 0; i < GraphUtil.boundaryAr.length; i++) {
-            stereoNeighbours.get(i).set(GraphUtil.boundaryAr[i][this.getNeighbours().size()-1],)
-        }
-        stereoNeighbours.add(e);
-        for(int i = 0; i < super.getNeighbours().size()-1;i++){
-            stereoNeighbours.get(i).set(GraphUtil.boundaryAr[super.getNeighbours().size()-1][i],node);
-            stereoNeighbours.get(super.getNeighbours().size()-1).set(GraphUtil.boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
-        }
-    }*/
-
-    public void print(){
-        System.out.println("Atom "+this.getLabel()+" with ID"+this.getId()+"------------");
-        System.out.println("Neighbours:" +super.getNeighbours().size());
-        for(int i = 0; i < stereoNeighbours.size(); i++){
-            System.out.println(super.getNeighbours().get(i).getId()+"--------------------");
-            stereoNeighbours.get(i).forEach(node -> {
-                if(node != null)System.out.print("AtomSymbol"+node.getLabel()+" ID:"+node.getId()+" ");
-                //else System.out.print("NULL ");
-            });
-            System.out.println();
-        }
-        System.out.println("----- --------- --------- ---------- -------------- -----------");
-        System.out.println(this.getLabel());
-        stereoNeighbours.forEach(nodes -> {
-            nodes.forEach(node -> {
-                if(node!=null)System.out.print(node.getLabel());
-            });
-            System.out.println();
-        });
-        System.out.println("----- --------- --------- ---------- -------------- -----------");
-
-    }
-
+    /**
+     * Gibt die Liste zurück mit dem Blick von node zu diesem Atom.
+     * @param node Atom von dem auf dieses Atom gesehen wird.
+     * @return
+     */
     public List<Node> getNeighbourList(Node node){
-
-        //return stereoNeighbours.get(super.getNeighbours().indexOf(node)).subList(0,getNeighbours().size()-1);
         return stereoNeighbours.get(super.getNeighbours().indexOf(node));
     }
+
 
     public int getAtomicNumber(){
         return atomicNumber;
     }
-
     public void setAtomicNumber(int atomicNumber){
         this.atomicNumber=atomicNumber;
     }

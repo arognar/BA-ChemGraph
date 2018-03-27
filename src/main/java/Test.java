@@ -91,9 +91,7 @@ public class Test extends Application {
         StringGen stringGen = new StringGen();
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(=C(H)(H))(F)(H)");
-        molecule1.getNodes().forEach((s, node) -> {
-            ((StereoAtom)node).print();
-        });
+
 
         Molecule molecule2 = smileParser.parseSmile("C(F)(=C(H)(H))(H)");
         String test = ChemAlgorithm.konsitutionIso(molecule1);

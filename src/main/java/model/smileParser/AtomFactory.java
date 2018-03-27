@@ -2,6 +2,10 @@ package model.smileParser;
 
 import model.chemGraph.*;
 
+/**
+ * Gibt Atom-Knoten für den Parser zurück.
+ * Je nach Eingabe.
+ */
 public class AtomFactory {
 
     public StereoAtom getAtom(String atomSymbol){
