@@ -13,10 +13,16 @@ import javafx.scene.text.TextFlow;
 
 public class MainView extends Region {
     private TextField textField = new TextField();
+    private Text emptyLine = new Text("");
     private Button generateButton;
     private Button clearButton;
+
     private Button weinSButton;
     private Button butenDiButton;
+
+    private Button analyzeChiralityButton;
+    private Button getKonsButton;
+
     private Text testCaseText;
 
 
@@ -25,7 +31,8 @@ public class MainView extends Region {
     private VBox controllsContainer;
     private HBox mainInputContainer;
     private HBox testCaseContainer;
-    private HBox utilityContainer = new HBox();
+    private HBox utilityContainer;
+    private HBox analyzeOperationsContainer;
 
     public Button testButton;
 
@@ -45,17 +52,26 @@ public class MainView extends Region {
 
 
         controllsContainer.getChildren().add(mainInputContainer);
+        mainInputContainer.getChildren().add(textField);
+        mainInputContainer.getChildren().add(generateButton);
+
         controllsContainer.getChildren().add(scrollPane);
+
         controllsContainer.getChildren().add(utilityContainer);
+
+        controllsContainer.getChildren().add(new Text(""));
+        controllsContainer.getChildren().add(analyzeOperationsContainer);
 
 
         utilityContainer.getChildren().add(clearButton);
-        mainInputContainer.getChildren().add(textField);
-        mainInputContainer.getChildren().add(generateButton);
+        controllsContainer.getChildren().add(new Text(""));
         controllsContainer.getChildren().add(testCaseText);
         controllsContainer.getChildren().add(testCaseContainer);
         testCaseContainer.getChildren().add(weinSButton);
         testCaseContainer.getChildren().add(butenDiButton);
+
+        analyzeOperationsContainer.getChildren().add(analyzeChiralityButton);
+
 
     }
 
@@ -65,14 +81,11 @@ public class MainView extends Region {
         mainInputContainer = new HBox();
         testCaseContainer = new HBox();
         utilityContainer = new HBox();
+        analyzeOperationsContainer = new HBox();
 
 
         scrollPane.setPrefWidth(400);
         scrollPane.setPrefHeight(200);
-
-
-
-
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
 
@@ -90,6 +103,8 @@ public class MainView extends Region {
 
         weinSButton = new Button("Weinsäure");
         butenDiButton = new Button("Butendisäure");
+
+        analyzeChiralityButton = new Button("chirality");
 
         textField.setPromptText("Bitte SMILES eingeben");
         textField.setFocusTraversable(false);
@@ -109,8 +124,10 @@ public class MainView extends Region {
         return weinSButton;
     }
 
-    public Button getButenDiButton() {
-        return butenDiButton;
+    public Button getButenDiButton() { return butenDiButton; }
+
+    public Button getAnalyzeChiralityButton() {
+        return analyzeChiralityButton;
     }
 
     public TextField getTextField() {

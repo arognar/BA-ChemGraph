@@ -32,12 +32,17 @@ public class Controller implements Observer {
             analyzer.analyze(view.getTextField().getText());
         });
 
-
-
         view.getButenDiButton().setOnMouseClicked(event -> {
             String butendisäure = "(C(=O)(O(H))(C(H)(=C(H)(C(=O)(O(H))))))";
             analyzer.analyze(butendisäure);
+        });
 
+        view.getAnalyzeChiralityButton().setOnMouseClicked(event -> {
+            if(view.getTextField().getText().trim().isEmpty()) {
+                view.addToTextflow("Bitte SMILES eingeben");
+                return;
+            }
+            analyzer.analyzeChirality(view.getTextField().getText());
         });
 
         view.getWeinSButton().setOnMouseClicked(event -> {

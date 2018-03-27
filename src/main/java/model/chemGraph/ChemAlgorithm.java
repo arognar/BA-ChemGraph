@@ -1,6 +1,6 @@
 package model.chemGraph;
 
-import model.StringGen;
+import model.StringGenerator;
 import model.graph.Node;
 import java.util.*;
 
@@ -8,12 +8,12 @@ import java.util.*;
 public class ChemAlgorithm {
 
     public static String konsitutionIso(Molecule molecule){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         ArrayList<String> test = new ArrayList<>();
         molecule.getNodes().forEach((s, node) -> {
             if(node instanceof Carbon){
                 String n = node.getLabel();
-                String c = stringGen.getStereoSmiles2((StereoAtom) node);
+                String c = stringGenerator.getKonstiString((StereoAtom) node);
 
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
@@ -30,12 +30,12 @@ public class ChemAlgorithm {
     }
 
     public static String konfigurationIso(Molecule molecule){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         ArrayList<String> test = new ArrayList<>();
         molecule.getNodes().forEach((s, node) -> {
             if(node instanceof Carbon){
                 String n = node.getLabel();
-                String c = stringGen.getStereoSmiles((StereoAtom) node);
+                String c = stringGenerator.getKonfiString((StereoAtom) node);
 
                 test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
             }
@@ -51,10 +51,10 @@ public class ChemAlgorithm {
     }
 
     public static boolean isChiral(Node node){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         Set<String> TODO = new HashSet<>();
         node.getNeighbours().forEach(node1 -> {
-            TODO.add(stringGen.getString(node,node1));
+            TODO.add(stringGenerator.getStringNonStereo(node,node1));
 
         });
         if (TODO.size()==4) return true;
@@ -64,12 +64,12 @@ public class ChemAlgorithm {
 
 
     public static String RSDetermination(StereoAtom atom){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         ArrayList<String> test = new ArrayList<>();
         Map<String,Node> stringNodeMap = new HashMap<>();
         Map<Node,String> nodeStringMap = new HashMap<>();
         atom.getNeighbours().forEach(node -> {
-            String smileNumber = stringGen.stringGenStereoAtomicNumber(atom,(StereoAtom)node);
+            String smileNumber = stringGenerator.stringGenStereoAtomicNumber(atom,(StereoAtom)node);
             test.add(smileNumber);
             stringNodeMap.put(smileNumber,node);
             nodeStringMap.put(node,smileNumber);
@@ -87,7 +87,7 @@ public class ChemAlgorithm {
     }
 
     public static boolean isChiralDoubleBound(DoubleBondWrapper doubleBoundWrapper){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
         StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
 
@@ -95,14 +95,14 @@ public class ChemAlgorithm {
 
         Set<String> neighboursFirst = new HashSet<>();
         first.getNeighbourList(second).forEach(node -> {
-            if(node!=null)neighboursFirst.add(stringGen.stringGenStereo(first,(StereoAtom)node));
+            if(node!=null)neighboursFirst.add(stringGenerator.stringGenKonstiStereo(first,(StereoAtom)node));
         });
 
         if(neighboursFirst.size()<2) return false;
 
         Set<String> neighboursSecond = new HashSet<>();
         second.getNeighbourList(first).forEach(node -> {
-            if(node!=null)neighboursSecond.add(stringGen.stringGenStereo(second,(StereoAtom)node));
+            if(node!=null)neighboursSecond.add(stringGenerator.stringGenKonstiStereo(second,(StereoAtom)node));
         });
         if(neighboursSecond.size()<2) return false;
 
@@ -110,16 +110,16 @@ public class ChemAlgorithm {
     }
 
     public static String cisTrans(DoubleBondWrapper doubleBoundWrapper){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
         StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
         ArrayList<String> firstNeighboursPrio = new ArrayList<>();
         ArrayList<String> secondNeighboursPrio = new ArrayList<>();
         first.getNeighbourList(second).forEach(node -> {
-            if(node!=null) firstNeighboursPrio.add(stringGen.stringGenStereoAtomicNumber(first,(StereoAtom) node));
+            if(node!=null) firstNeighboursPrio.add(stringGenerator.stringGenStereoAtomicNumber(first,(StereoAtom) node));
         });
         second.getNeighbourList(first).forEach(node -> {
-            if(node!=null) secondNeighboursPrio.add(stringGen.stringGenStereoAtomicNumber(second,(StereoAtom) node));
+            if(node!=null) secondNeighboursPrio.add(stringGenerator.stringGenStereoAtomicNumber(second,(StereoAtom) node));
         });
         if(firstNeighboursPrio.get(0).compareTo(firstNeighboursPrio.get(1))<0 && secondNeighboursPrio.get(0).compareTo(secondNeighboursPrio.get(1))<0) {
             return "Z";

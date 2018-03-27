@@ -2,7 +2,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.GraphUtil;
-import model.StringGen;
+import model.StringGenerator;
 import model.chemGraph.*;
 import model.graph.AbstractPQNode;
 import model.graph.QNode;
@@ -55,7 +55,7 @@ public class Test extends Application {
     }
 
     public void testStringGen(){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         Molecule molecule = new Molecule();
         StereoAtom a1 = new Carbon();
         StereoAtom a2 = new Hydrogen();
@@ -71,11 +71,11 @@ public class Test extends Application {
         molecule.tryConnect(a1,a3,"");
         molecule.tryConnect(a1,a4,"");
         molecule.tryConnect(a1,a5,"");
-        System.out.println(stringGen.getStereoSmiles2(a1));
+        System.out.println(stringGenerator.getKonstiString(a1));
     }
 
     public void simpleKonstitutionsTest(){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
         Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
@@ -85,7 +85,7 @@ public class Test extends Application {
         System.out.println(test2);
     }
     public void doubleBoundaryKonstitutionsTest(){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(=C(H)(H))(F)(H)");
 
@@ -99,7 +99,7 @@ public class Test extends Application {
     }
 
     public void simpleKonfigurationTest(){
-        StringGen stringGen = new StringGen();
+        StringGenerator stringGenerator = new StringGenerator();
         SmileParser smileParser = new SmileParser();
         Molecule molecule1 = smileParser.parseSmile("C(Br)(C(H)(H)(H))(F)(H)");
         Molecule molecule2 = smileParser.parseSmile("C(Br)(F)(C(H)(H)(H))(H)");
