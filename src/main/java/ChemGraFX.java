@@ -7,6 +7,11 @@ import javafx.stage.Stage;
 import model.Analyzer;
 import view.MainView;
 
+/**
+ * Startklasse des Programms.
+ * Zusammenspiel aus Model,View und Controller.
+ * Für die Berechnung der Moleküle, eine Darstellung auf dem Bildschirm und die Interaktion.
+ */
 public class ChemGraFX extends Application {
 
     @Override
