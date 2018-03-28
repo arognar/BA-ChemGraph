@@ -7,6 +7,7 @@ import java.util.*;
 
 public class ChemAlgorithm {
 
+
     public static String konsitutionIso(Molecule molecule){
         StringGenerator stringGenerator = new StringGenerator();
         ArrayList<String> test = new ArrayList<>();
@@ -46,6 +47,29 @@ public class ChemAlgorithm {
         test.forEach(s -> {
             m[0] = new StringBuilder().append(m[0]).append(s).toString();
         });
+        return m[0];
+
+    }
+
+
+    public static String konformationIso(Molecule molecule){
+        StringGenerator stringGenerator = new StringGenerator();
+        ArrayList<String> test = new ArrayList<>();
+        molecule.getNodes().forEach((s, node) -> {
+            if(node instanceof Carbon){
+                String n = node.getLabel();
+                String c = stringGenerator.getKonformString((StereoAtom) node);
+
+                test.add(new StringBuilder().append(n).append("[").append((c)).append("]").toString());
+            }
+        });
+
+        Collections.sort(test, String.CASE_INSENSITIVE_ORDER);
+        final String[] m = {""};
+        test.forEach(s -> {
+            m[0] = new StringBuilder().append(m[0]).append(s).toString();
+        });
+
         return m[0];
 
     }

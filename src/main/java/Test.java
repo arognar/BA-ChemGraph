@@ -37,6 +37,7 @@ public class Test extends Application {
         //RSTestSimple();
         //testRS();
         //testButendisäure();
+        //konformTest();
         Platform.exit();
 
     }
@@ -52,6 +53,27 @@ public class Test extends Application {
             System.out.println("test");
             ChemAlgorithm.RSDetermination((StereoAtom) node);
         });
+    }
+
+    public void konformTest(){
+        SmileParser smileParser = new SmileParser();
+        Molecule m = smileParser.parseSmile("(C(Br)(F)(H)(C(Br)(H)(H)))");
+        Molecule m2 = smileParser.parseSmile("(C(Br)(F)(H)(C(H)(Br)(H)))");
+
+        Set<String> konfiguration = new HashSet<>();
+        Set<String> konstitution = new HashSet<>();
+        Set<String> konformation = new HashSet<>();
+
+        konfiguration.add(ChemAlgorithm.konfigurationIso(m));
+        konfiguration.add(ChemAlgorithm.konfigurationIso(m2));
+        konstitution.add(ChemAlgorithm.konsitutionIso(m));
+        konstitution.add(ChemAlgorithm.konsitutionIso(m2));
+        konformation.add(ChemAlgorithm.konformationIso(m));
+        konformation.add(ChemAlgorithm.konformationIso(m2));
+
+        System.out.println(konfiguration.size());
+        System.out.println(konstitution.size());
+        System.out.println(konformation.size());
     }
 
     public void testStringGen(){
@@ -173,19 +195,7 @@ public class Test extends Application {
         //set.forEach(s1 -> System.out.println("set "+s1));
     }
 
-    public void simplesPQTest(){
-        SmileParser smileParser = new SmileParser();
-        //PQTree pqTree = smileParser.parseSmileToPQTree("(C(=O)(O(H))(H))");
-        PQTree pqTree = smileParser.parseSmileToPQTree("(C(Br)(H)(F)(C(C(=O)(H))(H)(H)))");
-        GraphUtil.print(pqTree.getRoot());
-        pqTree.determineStereocenter();
-        GraphUtil.print(pqTree.getRoot());
-        System.out.println(pqTree.getRoot().isChiral());
-        AbstractPQNode reducedRoot = pqTree.getRoot().reduce();
-        GraphUtil.print(reducedRoot);
-        ArrayList<String> smiles = reducedRoot.getAllSmiles();
-        smiles.forEach(s -> System.out.println(s));
-    }
+
 
     public void weinsaeurePQTest(){
         SmileParser smileParser = new SmileParser();
@@ -212,6 +222,7 @@ public class Test extends Application {
         });
         Set<String> konstiStrings = new HashSet<>();
         Set<String> konfiStrings = new HashSet<>();
+        Set<String> konforStrings = new HashSet<>();
         molecules.forEach(molecule -> {
             System.out.println(ChemAlgorithm.konsitutionIso(molecule));
             System.out.println("*******************");
@@ -229,6 +240,8 @@ public class Test extends Application {
         System.out.println(test.add(ChemAlgorithm.konfigurationIso(molecules.get(3))));
         System.out.println(konstiStrings.size());
         System.out.println(konfiStrings.size());
+        molecules.forEach(molecule -> konforStrings.add(ChemAlgorithm.konformationIso(molecule)));
+        System.out.println(konforStrings.size());
        // molecules.get(3).getDoubleBounds().forEach(doubleBoundWrapper -> System.out.println(doubleBoundWrapper.getStereoAtomOne().getLabel()+" "+doubleBoundWrapper.getStereoAtomTwo().getLabel()));
         //molecules.get(3).determineChiralityDoubleBound();
         //System.out.println(molecules.get(3).getChiralDoubleBounds().size());

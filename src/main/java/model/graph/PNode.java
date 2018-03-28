@@ -26,7 +26,7 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
         //Regeln für eine starre Bindung.
         if(isntRotational()){
-            if(distinctChildren.size()<2) {
+            if(distinctChildren.size() < 2) {
                 return reductionRulePToQ();
             } else {
                 return this;
@@ -35,21 +35,20 @@ public class PNode extends AbstractPQNode implements IPrintable {
         }
 
 
-        if(distinctChildren.size()<3){
+        if(distinctChildren.size() < 3){
             return reductionRulePToQ();
-        }
-        else {
+        } else {
             if(isChiral()){
                 QNode qNode = new QNode(getLabel());
                 qNode.setLabel(getLabel());
                 qNode.setChirality(true);
 
-                qNode.getChildren().addAll(getChildren().subList(0,getChildren().size()-2));
+                qNode.getChildren().addAll(getChildren().subList(0,getChildren().size() - 2));
                 PNode pNode = new PNode("P");
                 pNode.setBonding("-");
 
 
-                pNode.getChildren().addAll(getChildren().subList(getChildren().size()-2,getChildren().size()));
+                pNode.getChildren().addAll(getChildren().subList(getChildren().size() - 2,getChildren().size()));
                 pNode.setChildrenInformation();
                 qNode.addChild(pNode,"-");
                 qNode.setChildrenInformation();
@@ -64,14 +63,9 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
     /**
      * Reduktion eines P-Knotens zu einem Q-Knoten.
-     * @return
+     * @return Generierter Q-Knoten.
      */
     private AbstractPQNode reductionRulePToQ(){
-
-        //setChildrenInformation(getNodeType()+ getBonding()+getLabel());
-        //getChildren().forEach(abstractPQNode -> {
-        //    setChildrenInformation(getChildrenInformation()+abstractPQNode.getChildrenInformation());
-        //});
         QNode qNode = new QNode(getLabel());
         qNode.setBonding(getBonding());
         qNode.getChildren().addAll(getChildren());

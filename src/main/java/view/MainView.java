@@ -12,8 +12,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 public class MainView extends Region {
-    private TextField textField = new TextField();
-    private Text emptyLine = new Text("");
+    private TextField textField;
+
     private Button generateButton;
     private Button clearButton;
 
@@ -21,18 +21,20 @@ public class MainView extends Region {
     private Button butenDiButton;
 
     private Button analyzeChiralityButton;
-    private Button getKonsButton;
+    private Button konstitutionButton;
+    private Button konformationButton;
+    private Button konfigurationButton;
 
     private Text testCaseText;
 
 
-    private TextFlow textFlow = new TextFlow();
-    ScrollPane scrollPane = new ScrollPane();
+    private TextFlow textFlow;
+    private ScrollPane scrollPane;
     private VBox controllsContainer;
     private HBox mainInputContainer;
     private HBox testCaseContainer;
     private HBox utilityContainer;
-    private HBox analyzeOperationsContainer;
+    private VBox analyzeOperationsContainer;
 
     public Button testButton;
 
@@ -47,6 +49,7 @@ public class MainView extends Region {
     }
 
     private void initLayout() {
+        textFlow = new TextFlow();
         scrollPane.setContent(textFlow);
         this.getChildren().add(controllsContainer);
 
@@ -71,6 +74,9 @@ public class MainView extends Region {
         testCaseContainer.getChildren().add(butenDiButton);
 
         analyzeOperationsContainer.getChildren().add(analyzeChiralityButton);
+        analyzeOperationsContainer.getChildren().add(konfigurationButton);
+        analyzeOperationsContainer.getChildren().add(konstitutionButton);
+        analyzeOperationsContainer.getChildren().add(konformationButton);
 
 
     }
@@ -81,7 +87,7 @@ public class MainView extends Region {
         mainInputContainer = new HBox();
         testCaseContainer = new HBox();
         utilityContainer = new HBox();
-        analyzeOperationsContainer = new HBox();
+        analyzeOperationsContainer = new VBox();
 
 
         scrollPane.setPrefWidth(400);
@@ -89,7 +95,7 @@ public class MainView extends Region {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
 
-        HBox.setHgrow(textField, Priority.ALWAYS);
+
 
     }
 
@@ -97,14 +103,18 @@ public class MainView extends Region {
 
         clearButton = new Button("Lösche TextBox");
         generateButton = new Button("Generiere Stereoisomere");
-        testButton = new Button("testButton");
         textField = new TextField();
+        HBox.setHgrow(textField, Priority.ALWAYS);
         testCaseText = new Text("Beispiele:");
 
         weinSButton = new Button("Weinsäure");
         butenDiButton = new Button("Butendisäure");
 
-        analyzeChiralityButton = new Button("chirality");
+        analyzeChiralityButton = new Button("Überprüfe Chiralität");
+
+        konfigurationButton = new Button("Generiere Konfigurations-String");
+        konstitutionButton = new Button("Generiere Konstitutions-String");
+        konformationButton = new Button("Generiere Konformations-String");
 
         textField.setPromptText("Bitte SMILES eingeben");
         textField.setFocusTraversable(false);
@@ -134,9 +144,11 @@ public class MainView extends Region {
         return textField;
     }
 
+
     public void addToTextflow(String message){
         textFlow.getChildren().add(new Text(message+"\n"));
     }
+
 
 
 }

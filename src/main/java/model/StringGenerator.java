@@ -5,14 +5,16 @@ import model.graph.Node;
 
 import java.util.*;
 
-//TODO benennen
+/**
+ * Generiert Zeichenketten, um eine Aussage über die Isomorphie von chemischen Graphen und Bäume treffen zu können.
+ */
 public class StringGenerator {
     /**
-     * Menge an bereits besuchten Knoten. Falls keine eindeutige Richtung wie durch die Stereoatome festgelegt ist.
+     * Menge an bereits besuchten Knoten. Wird benutzt, falls keine eindeutige Richtung wie durch die Stereoatome festgelegt ist.
      * Mehrmaliges besuchen von Knoten wird verhindert.
      */
     private Set<String> visitedNodes = new HashSet<String>();
-    //private Node root;
+
 
     public StringGenerator(){
     }
@@ -31,7 +33,7 @@ public class StringGenerator {
     }
 
     /**
-     * Berechnet den String für die KonfigurationsIsomorphie.
+     * Berechnet den String für die KonfigurationsIsomorphie von einem Atom.
      * @param node Atom das betrachet wird.
      * @return eindeutige Konfigurations-Isomorphie-Zeichenkette.
      */
@@ -55,7 +57,7 @@ public class StringGenerator {
     }
 
     /**
-     * Berechnet den String für die Konstitutions-Isomorphie.
+     * Berechnet den String für die Konstitutions-Isomorphie von einem Atom.
      * @param node Atom das betrachet wird.
      * @return eindeutige Konstitutions-Isomorphie-Zeichenkette.
      */
@@ -66,6 +68,30 @@ public class StringGenerator {
         //Berechne für jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
         node.getNeighbours().forEach(node1 -> {
             childStrings.add(stringGenKonstiStereo(node,(StereoAtom) node1));
+        });
+
+        //Füge Informationen in geordneter Reihung zusammen.
+        Collections.sort(childStrings, String.CASE_INSENSITIVE_ORDER);
+        childStrings.forEach(s -> {
+            isoString[0] = new StringBuilder().append(isoString[0]).append("(").append((s)).append(")").toString();
+        });
+
+        return isoString[0];
+
+    }
+
+    /**
+     * Berechnet den String für die Konformations-Isomorphie von einem Atom.
+     * @param node Atom das betrachet wird.
+     * @return eindeutige Konstitutions-Isomorphie-Zeichenkette.
+     */
+    public String getKonformString(StereoAtom node){
+        ArrayList<String> childStrings = new ArrayList<>();
+        String[] isoString = {node.getLabel()};
+
+        //Berechne für jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
+        node.getNeighbours().forEach(node1 -> {
+            childStrings.add(stringGenKonformStereo(node,(StereoAtom) node1));
         });
 
         //Füge Informationen in geordneter Reihung zusammen.
@@ -141,6 +167,33 @@ public class StringGenerator {
             childStrings.forEach(node -> {
                 isoString[0] = new StringBuilder().append(isoString[0]).append("(").append((node)).append(")").toString();
             });
+            return isoString[0];
+        }
+    }
+
+    /**
+     * Generiert den eindeutigen Baum-Isomorphie-String mit Konformations-Informationen.
+     * @param from Atom von dem man kommt.
+     * @param to Atom auf das man blickt.
+     * @return Eindeutige Zeichenkette für die Isomorphie von Bäumen mit Konformations-Informationen.
+     */
+    public String stringGenKonformStereo(StereoAtom from, StereoAtom to){
+        final String[] isoString = {to.getLabel()};
+        ArrayList<String> childStrings = new ArrayList<>();
+
+        //Generiert die Strings der Kindatome.
+        //Null, falls leere Stellen bei Doppelbindungen in der Liste.
+        to.getNeighbourList(from).forEach(node -> {
+            if(node!=null)childStrings.add(to.getBoundingType(node)+ stringGenKonstiStereo(to,(StereoAtom) node));
+        });
+
+        //hat keine Kinder.
+        if(childStrings.isEmpty()){
+            return to.getLabel();
+        } else {
+
+            //Generierten Strings der Kinder in Reihung bringen und zusammenfügen.
+            isoString[0]= new StringBuilder().append(isoString[0]).append(getSimpleList(childStrings)).toString();
             return isoString[0];
         }
     }

@@ -27,7 +27,7 @@ public class Molecule extends Graph {
 
 
     /**
-     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt dieses der Liste aller chiralen Atome hinzu.
+     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt die chiralen Atome der Liste aller chiralen Atome hinzu.
      */
     public void determineChirality(){
         getNodes().forEach((s, node) -> {
@@ -40,7 +40,7 @@ public class Molecule extends Graph {
     }
 
     /**
-     * Untersucht die Chiralität jeder Doppelbindung und fügt diese der Liste aller chiralen Doppelbindungen hinzu.
+     * Untersucht die Chiralität jeder Doppelbindung und fügt diese bei Treffer der Liste aller chiralen Doppelbindungen hinzu.
      */
     public void determineChiralityDoubleBound(){
         getDoubleBonds().forEach(doubleBoundWrapper -> {

@@ -9,6 +9,8 @@ import java.util.List;
  * Node in einem Graphen mit stereochemischen Informationen.
  */
 public class StereoAtom extends Node{
+    public static int[][] boundaryAr = {{-1,0,0,0},{2,-1,2,1},{1,1,-1,2},{0,2,1,-1}};
+
     /**
      * Alle zyklischen Listen.
      * Blick eines Atoms auf dieses Atom.
@@ -34,8 +36,8 @@ public class StereoAtom extends Node{
         stereoNeighbours.add(e);
         //Fügt das Atom in die Listen und die vorherigen Atome in die Liste des Atoms aktuellen Atoms
         for(int i = 0; i < super.getNeighbours().size()-1;i++){
-            stereoNeighbours.get(i).set(GraphUtil.boundaryAr[super.getNeighbours().size()-1][i],node);
-            stereoNeighbours.get(super.getNeighbours().size()-1).set(GraphUtil.boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
+            stereoNeighbours.get(i).set(boundaryAr[super.getNeighbours().size()-1][i],node);
+            stereoNeighbours.get(super.getNeighbours().size()-1).set(boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
         }
     }
 

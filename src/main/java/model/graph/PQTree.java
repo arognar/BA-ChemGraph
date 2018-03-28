@@ -35,8 +35,7 @@ public class PQTree {
 
         nodes.forEach(abstractPQNode -> {
             //Knoten kann nur chiral sein, wenn er als Kohlenstoff markiert wurde und 4 Nachbarn hat.
-            if(abstractPQNode.getLabel().equals("C") && abstractPQNode.getNeighbours().size()==4) {
-
+            if(abstractPQNode.getLabel().equals("C") && abstractPQNode.getNeighbours().size() == 4) {
                 abstractPQNode.setChirality(ChemAlgorithm.isChiral(abstractPQNode));
                 if(abstractPQNode.isChiral()) {
                     numberOfChiralAtoms[0]++;

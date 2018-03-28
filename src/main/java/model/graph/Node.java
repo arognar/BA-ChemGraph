@@ -40,12 +40,19 @@ public class Node {
      * @param c Verbindungsart zum neuen Nachbarknoten.
      */
     public void addNeighbour(Node node, String c){
-        if(c.equals(""))neighbours.put(node,"-");
-        else neighbours.put(node,c);
+        if(c.equals("")) {
+            neighbours.put(node,"-");
+        } else {
+            neighbours.put(node,c);
+        }
 
-        if(c.equals("")) connections--;
-        else if(c.equals("-")) connections--;
-        else if (c.equals("=")) connections-=2;
+        if(c.equals("")) {
+            connections--;
+        } else if(c.equals("-")) {
+            connections--;
+        } else if (c.equals("=")) {
+            connections-=2;
+        }
     }
 
     /**
@@ -55,11 +62,11 @@ public class Node {
      */
     public boolean isConnectable(String boundingType){
         if(boundingType.equals("")) {
-            return connections>0;
+            return connections > 0;
         } else if(boundingType.equals("-")) {
-            return connections>0;
+            return connections > 0;
         } else if(boundingType.equals("=")) {
-            return connections-2>=0;
+            return connections - 2 >= 0;
         } else {
             return false;
         }

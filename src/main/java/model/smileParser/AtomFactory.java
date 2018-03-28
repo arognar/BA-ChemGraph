@@ -4,7 +4,7 @@ import model.chemGraph.*;
 
 /**
  * Gibt Atom-Knoten für den Parser zurück.
- * Je nach Eingabe.
+ * Je nach Eingabe verschieden.
  */
 public class AtomFactory {
 
@@ -15,7 +15,6 @@ public class AtomFactory {
         else if(atomSymbol.equals("Br")) return new Bromine();
         else if(atomSymbol.equals("O")) return new Oxygen();
         else {
-            System.out.println("Could not find "+atomSymbol);
             return null;
         }
     }

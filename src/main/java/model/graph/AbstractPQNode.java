@@ -11,7 +11,6 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
      */
     private ArrayList<AbstractPQNode> children;
 
-
     /**
      * Art der Bindung. Standardbindung ist die Einzelbindung.
      */
@@ -29,22 +28,16 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
      */
     private String nodeType="";
     /**
-     * Ob der Knoten als chiral erkannt wurde.
+     * Fasst, ob der Knoten als chiral erkannt wurde.
      */
     private boolean chirality = false;
 
-
-    /**
-     * KOnstruktor eines abstrakten PQ-Knotens
-     * @param label
-     */
     public AbstractPQNode(String label){
         super();
         setLabel(label);
         setChildrenInformation(label);
         children = new ArrayList<>();
     }
-
 
     public void addChild(AbstractPQNode child,String bonding){
         addNeighbour(child,bonding);
@@ -108,12 +101,74 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
     }
 
 
+
+
+
     /**
-     *
-     * @param d
-     * @param s
-     * @param strings
-     * @param results
+     * Setzt die Informationen eines Baums zu einer Liste an gültigen SMILES-String zusammen.
+     * @return Liste aller generierter SMILES-Strings.
+     */
+    public ArrayList<String> getAllSmiles(){
+        ArrayList<String> smiles = new ArrayList<>();
+        //Hat keine Kinder.
+        if(children.isEmpty()) {
+            smiles.add("("+ getBonding()+getLabel()+")");
+            return smiles;
+        } else {
+            //Wenn Kinder vorhanden.
+            //Informationen der Kinder werden je nach Art des Knoten Permutiert und mit dem Karthesischen Produkt zu einer List
+            //aller gültigen Strings zusammengefügt.
+            ArrayList<ArrayList<String>> childSMILES = new ArrayList<>();
+            //SMILES der Kinder werden generiert.
+            children.forEach(abstractPQNode -> childSMILES.add(abstractPQNode.getAllSmiles()));
+            //Alle Möglichkeiten werden in abhängigkeit der Art des Knotens generiert.
+            Set<String> results = new HashSet<>();
+            if(this instanceof PNode){
+                getPermutationsP(0,"",childSMILES,results);
+            }
+            if(this instanceof QNode){
+                getPermutations(0,"",childSMILES,results);
+            }
+
+
+             //alle SMILES der Kinder werden um die Informationen dieses Knoten, sowie der Klammern der Verzweigung ergänzt.
+            ArrayList<String> end = new ArrayList<>(results);
+            for (int i = 0; i < end.size(); i++) {
+                end.set(i,"("+ getBonding()+getLabel()+end.get(i)+")");
+            }
+
+            return end;
+        }
+    }
+
+
+    /**
+     * Berechnet das karthesische Produkt einer Liste von Stringlisten sowie die Permutationen.
+     * @param d Index der aktuellen Liste.
+     * @param s String des aktuellen karthesischen Produkts.
+     * @param strings Eingabe der Listen.
+     * @param results Alle Resultate.
+     * @see
+     */
+    public void getPermutationsP(int d, String s, ArrayList<ArrayList<String>> strings, Set<String> results){
+        if(d == strings.size()){
+            String str[] = s.substring(0,s.length()-1).split(",");
+            //Permutiert die karthesischen Produkte, um alle Möglichkeiten an einem P-Knoten zu generieren.
+            permutations(str,0,str.length,results);
+            return;
+        }
+        for (int i = 0; i < strings.get(d).size(); i++) {
+            getPermutationsP(d+1,s+strings.get(d).get(i)+",",strings,results);
+        }
+    }
+
+    /**
+     * Berechnet das karthesische Produkt einer Liste von Stringlisten.
+     * @param d Index der aktuellen Liste.
+     * @param s String des aktuellen karthesischen Produkts.
+     * @param strings Eingabe der Listen.
+     * @param results Alle Resultate.
+     * @see
      */
     private void getPermutations(int d,String s,ArrayList<ArrayList<String>> strings,Set<String> results){
         if(d == strings.size()){
@@ -125,45 +180,14 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         }
     }
 
-
-    public ArrayList<String> getAllSmiles(){
-        ArrayList<String> smiles = new ArrayList<>();
-        if(children.isEmpty()) {
-            smiles.add("("+ getBonding()+getLabel()+")");
-            return smiles;
-        } else {
-            ArrayList<ArrayList<String>> child = new ArrayList<>();
-            children.forEach(abstractPQNode -> child.add(abstractPQNode.getAllSmiles()));
-            Set<String> results = new HashSet<>();
-            if(this instanceof PNode){
-                getPermutationsP(0,"",child,results);
-            }
-            if(this instanceof QNode){
-                getPermutations(0,"",child,results);
-            }
-
-            ArrayList<String> end = new ArrayList<>(results);
-            for (int i = 0; i < end.size(); i++) {
-                end.set(i,"("+ getBonding()+getLabel()+end.get(i)+")");
-            }
-
-            return end;
-        }
-    }
-
-
-
-    public void getPermutationsP(int d, String s, ArrayList<ArrayList<String>> strings, Set<String> results){
-        if(d == strings.size()){
-            String str[] = s.substring(0,s.length()-1).split(",");
-            permutations(str,0,str.length,results);
-            return;
-        }
-        for (int i = 0; i < strings.get(d).size(); i++) {
-            getPermutationsP(d+1,s+strings.get(d).get(i)+",",strings,results);
-        }
-    }
-
+    /**
+     * Berechnet alle Permutationen eines StringArray nach dem Algorithmus von Heap.
+     * @param strings Eingabe der Strings.
+     * @param startIndex
+     * @param endIndex
+     * @param results Menge aller Permutationen.
+     * @see
+     */
     private void permutations(String[] strings,int startIndex,int endIndex,Set<String> results){
         if(startIndex == endIndex){
             String s = "";
@@ -180,6 +204,14 @@ public abstract class AbstractPQNode extends Node implements IPrintable,Comparab
         }
     }
 
+    /**
+     * Hilfsfunktion für den Algorithmus von Heap. Tauscht Elemente in einem Array.
+     * @param strings Eingabe des Arrays.
+     * @param i Zu tauschender Index.
+     * @param x Zu tauschender Index.
+     * @see
+     * @see
+     */
     private void swap(String[] strings,int i,int x){
         String s = strings[i];
         strings[i] = strings[x];
