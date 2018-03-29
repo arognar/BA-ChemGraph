@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
- * Zustaendig für die grafische Repräsentation.
+ * Zustaendig fuer die grafische Repraesentation.
  */
 public class MainView extends Region {
     /**
@@ -119,7 +119,7 @@ public class MainView extends Region {
         weinSButton = new Button("Weinsaeure");
         butenDiButton = new Button("Butendisaeure");
 
-        analyzeChiralityButton = new Button("Überpruefe Chiralitaet");
+        analyzeChiralityButton = new Button("Ueberpruefe Chiralitaet");
 
         konfigurationButton = new Button("Generiere Konfigurations-String");
         konstitutionButton = new Button("Generiere Konstitutions-String");

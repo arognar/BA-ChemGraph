@@ -36,8 +36,8 @@ public class Controller implements Observer {
         });
 
         view.getButenDiButton().setOnMouseClicked(event -> {
-            String butendisäure = "(C(=O)(O(H))(C(H)(=C(H)(C(=O)(O(H))))))";
-            analyzer.analyze(butendisäure);
+            String butendisaeure = "(C(=O)(O(H))(C(H)(=C(H)(C(=O)(O(H))))))";
+            analyzer.analyze(butendisaeure);
         });
 
         view.getAnalyzeChiralityButton().setOnMouseClicked(event -> {

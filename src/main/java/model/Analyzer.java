@@ -24,8 +24,8 @@ public class Analyzer extends java.util.Observable {
     }
 
     /**
-     * Starten die in dem Kapitel Anwendung vorgestellte Analyse eines Molekuels.
-     * Unterstuetzt den Ablauf visuell durch Nachrichten an die View.
+     * Startet die in dem Kapitel Anwendung vorgestellte Analyse eines Molekuels.
+     * Unterstuetzt den Ablauf, durch Nachrichten an die View, visuell durch Nachrichten.
      *
      * @param s SMILES String.
      */
