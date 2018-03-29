@@ -32,14 +32,62 @@ public class Test extends Application {
         //testPerm();
         //weinsaeurePQTest();
         //simplesPQTest();
-        weinsaeurePQTest();
+        //weinsaeurePQTest();
         //matchingBracketsTest();
         //RSTestSimple();
         //testRS();
         //testButendisäure();
         //konformTest();
+        test();
         Platform.exit();
 
+    }
+
+    public void test(){
+        SmileParser smileParser = new SmileParser();
+        StringGenerator stringGenerator = new StringGenerator();
+        //Molecule m = smileParser.parseSmile("(C(C(H)(Br)(O(H))(C(H)(H)(H))(H)(H)(H)))");
+        Molecule m = smileParser.parseSmile("(C(C(Br)(O(H))(C(H)(H)(H)))(H)(H)(H))");
+        //Molecule m = smileParser.parseSmile("C(H)(H)(H)(H)");
+        m.determineChirality();
+        ArrayList<String> test = new ArrayList<>();
+        m.getNodes().forEach((s, node) -> {
+            if(node instanceof Carbon) {
+                node.getNeighbours().forEach(node1 -> {
+                    //test.add(stringGenerator.stringGenKonstiStereo((StereoAtom) node, (StereoAtom) node1));
+                    System.out.println(stringGenerator.stringGenKonstiStereo((StereoAtom) node, (StereoAtom) node1));
+                });
+            }
+        });
+
+        System.out.println(ChemAlgorithm.konfigurationIso(m));
+        System.out.println(ChemAlgorithm.konsitutionIso(m));
+
+        ArrayList<String> s = new ArrayList<>();
+        s.add("Br");
+        s.add("C");
+        s.add("H");
+        System.out.println(getCircularMaxString(s));
+
+
+        //Collections.sort(test);
+        //test.forEach(s -> System.out.println(s));
+    }
+
+    private String getCircularMaxString(ArrayList<String> strings){
+        Set<String> candidates = new HashSet<>();
+
+        //Geht alle Möglichkeiten durch und fügt sie den Kandidaten hinzu.
+        for (int i = 0; i < strings.size() ; i++) {
+            String candidat ="";
+            for (int j = 0; j < strings.size(); j++) {
+                candidat+="("+strings.get((j+i)%strings.size())+")";
+            }
+            candidates.add(candidat);
+        }
+
+        //größte Zeichenkette der Kandidaten.
+        return Collections.max(candidates);
     }
 
     public void RSTestSimple(){

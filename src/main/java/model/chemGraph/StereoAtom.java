@@ -1,6 +1,5 @@
 package model.chemGraph;
 
-import model.GraphUtil;
 import model.graph.Node;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +8,14 @@ import java.util.List;
  * Node in einem Graphen mit stereochemischen Informationen.
  */
 public class StereoAtom extends Node{
+    /**
+     * Projektion der Atome auf die jeweiligen Listenpositionen.
+     */
     public static int[][] boundaryAr = {{-1,0,0,0},{2,-1,2,1},{1,1,-1,2},{0,2,1,-1}};
 
     /**
      * Alle zyklischen Listen.
-     * Blick eines Atoms auf dieses Atom.
+     * Blick eines Nachbaratoms auf dieses Atom.
      */
     private ArrayList<ArrayList<Node>> stereoNeighbours = new ArrayList<>();
     /**
@@ -30,11 +32,13 @@ public class StereoAtom extends Node{
     public void addNeighbour(Node node, String c) {
         super.addNeighbour(node, c);
         ArrayList<Node> e = new ArrayList();
+        //Liste wird mit null-Elementen vorinitialisiert, da hinzufügen nicht unbedingt chronologisch erfolgt.
         for(int i = 0; i < this.getMaxConnections()-1; i++) {
             e.add(null);
         }
+
         stereoNeighbours.add(e);
-        //Fügt das Atom in die Listen und die vorherigen Atome in die Liste des Atoms aktuellen Atoms
+        //Fügt das Atom in die Listen und die vorherigen Atome in die Liste des aktuell hinzugefügten Atoms
         for(int i = 0; i < super.getNeighbours().size()-1;i++){
             stereoNeighbours.get(i).set(boundaryAr[super.getNeighbours().size()-1][i],node);
             stereoNeighbours.get(super.getNeighbours().size()-1).set(boundaryAr[i][super.getNeighbours().size()-1],getNeighbours().get(i));
@@ -42,7 +46,7 @@ public class StereoAtom extends Node{
     }
 
     /**
-     * Gibt die Liste zurück mit dem Blick von node zu diesem Atom.
+     * Gibt die Liste zurück mit dem Blick von "node" auf dieses Atom.
      * @param node Atom von dem auf dieses Atom gesehen wird.
      * @return
      */

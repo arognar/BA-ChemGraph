@@ -11,7 +11,7 @@ import java.util.*;
 public class Molecule extends Graph {
 
     /**
-     * Liste aller chiraler Atome.
+     * Liste aller Chiralitätszentren.
      */
     private ArrayList<Node> chiralAtoms = new ArrayList<>();
     /**
@@ -27,7 +27,7 @@ public class Molecule extends Graph {
 
 
     /**
-     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt die chiralen Atome der Liste aller chiralen Atome hinzu.
+     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt die Chiralitätszentren der Liste aller Chiralitätszentren hinzu.
      */
     public void determineChirality(){
         getNodes().forEach((s, node) -> {
