@@ -3,7 +3,7 @@ package model.graph;
 /**
  * Implementierung des Q-Knotens.
  */
-public class QNode extends AbstractPQNode implements IPrintable {
+public class QNode extends AbstractPQNode {
     public QNode(String label) {
         super(label);
         setNodeType("Q");

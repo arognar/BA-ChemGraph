@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Der P-Knoten Typ des PQ-Baums.
  */
-public class PNode extends AbstractPQNode implements IPrintable {
+public class PNode extends AbstractPQNode {
     public PNode(String label) {
         super(label);
         setNodeType("P");
