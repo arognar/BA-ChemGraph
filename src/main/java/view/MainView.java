@@ -16,7 +16,7 @@ import javafx.scene.text.TextFlow;
  */
 public class MainView extends Region {
     /**
-     * Textfeld fuer die SMILES eingabe.
+     * Textfeld fuer die SMILES-Eingabe.
      */
     private TextField textField;
 

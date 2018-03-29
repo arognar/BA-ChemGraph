@@ -10,7 +10,7 @@ import view.MainView;
 /**
  * Startklasse des Programms.
  * Zusammenspiel aus Model,View und Controller.
- * Für die Berechnung der Molekuele, eine Darstellung auf dem Bildschirm und die Interaktion.
+ * Fuer die Berechnung der Molekuele, eine Darstellung auf dem Bildschirm und die Interaktion.
  */
 public class ChemGraFX extends Application {
 
