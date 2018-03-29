@@ -14,7 +14,8 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
     /**
      * Reduktion eines P-Knotens.
-     * @return Gibt den reduzierten Knoten zurück. Typ kann sich geändert haben.
+     *
+     * @return Gibt den reduzierten Knoten zurueck. Typ kann sich geaendert haben.
      */
     @Override
     public AbstractPQNode enforceRules() {
@@ -25,8 +26,8 @@ public class PNode extends AbstractPQNode implements IPrintable {
         });
 
         //Regeln für eine starre Bindung.
-        if(isntRotational()){
-            if(distinctChildren.size() < 2) {
+        if (isntRotational()) {
+            if (distinctChildren.size() < 2) {
                 return reductionRulePToQ();
             } else {
                 return this;
@@ -35,22 +36,22 @@ public class PNode extends AbstractPQNode implements IPrintable {
         }
 
 
-        if(distinctChildren.size() < 3){
+        if (distinctChildren.size() < 3) {
             return reductionRulePToQ();
         } else {
-            if(isChiral()){
+            if (isChiral()) {
                 QNode qNode = new QNode(getLabel());
                 qNode.setLabel(getLabel());
                 qNode.setChirality(true);
 
-                qNode.getChildren().addAll(getChildren().subList(0,getChildren().size() - 2));
+                qNode.getChildren().addAll(getChildren().subList(0, getChildren().size() - 2));
                 PNode pNode = new PNode("P");
                 pNode.setBonding("-");
 
 
-                pNode.getChildren().addAll(getChildren().subList(getChildren().size() - 2,getChildren().size()));
+                pNode.getChildren().addAll(getChildren().subList(getChildren().size() - 2, getChildren().size()));
                 pNode.setChildrenInformation();
-                qNode.addChild(pNode,"-");
+                qNode.addChild(pNode, "-");
                 qNode.setChildrenInformation();
                 return qNode;
 
@@ -63,9 +64,10 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
     /**
      * Reduktion eines P-Knotens zu einem Q-Knoten.
+     *
      * @return Generierter Q-Knoten.
      */
-    private AbstractPQNode reductionRulePToQ(){
+    private AbstractPQNode reductionRulePToQ() {
         QNode qNode = new QNode(getLabel());
         qNode.setBonding(getBonding());
         qNode.getChildren().addAll(getChildren());
@@ -75,9 +77,10 @@ public class PNode extends AbstractPQNode implements IPrintable {
 
 
     /**
-     * Implementation von Comparable, damit die Kindknoten sortiert werden können.
+     * Implementation von Comparable, damit die Kindknoten sortiert werden koennen.
+     *
      * @param o Knoten mit dem verglichen wird.
-     * @return Sortierung anhand der Kindinformatione. Für Strings ist compareTo bereits implementiert.
+     * @return Sortierung anhand der Kindinformatione. Fuer Strings ist compareTo bereits implementiert.
      */
     @Override
     public int compareTo(AbstractPQNode o) {

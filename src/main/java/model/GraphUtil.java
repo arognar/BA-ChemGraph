@@ -1,7 +1,5 @@
 package model;
 
-import model.graph.IPrintable;
-
 /**
  * Utility Klasse.
  */

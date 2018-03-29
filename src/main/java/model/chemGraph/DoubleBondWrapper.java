@@ -7,7 +7,7 @@ public class DoubleBondWrapper {
     private StereoAtom stereoAtomOne;
     private StereoAtom stereoAtomTwo;
 
-    public DoubleBondWrapper(StereoAtom stereoAtomOne, StereoAtom stereoAtomTwo){
+    public DoubleBondWrapper(StereoAtom stereoAtomOne, StereoAtom stereoAtomTwo) {
         this.stereoAtomOne = stereoAtomOne;
         this.stereoAtomTwo = stereoAtomTwo;
     }

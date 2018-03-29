@@ -11,6 +11,7 @@ public class QNode extends AbstractPQNode implements IPrintable {
 
     /**
      * Ein Q-Knoten kann nicht reduziert werden.
+     *
      * @return Der Q-Knoten selbst.
      */
     @Override
@@ -21,9 +22,10 @@ public class QNode extends AbstractPQNode implements IPrintable {
 
 
     /**
-     * Implementation von Comparable, damit die Kindknoten sortiert werden können.
+     * Implementation von Comparable, damit die Kindknoten sortiert werden koennen.
+     *
      * @param o Knoten mit dem verglichen wird.
-     * @return Sortierung anhand der Kindinformationen. Für Strings ist compareTo bereits implementiert.
+     * @return Sortierung anhand der Kindinformationen. Fuer Strings ist compareTo bereits implementiert.
      */
     @Override
     public int compareTo(AbstractPQNode o) {

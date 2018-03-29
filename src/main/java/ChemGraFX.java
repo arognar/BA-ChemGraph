@@ -10,7 +10,7 @@ import view.MainView;
 /**
  * Startklasse des Programms.
  * Zusammenspiel aus Model,View und Controller.
- * Für die Berechnung der Moleküle, eine Darstellung auf dem Bildschirm und die Interaktion.
+ * Für die Berechnung der Molekuele, eine Darstellung auf dem Bildschirm und die Interaktion.
  */
 public class ChemGraFX extends Application {
 
@@ -18,8 +18,8 @@ public class ChemGraFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         MainView view = new MainView();
         Analyzer analyzer = new Analyzer();
-        Controller controller = new Controller(view,analyzer);
-        Scene scene = new Scene(view,400,444);
+        Controller controller = new Controller(view, analyzer);
+        Scene scene = new Scene(view, 400, 444);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

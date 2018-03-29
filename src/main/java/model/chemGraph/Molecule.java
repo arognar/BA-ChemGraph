@@ -6,12 +6,12 @@ import model.graph.Node;
 import java.util.*;
 
 /**
- * Repräsentiert den chemischen Graphen.
+ * Repraesentiert den chemischen Graphen.
  */
 public class Molecule extends Graph {
 
     /**
-     * Liste aller Chiralitätszentren.
+     * Liste aller Chiralitaetszentren.
      */
     private ArrayList<Node> chiralAtoms = new ArrayList<>();
     /**
@@ -24,15 +24,14 @@ public class Molecule extends Graph {
     private ArrayList<DoubleBondWrapper> chiralDoubleBonds = new ArrayList<>();
 
 
-
-
     /**
-     * Untersucht für jedes Kohlenstoffatom die Chiralität und fügt die Chiralitätszentren der Liste aller Chiralitätszentren hinzu.
+     * Untersucht für jedes Kohlenstoffatom die Chiralitaet und fügt die Chiralitaetszentren der Liste aller
+     * Chiralitaetszentren hinzu.
      */
-    public void determineChirality(){
+    public void determineChirality() {
         getNodes().forEach((s, node) -> {
-            if(node instanceof Carbon) {
-                if(ChemAlgorithm.isChiral(node)){
+            if (node instanceof Carbon) {
+                if (ChemAlgorithm.isChiral(node)) {
                     chiralAtoms.add(node);
                 }
             }
@@ -40,24 +39,24 @@ public class Molecule extends Graph {
     }
 
     /**
-     * Untersucht die Chiralität jeder Doppelbindung und fügt diese bei Treffer der Liste aller chiralen Doppelbindungen hinzu.
+     * Untersucht die Chiralitaet jeder Doppelbindung und fuegt diese bei Treffer der Liste aller chiralen
+     * Doppelbindungen hinzu.
      */
-    public void determineChiralityDoubleBound(){
+    public void determineChiralityDoubleBound() {
         getDoubleBonds().forEach(doubleBoundWrapper -> {
-            if(ChemAlgorithm.isChiralDoubleBound(doubleBoundWrapper)){
+            if (ChemAlgorithm.isChiralDoubleBound(doubleBoundWrapper)) {
                 chiralDoubleBonds.add(doubleBoundWrapper);
             }
         });
     }
 
 
-
     public ArrayList<Node> getChiralAtoms() {
         return chiralAtoms;
     }
 
-    public void addDoubleBond(StereoAtom stereoAtomOne,StereoAtom stereoAtomTwo){
-        doubleBonds.add(new DoubleBondWrapper(stereoAtomOne,stereoAtomTwo));
+    public void addDoubleBond(StereoAtom stereoAtomOne, StereoAtom stereoAtomTwo) {
+        doubleBonds.add(new DoubleBondWrapper(stereoAtomOne, stereoAtomTwo));
     }
 
     public ArrayList<DoubleBondWrapper> getDoubleBonds() {

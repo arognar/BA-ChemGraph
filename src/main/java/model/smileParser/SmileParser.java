@@ -13,11 +13,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Stellt Funktionen bereit, um aus einer Zeichenkette einen PQ-Baum oder ein Molekül zu generieren.
+ * Stellt Funktionen bereit, um aus einer Zeichenkette einen PQ-Baum oder ein Molekuel zu generieren.
  */
 public class SmileParser {
     /**
-     * Fehlernachricht. Kann wenn nötig ausgelesen werden.
+     * Fehlernachricht. Kann, wenn noetig, ausgelesen werden.
      */
     private String errorMessage;
     /**
@@ -25,25 +25,25 @@ public class SmileParser {
      */
     private AtomFactory atomFactory;
 
-    public SmileParser(){
-        atomFactory= new AtomFactory();
+    public SmileParser() {
+        atomFactory = new AtomFactory();
     }
 
     /**
-     * Parst die eingegebene Zeichenkette zu einem Molekül.
+     * Parst die eingegebene Zeichenkette zu einem Molekuel.
      * Die Zeichenkette wird von links nach rechts durchlaufen und es wird je nach Symbol eine andere Regel angewandt.
      *
      * @param smileString Eingegebene Zeichenkette.
-     * @return Das geparste Molekül.
+     * @return Das geparste Molekuel.
      */
-    public Molecule parseSmile(String smileString){
+    public Molecule parseSmile(String smileString) {
         ArrayList<String> token = tokenize(smileString);
-        if(token.isEmpty()) {
+        if (token.isEmpty()) {
             errorMessage = "Fehler beim Parsen";
             return null;
         }
-        if(!machtingBrackets(token)){
-            errorMessage = "Fehler bei der Überprüfung der Klammerung";
+        if (!machtingBrackets(token)) {
+            errorMessage = "Fehler bei der Ueberpruefung der Klammerung";
             return null;
         }
 
@@ -53,42 +53,45 @@ public class SmileParser {
         final boolean[] branchFlag = {false};
 
         token.forEach(curToken -> {
-            if(curToken.equals("(")) branchFlag[0] = true;
-            else if(curToken.equals(")")) {
-                try{
+            if (curToken.equals("(")) branchFlag[0] = true;
+            else if (curToken.equals(")")) {
+                try {
                     atomStack.pop();
-                } catch(EmptyStackException e){
-                    errorMessage = "Fehler beim Parsen. Mögliche Fehler sind: Klammerung fehlerhaft oder falsches Symbol";
+                } catch (EmptyStackException e) {
+                    errorMessage = "Fehler beim Parsen. Moegliche Fehler sind: Klammerung fehlerhaft oder falsches " +
+                            "Symbol";
                     return;
 
                 }
 
             }
             //P ist Symbol des PQ-Baum Knotens.
-            //Um Konflikte mit der zusätzlichen Klammerung zu vermeiden wird das letzte Atom auf dem Stack noch mal hinzugefügt.
-            else if(curToken.equals("P")) {
+            //Um Konflikte mit der zusaetzlichen Klammerung zu vermeiden wird das letzte Atom auf dem Stack noch mal
+            // hinzugefuegt.
+            else if (curToken.equals("P")) {
                 atomStack.push(atomStack.peek());
-            } else if(curToken.equals("=")) {
+            } else if (curToken.equals("=")) {
                 bound[0] = "=";
-            } else if(curToken.equals("-")){
+            } else if (curToken.equals("-")) {
                 bound[0] = "-";
             } else {
                 //Neues Atom wird von der atomFactory generiert.
                 StereoAtom curAtom = atomFactory.getAtom(curToken);
                 molecule[0].addNode(curAtom);
-                if(!atomStack.empty()) {
+                if (!atomStack.empty()) {
                     //Wenn bindungstechnisch gültig werden Atome verbunden.
-                    boolean tryconnect = molecule[0].tryConnect(curAtom,atomStack.peek(),bound[0]);
-                    if(!tryconnect) {
+                    boolean tryconnect = molecule[0].tryConnect(curAtom, atomStack.peek(), bound[0]);
+                    if (!tryconnect) {
                         molecule[0] = null;
-                        errorMessage = "Fehler beim Parsen. Möglicherweise stimmt etwas nicht mit den chemisch erlaubten Bindungen";
+                        errorMessage = "Fehler beim Parsen. Moeglicherweise stimmt etwas nicht mit den chemisch " +
+                                "erlaubten Bindungen";
                         return;
                     }
-                    if(bound[0].equals("=")) {
-                        molecule[0].addDoubleBond(atomStack.peek(),curAtom);
+                    if (bound[0].equals("=")) {
+                        molecule[0].addDoubleBond(atomStack.peek(), curAtom);
                     }
-                    if(branchFlag[0]) {
-                        branchFlag[0]=false;
+                    if (branchFlag[0]) {
+                        branchFlag[0] = false;
                     } else {
                         atomStack.pop();
                     }
@@ -109,15 +112,15 @@ public class SmileParser {
      * @param smileString Eingegebene Zeichenkette.
      * @return Der geparste PQ-Baum.
      */
-    public PQTree parseSmileToPQTree(String smileString){
+    public PQTree parseSmileToPQTree(String smileString) {
         final PQTree[] pqTree = {new PQTree()};
         ArrayList<String> token = tokenize(smileString);
-        if(token.isEmpty()) {
+        if (token.isEmpty()) {
             errorMessage = "Fehler beim parsen";
             return null;
         }
-        if(!machtingBrackets(token)){
-            errorMessage = "Fehler bei der überprüfung der Klammerung";
+        if (!machtingBrackets(token)) {
+            errorMessage = "Fehler bei der Ueberpruefung der Klammerung";
             return null;
         }
 
@@ -130,14 +133,14 @@ public class SmileParser {
 
         token.forEach(curToken -> {
             //neue Verzweigung.
-            if(curToken.equals("(")) {
+            if (curToken.equals("(")) {
                 branchFlag[0] = true;
             }
             //Verzweigung abgeschlossen. Letzte Atom auf dem Stack wurde abgearbeitet.
-            else if(curToken.equals(")")) {
-                try{
+            else if (curToken.equals(")")) {
+                try {
                     atomStack.pop();
-                } catch(EmptyStackException e){
+                } catch (EmptyStackException e) {
                     errorMessage = "Fehler beim Parsen. Mögliche Fehler sind Klammerung oder falsches Symbol";
                     pqTree[0] = null;
                     return;
@@ -146,27 +149,27 @@ public class SmileParser {
 
             }
             //Setzt die angegebenen Bindungen.
-            else if(curToken.equals("=")) {
+            else if (curToken.equals("=")) {
                 bound[0] = "=";
-            } else if(curToken.equals("-")) {
+            } else if (curToken.equals("-")) {
                 bound[0] = "-";
             } else {
                 //Neuer Knoten wird angelegt
                 PNode curAtom = new PNode(curToken);
                 pqTree[0].add(curAtom);
                 //Wurzel wird gesetzt, falls noch nicht vorhanden.
-                if(rootFlag[0]){
+                if (rootFlag[0]) {
                     root[0] = curAtom;
                     pqTree[0].setRoot(curAtom);
                     rootFlag[0] = false;
                 }
                 //Wenn der Stack nicht leer ist wird der aktuelle Knoten mit dem auf dem Stapel verbunden.
                 //Seine Eigenschaften werden gesetzt.
-                if(!atomStack.empty()) {
-                    atomStack.peek().addChild(curAtom,bound[0]);
-                    curAtom.addNeighbour(curAtom,bound[0]);
+                if (!atomStack.empty()) {
+                    atomStack.peek().addChild(curAtom, bound[0]);
+                    curAtom.addNeighbour(curAtom, bound[0]);
                     curAtom.setBonding(bound[0]);
-                    if(branchFlag[0])branchFlag[0]=false;
+                    if (branchFlag[0]) branchFlag[0] = false;
                     else atomStack.pop();
 
                 }
@@ -180,31 +183,33 @@ public class SmileParser {
 
 
     /**
-     * Nutzt einen regulären Ausdruck um die gültigen Zeichen zu extrahieren.
+     * Nutzt einen regulaeren Ausdruck um die gueltigen Zeichen zu extrahieren.
+     *
      * @param smileString Der eingegebene String.
-     * @return Liste der gültigen Zeichen.
+     * @return Liste der gueltigen Zeichen.
      */
-    private ArrayList<String> tokenize(String smileString){
+    private ArrayList<String> tokenize(String smileString) {
         String regex = "([A-Z][a-z]*)|[()=-]";
         Pattern pattern = Pattern.compile(regex);
         ArrayList<String> token = new ArrayList<>();
         Matcher matcher = pattern.matcher(smileString);
-        while(matcher.find()){
+        while (matcher.find()) {
             token.add(matcher.group(0));
         }
         return token;
     }
 
     /**
-     * Überprüft ob die Klammerung balanciert ist.
-     * Für jede öffnende Klammer wird der Zähler erhöht.
-     * Für jede schließende Klammer wird der Zähler verringert.
-     * Wird der Zähler negativ treten zuviele schließende Klammern auf.
-     * Am Ende muss der Zähler 0 sein, ansonsten sind es zuviele öffnende Klammern.
-     * @param tokens Liste an zu überprüfenden Zeichen.
+     * Überprueft ob die Klammerung balanciert ist.
+     * Für jede oeffnende Klammer wird der Zaehler erhöht.
+     * Für jede schließende Klammer wird der Zaehler verringert.
+     * Wird der Zaehler negativ treten zuviele schließende Klammern auf.
+     * Am Ende muss der Zaehler 0 sein, ansonsten sind es zuviele oeffnende Klammern.
+     *
+     * @param tokens Liste an zu überpruefenden Zeichen.
      * @return Klammerung passt und nicht.
      */
-    private boolean machtingBrackets(ArrayList<String> tokens){
+    private boolean machtingBrackets(ArrayList<String> tokens) {
         int counter = 0;
         for (String s : tokens) {
             if (s.equals("(")) counter++;
@@ -213,11 +218,11 @@ public class SmileParser {
                 return false;
             }
         }
-        if(counter > 0) return false;
+        if (counter > 0) return false;
         return true;
     }
 
-    public String getErrorMessage(){
+    public String getErrorMessage() {
         return errorMessage;
     }
 }
