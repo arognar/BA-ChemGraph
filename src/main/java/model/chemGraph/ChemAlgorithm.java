@@ -7,16 +7,16 @@ import java.util.*;
 
 
 /**
- * Stellt Algorithmen bereit, die für die chemischen Analyse noetig sind.
+ * Stellt Algorithmen bereit, die fuer die chemischen Analyse noetig sind.
  */
 public class ChemAlgorithm {
 
     /**
-     * Berechnet den eindeutigen String mit Konstitutionsinformationen für das gesamten Molekuel.
-     * Fuegt die für jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
+     * Berechnet den eindeutigen String mit Konstitutionsinformationen fuer das gesamte Molekuel.
+     * Fuegt die fuer jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
      *
      * @param molecule Molekuel das betrachtet wird.
-     * @return Eindeutigen String für den Konstitutions-Isomorphismus.
+     * @return Eindeutigen String fuer den Konstitutions-Isomorphismus.
      */
     public static String konsitutionIso(Molecule molecule) {
         StringGenerator stringGenerator = new StringGenerator();
@@ -42,11 +42,11 @@ public class ChemAlgorithm {
     }
 
     /**
-     * Berechnet den eindeutigen String mit Konfigurationsinformationen für das gesamte Molekuel.
-     * Fuegt die für jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
+     * Berechnet den eindeutigen String mit Konfigurationsinformationen fuer das gesamte Molekuel.
+     * Fuegt die fuer jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
      *
      * @param molecule Molekuel das betrachtet wird.
-     * @return Eindeutigen String für den Konfigurations-Isomorphismus.
+     * @return Eindeutigen String fuer den Konfigurations-Isomorphismus.
      */
     public static String konfigurationIso(Molecule molecule) {
         StringGenerator stringGenerator = new StringGenerator();
@@ -71,11 +71,11 @@ public class ChemAlgorithm {
 
 
     /**
-     * Berechnet den eindeutigen String mit Konformationsinformationen für das gesamte Molekuel.
-     * Fuegt die für jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
+     * Berechnet den eindeutigen String mit Konformationsinformationen fuer das gesamte Molekuel.
+     * Fuegt die fuer jedes Kohlenstoff-Atom generierten Baum-Isomorphismus-Strings geordnet zusammen.
      *
      * @param molecule Molekuel das betrachtet wird.
-     * @return Eindeutigen String für den Konformations-Isomorphismus.
+     * @return Eindeutigen String fuer den Konformations-Isomorphismus.
      */
     public static String konformationIso(Molecule molecule) {
         StringGenerator stringGenerator = new StringGenerator();
@@ -108,12 +108,12 @@ public class ChemAlgorithm {
      */
     public static boolean isChiral(Node node) {
         StringGenerator stringGenerator = new StringGenerator();
-        //Fuegt für jede anliegende Atomgruppe des Knoten den String des Baum-Isomorphismus dem Set hinzu.
+        //Fuegt fuer jede anliegende Atomgruppe des Knoten den String des Baum-Isomorphismus dem Set hinzu.
         Set<String> isoSet = new HashSet<>();
         node.getNeighbours().forEach(node1 -> {
             isoSet.add(stringGenerator.getStringNonStereo(node, node1));
         });
-        //Groeße des Sets muss 4 sein. Nur dann sind alle Nachbarn verschieden.
+        //Groesse des Sets muss 4 sein. Nur dann sind alle Nachbarn verschieden.
         if (isoSet.size() == 4) return true;
         return false;
     }
@@ -132,7 +132,7 @@ public class ChemAlgorithm {
         Map<String, Node> stringNodeMap = new HashMap<>();
         //Ordnet einem Knoten den isoString zu.
         Map<Node, String> nodeStringMap = new HashMap<>();
-        //Berechnet für jeden Nachbarn des Zentrum den String mit Prioritaetsinformationen.
+        //Berechnet fuer jeden Nachbarn des Zentrums den String mit Prioritaetsinformationen.
         atom.getNeighbours().forEach(node -> {
             String smileNumber = stringGenerator.stringGenStereoAtomicNumber(atom, (StereoAtom) node);
             isoStrings.add(smileNumber);
@@ -142,10 +142,10 @@ public class ChemAlgorithm {
 
         //Knoten mit der kleinsten Prioritaet wird bestimmt.
         Collections.sort(isoStrings);
-        //Liste mit Blick des prioritaetsmaeßig kleinsten Atoms auf das Zentrum.
+        //Liste mit Blick des prioritaetsmaessig kleinsten Atoms auf das Zentrum.
         List<Node> nodesList = atom.getNeighbourList(stringNodeMap.get(isoStrings.get(0)));
 
-        //Sucht den Eintrag des Atoms mit der groeßten Prioritaet und vergleicht die links und rechts liegenden
+        //Sucht den Eintrag des Atoms mit der groessten Prioritaet und vergleicht die links und rechts liegenden
         // Nachbarn.
         for (int i = 0; i < nodesList.size(); i++) {
             if (nodesList.get(i) == stringNodeMap.get(isoStrings.get(3))) {
@@ -161,18 +161,18 @@ public class ChemAlgorithm {
     /**
      * Untersucht ob eine Doppelbindung chiral ist.
      *
-     * @param doubleBoundWrapper Beide Atome einer Doppelbindung.
+     * @param doubleBondWrapper Beide Atome einer Doppelbindung.
      * @return Ob die Doppelbindung chiral ist oder nicht.
      */
-    public static boolean isChiralDoubleBound(DoubleBondWrapper doubleBoundWrapper) {
+    public static boolean isChiralDoubleBond(DoubleBondWrapper doubleBondWrapper) {
         StringGenerator stringGenerator = new StringGenerator();
-        StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
-        StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
+        StereoAtom first = doubleBondWrapper.getStereoAtomOne();
+        StereoAtom second = doubleBondWrapper.getStereoAtomTwo();
 
         //Anzahl Nachbarn muss jeweils 3 sein.
         if ((first.getNeighbours().size() < 3) || second.getNeighbours().size() < 3) return false;
 
-        //Generiere die Baum-Isomorphie Strings für die Nachbarn des ersten Atoms.
+        //Generiere die Baum-Isomorphie Strings fuer die Nachbarn des ersten Atoms.
         Set<String> neighboursFirst = new HashSet<>();
         first.getNeighbourList(second).forEach(node -> {
             if (node != null) neighboursFirst.add(stringGenerator.stringGenKonstiStereo(first, (StereoAtom) node));
@@ -181,7 +181,7 @@ public class ChemAlgorithm {
         //Atome sind nicht unterschiedlich.
         if (neighboursFirst.size() < 2) return false;
 
-        //Generiere die Baum-Isomorphie Strings für die Nachbarn des zweiten Atoms.
+        //Generiere die Baum-Isomorphie Strings fuer die Nachbarn des zweiten Atoms.
         Set<String> neighboursSecond = new HashSet<>();
         second.getNeighbourList(first).forEach(node -> {
             if (node != null) neighboursSecond.add(stringGenerator.stringGenKonstiStereo(second, (StereoAtom) node));
@@ -195,13 +195,13 @@ public class ChemAlgorithm {
     /**
      * Prueft eine chirale Doppelbindung auf E oder Z .
      *
-     * @param doubleBoundWrapper Beinhaltet die beiden Atome einer Doppelbindung.
+     * @param doubleBondWrapper Beinhaltet die beiden Atome einer Doppelbindung.
      * @return E oder Z. Je nach Art der Bindung.
      */
-    public static String cisTrans(DoubleBondWrapper doubleBoundWrapper) {
+    public static String cisTrans(DoubleBondWrapper doubleBondWrapper) {
         StringGenerator stringGenerator = new StringGenerator();
-        StereoAtom first = doubleBoundWrapper.getStereoAtomOne();
-        StereoAtom second = doubleBoundWrapper.getStereoAtomTwo();
+        StereoAtom first = doubleBondWrapper.getStereoAtomOne();
+        StereoAtom second = doubleBondWrapper.getStereoAtomTwo();
         ArrayList<String> firstNeighboursPrio = new ArrayList<>();
         ArrayList<String> secondNeighboursPrio = new ArrayList<>();
 

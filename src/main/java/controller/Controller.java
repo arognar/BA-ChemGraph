@@ -8,7 +8,7 @@ import java.util.Observer;
 
 /**
  * Liefert die Schnittstelle zwischen Model und View.
- * Verknuepft die Button mit Logik.
+ * Verknuepft die Buttons mit Logik.
  * Ueberwacht den Analyzer auf Nachrichten (Observer).
  */
 public class Controller implements Observer {
@@ -24,7 +24,7 @@ public class Controller implements Observer {
     }
 
     /**
-     * Fuegt den verschiedenen Button die richtige Logik hinzu.
+     * Fuegt den verschiedenen Buttons die richtige Logik hinzu.
      */
     private void initButtons() {
         view.getGenerateButton().setOnMouseClicked(event -> {

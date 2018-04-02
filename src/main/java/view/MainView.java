@@ -32,7 +32,7 @@ public class MainView extends Region {
     private Text testCaseText;
 
     /**
-     * Darstellung der generierten Analyse.
+     * Textliche Darstellung der generierten Analyse.
      */
     private TextFlow textFlow;
 
@@ -87,7 +87,7 @@ public class MainView extends Region {
     }
 
     /**
-     * Initialisiert die Container, welche die Buttons und Texte fassen und anordnen.
+     * Initialisiert die Container, welche die Buttons und Texte fassen sowie anordnen.
      */
     private void initContainer() {
         controllsContainer = new VBox();
@@ -106,7 +106,7 @@ public class MainView extends Region {
     }
 
     /**
-     * Erstellt die Button und beschriftet sie.
+     * Erstellt die Buttons und beschriftet sie.
      */
     private void initFieldsAndButtons() {
 

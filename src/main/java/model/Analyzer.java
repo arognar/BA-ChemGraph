@@ -16,7 +16,6 @@ import java.util.Set;
  * Fuegt die Datenstrukturen und Algorithmen zusammen.
  */
 public class Analyzer extends java.util.Observable {
-    StringGenerator stringGenerator;
     SmileParser smileParser = new SmileParser();
 
     public Analyzer() {
@@ -25,7 +24,7 @@ public class Analyzer extends java.util.Observable {
 
     /**
      * Startet die in dem Kapitel Anwendung vorgestellte Analyse eines Molekuels.
-     * Unterstuetzt den Ablauf, durch Nachrichten an die View, visuell durch Nachrichten.
+     * Unterstuetzt den Ablauf, durch Nachrichten an die View, auch visuell .
      *
      * @param s SMILES String.
      */
@@ -105,7 +104,7 @@ public class Analyzer extends java.util.Observable {
         notifyController(m.getChiralAtoms().size() + " Chiralitaetszentren:");
         m.getChiralAtoms().forEach(node -> notifyController("Drehrichtung: " + ChemAlgorithm.RSDetermination(
                 (StereoAtom) node)));
-        m.determineChiralityDoubleBound();
+        m.determineChiralityDoubleBond();
         notifyController(m.getChiralDoubleBonds().size() + " chirale Doppelbindungen:");
         m.getChiralDoubleBonds().forEach(doubleBondWrapper -> notifyController("Spezifizierung :" + ChemAlgorithm
                 .cisTrans(doubleBondWrapper)));

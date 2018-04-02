@@ -58,15 +58,15 @@ public class Node {
     /**
      * Prueft, ob dieser Knoten noch mit einer bestimmten Art von Bindung verbunden werden kann.
      *
-     * @param boundingType Art der Bindung.
+     * @param bondingType Art der Bindung.
      * @return
      */
-    public boolean isConnectable(String boundingType) {
-        if (boundingType.equals("")) {
+    public boolean isConnectable(String bondingType) {
+        if (bondingType.equals("")) {
             return connections > 0;
-        } else if (boundingType.equals("-")) {
+        } else if (bondingType.equals("-")) {
             return connections > 0;
-        } else if (boundingType.equals("=")) {
+        } else if (bondingType.equals("=")) {
             return connections - 2 >= 0;
         } else {
             return false;

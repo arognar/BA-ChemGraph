@@ -3,7 +3,7 @@ package model.smileParser;
 import model.chemGraph.*;
 
 /**
- * Gibt Atom-Knoten für den Parser zurueck.
+ * Gibt Atom-Knoten fuer den Parser zurueck.
  * Je nach Eingabe verschieden.
  */
 public class AtomFactory {

@@ -36,7 +36,7 @@ public class Graph {
      * @param node1
      * @param node2
      * @param boundingType Art der Bindung. Einzel- Doppelbindung.
-     * @return Ob die Knoten verbunden werden können.
+     * @return Ob die Knoten verbunden werden koennen.
      */
     public boolean tryConnect(Node node1, Node node2, String boundingType) {
         if (node1.isConnectable(boundingType) && node2.isConnectable(boundingType)) {

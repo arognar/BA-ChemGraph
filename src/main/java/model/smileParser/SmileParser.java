@@ -79,7 +79,7 @@ public class SmileParser {
                 StereoAtom curAtom = atomFactory.getAtom(curToken);
                 molecule[0].addNode(curAtom);
                 if (!atomStack.empty()) {
-                    //Wenn bindungstechnisch gültig werden Atome verbunden.
+                    //Wenn bindungstechnisch gueltig, werden Atome verbunden.
                     boolean tryconnect = molecule[0].tryConnect(curAtom, atomStack.peek(), bound[0]);
                     if (!tryconnect) {
                         molecule[0] = null;
@@ -132,7 +132,7 @@ public class SmileParser {
         final boolean[] rootFlag = {true};
 
         token.forEach(curToken -> {
-            //neue Verzweigung.
+            //Neue Verzweigung.
             if (curToken.equals("(")) {
                 branchFlag[0] = true;
             }
@@ -141,7 +141,7 @@ public class SmileParser {
                 try {
                     atomStack.pop();
                 } catch (EmptyStackException e) {
-                    errorMessage = "Fehler beim Parsen. Mögliche Fehler sind Klammerung oder falsches Symbol";
+                    errorMessage = "Fehler beim Parsen. Moegliche Fehler sind die Klammerung oder falsches Symbol";
                     pqTree[0] = null;
                     return;
 
@@ -200,13 +200,13 @@ public class SmileParser {
     }
 
     /**
-     * Überprueft ob die Klammerung balanciert ist.
-     * Für jede oeffnende Klammer wird der Zaehler erhöht.
-     * Für jede schließende Klammer wird der Zaehler verringert.
-     * Wird der Zaehler negativ treten zuviele schließende Klammern auf.
+     * Ueberprueft ob die Klammerung balanciert ist.
+     * Fuer jede oeffnende Klammer wird der Zaehler erhoeht.
+     * Fuer jede schliessende Klammer wird der Zaehler verringert.
+     * Wird der Zaehler negativ treten zuviele schliessende Klammern auf.
      * Am Ende muss der Zaehler 0 sein, ansonsten sind es zuviele oeffnende Klammern.
      *
-     * @param tokens Liste an zu überpruefenden Zeichen.
+     * @param tokens Liste an zu ueberpruefenden Zeichen.
      * @return Klammerung passt und nicht.
      */
     private boolean machtingBrackets(ArrayList<String> tokens) {

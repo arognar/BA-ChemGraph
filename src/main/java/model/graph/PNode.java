@@ -25,7 +25,7 @@ public class PNode extends AbstractPQNode {
             distinctChildren.add(abstractPQNode.getChildrenInformation());
         });
 
-        //Regeln für eine starre Bindung.
+        //Regeln fuer eine starre Bindung.
         if (isntRotational()) {
             if (distinctChildren.size() < 2) {
                 return reductionRulePToQ();
@@ -80,7 +80,7 @@ public class PNode extends AbstractPQNode {
      * Implementation von Comparable, damit die Kindknoten sortiert werden koennen.
      *
      * @param o Knoten mit dem verglichen wird.
-     * @return Sortierung anhand der Kindinformatione. Fuer Strings ist compareTo bereits implementiert.
+     * @return Sortierung anhand der Kindinformationen. Fuer Strings ist compareTo bereits implementiert.
      */
     @Override
     public int compareTo(AbstractPQNode o) {

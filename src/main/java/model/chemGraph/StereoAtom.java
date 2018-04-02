@@ -12,7 +12,7 @@ public class StereoAtom extends Node {
     /**
      * Projektion der Atome auf die jeweiligen Listenpositionen.
      */
-    public static int[][] boundaryAr = {{-1, 0, 0, 0}, {2, -1, 2, 1}, {1, 1, -1, 2}, {0, 2, 1, -1}};
+    public static int[][] bondaryAr = {{-1, 0, 0, 0}, {2, -1, 2, 1}, {1, 1, -1, 2}, {0, 2, 1, -1}};
 
     /**
      * Alle zyklischen Listen.
@@ -20,7 +20,7 @@ public class StereoAtom extends Node {
      */
     private ArrayList<ArrayList<Node>> stereoNeighbours = new ArrayList<>();
     /**
-     * Spezifische Ordnungszahl für die Prioritaet nach CIS.
+     * Spezifische Ordnungszahl fuer die Prioritaet nach CIS.
      */
     private int atomicNumber;
 
@@ -28,7 +28,7 @@ public class StereoAtom extends Node {
     /**
      * Fuegt ein Atom hinzu und ordnet es und alle vorherigen Nachbaratome in die passende Liste ein.
      *
-     * @param node Atom das hinzugefügt wird.
+     * @param node Atom das hinzugefuegt wird.
      * @param c    Art der Bindung.
      */
     public void addNeighbour(Node node, String c) {
@@ -42,8 +42,8 @@ public class StereoAtom extends Node {
         stereoNeighbours.add(e);
         //Fuegt das Atom in die Listen und die vorherigen Atome in die Liste des aktuell hinzugefuegten Atoms.
         for (int i = 0; i < super.getNeighbours().size() - 1; i++) {
-            stereoNeighbours.get(i).set(boundaryAr[super.getNeighbours().size() - 1][i], node);
-            stereoNeighbours.get(super.getNeighbours().size() - 1).set(boundaryAr[i][super.getNeighbours().size() -
+            stereoNeighbours.get(i).set(bondaryAr[super.getNeighbours().size() - 1][i], node);
+            stereoNeighbours.get(super.getNeighbours().size() - 1).set(bondaryAr[i][super.getNeighbours().size() -
                     1], getNeighbours().get(i));
         }
     }

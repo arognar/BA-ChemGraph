@@ -54,7 +54,7 @@ public abstract class AbstractPQNode extends Node implements Comparable<Abstract
      */
     public AbstractPQNode reduce() {
 
-        //Keine weiteren Kinder. Keine Reduktion möglich.
+        //Keine weiteren Kinder. Keine Reduktion moeglich.
         if (children.isEmpty()) {
             String childrenInformations = nodeType + getLabel();
             setChildrenInformation(childrenInformations);
@@ -105,7 +105,7 @@ public abstract class AbstractPQNode extends Node implements Comparable<Abstract
             //Wenn Kinder vorhanden.
             //Informationen der Kinder werden je nach Art des Knoten Permutiert und mit dem Karthesischen Produkt zu
             // einer List
-            //aller gueltigen Strings zusammengefügt.
+            //aller gueltigen Strings zusammengefuegt.
             ArrayList<ArrayList<String>> childSMILES = new ArrayList<>();
             //SMILES der Kinder werden generiert.
             children.forEach(abstractPQNode -> childSMILES.add(abstractPQNode.getAllSmiles()));
@@ -197,7 +197,7 @@ public abstract class AbstractPQNode extends Node implements Comparable<Abstract
     }
 
     /**
-     * Hilfsfunktion für den Algorithmus von Heap. Tauscht Elemente in einem Array.
+     * Hilfsfunktion fuer den Algorithmus von Heap. Tauscht Elemente in einem Array.
      *
      * @param strings Eingabe des Arrays.
      * @param i       Zu tauschender Index.

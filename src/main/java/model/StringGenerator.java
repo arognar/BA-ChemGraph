@@ -6,7 +6,7 @@ import model.graph.Node;
 import java.util.*;
 
 /**
- * Generiert Zeichenketten, um eine Aussage ueber die Isomorphie von chemischen Graphen und Baeume treffen zu können.
+ * Generiert Zeichenketten, um eine Aussage ueber die Isomorphie von chemischen Graphen und Baeume treffen zu koennen.
  */
 public class StringGenerator {
     /**
@@ -21,11 +21,11 @@ public class StringGenerator {
     }
 
     /**
-     * Generiert eindeutigen Isomorphie-String für den Chiralitaets-Check.
+     * Generiert eindeutigen Isomorphie-String fuer den Chiralitaets-Check.
      * Fuer Knoten ohne Stereoinformationen.
      *
-     * @param candidate Kandidat für die Chiralität.
-     * @param root      Wurzel des Baumes für den man den String generiert.
+     * @param candidate Kandidat fuer die Chiralitaet.
+     * @param root      Wurzel des Baumes fuer den man den String generiert.
      * @return IsomorphieString.
      */
     public String getStringNonStereo(Node candidate, Node root) {
@@ -35,7 +35,7 @@ public class StringGenerator {
     }
 
     /**
-     * Berechnet den String für die KonfigurationsIsomorphie von einem Atom.
+     * Berechnet den String fuer die KonfigurationsIsomorphie von einem Atom.
      *
      * @param node Atom das betrachet wird.
      * @return eindeutige Konfigurations-Isomorphie-Zeichenkette.
@@ -44,7 +44,7 @@ public class StringGenerator {
         ArrayList<String> childStrings = new ArrayList<>();
         String[] isoString = {node.getLabel()};
 
-        //Berechne für jeden Nachbarn den Baum-Isomorphismus mit Konfigurations-Informationen.
+        //Berechne fuer jeden Nachbarn den Baum-Isomorphismus mit Konfigurations-Informationen.
         node.getNeighbours().forEach(node1 -> {
             childStrings.add(stringGenKonfiStereo(node, (StereoAtom) node1));
         });
@@ -60,7 +60,7 @@ public class StringGenerator {
     }
 
     /**
-     * Berechnet den String für die Konstitutions-Isomorphie von einem Atom.
+     * Berechnet den String fuer die Konstitutions-Isomorphie von einem Atom.
      *
      * @param node Atom das betrachet wird.
      * @return eindeutige Konstitutions-Isomorphie-Zeichenkette.
@@ -69,7 +69,7 @@ public class StringGenerator {
         ArrayList<String> childStrings = new ArrayList<>();
         String[] isoString = {node.getLabel()};
 
-        //Berechne für jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
+        //Berechne fuer jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
         node.getNeighbours().forEach(node1 -> {
             childStrings.add(stringGenKonstiStereo(node, (StereoAtom) node1));
         });
@@ -85,7 +85,7 @@ public class StringGenerator {
     }
 
     /**
-     * Berechnet den String für die Konformations-Isomorphie von einem Atom.
+     * Berechnet den String fuer die Konformations-Isomorphie von einem Atom.
      *
      * @param node Atom das betrachet wird.
      * @return eindeutige Konstitutions-Isomorphie-Zeichenkette.
@@ -94,12 +94,12 @@ public class StringGenerator {
         ArrayList<String> childStrings = new ArrayList<>();
         String[] isoString = {node.getLabel()};
 
-        //Berechne für jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
+        //Berechne fuer jeden Nachbarn den Baum-Isomorphismus mit Konstitutions-Informationen.
         node.getNeighbours().forEach(node1 -> {
             childStrings.add(stringGenKonformStereo(node, (StereoAtom) node1));
         });
 
-        //Füge Informationen in geordneter Reihung zusammen.
+        //Fuege Informationen in geordneter Reihung zusammen.
         Collections.sort(childStrings, String.CASE_INSENSITIVE_ORDER);
         childStrings.forEach(s -> {
             isoString[0] = new StringBuilder().append(isoString[0]).append("(").append((s)).append(")").toString();
@@ -118,10 +118,10 @@ public class StringGenerator {
 
 
     /**
-     * Berechnet den String für den Baum-Isomorphismus ohne Stereoinformationen.
+     * Berechnet den String fuer den Baum-Isomorphismus ohne Stereoinformationen.
      *
      * @param n Wurzelknoten.
-     * @return Eindeutige Zeichenkette für einen markierten Baum ohne Ordnung.
+     * @return Eindeutige Zeichenkette fuer einen markierten Baum ohne Ordnung.
      */
     private String generateStringNonStereo(Node n) {
         visitedNodes.add(n.getId());
@@ -153,7 +153,7 @@ public class StringGenerator {
      *
      * @param from Atom von dem man kommt.
      * @param to   Atom auf das man blickt.
-     * @return Eindeutige Zeichenkette für die Isomorphie von Bäumen mit Konstitutions-Informationen.
+     * @return Eindeutige Zeichenkette fuer die Isomorphie von Baeumen mit Konstitutions-Informationen.
      */
     public String stringGenKonstiStereo(StereoAtom from, StereoAtom to) {
         final String[] isoString = {to.getLabel()};
@@ -185,7 +185,7 @@ public class StringGenerator {
      *
      * @param from Atom von dem man kommt.
      * @param to   Atom auf das man blickt.
-     * @return Eindeutige Zeichenkette für die Isomorphie von Bäumen mit Konformations-Informationen.
+     * @return Eindeutige Zeichenkette fuer die Isomorphie von Baeumen mit Konformations-Informationen.
      */
     public String stringGenKonformStereo(StereoAtom from, StereoAtom to) {
         final String[] isoString = {to.getLabel()};
@@ -209,7 +209,7 @@ public class StringGenerator {
     }
 
     /**
-     * Generiert den String, um die Prioritaeten für CIP zu bestimmen.
+     * Generiert den String, um die Prioritaeten fuer CIP zu bestimmen.
      * Nutzung der Ordnungzahl statt Atomsymbol.
      *
      * @param from Atom von dem man kommt.
@@ -247,7 +247,7 @@ public class StringGenerator {
      *
      * @param from Atom von dem man kommt.
      * @param to   Atom auf das man blickt.
-     * @return Eindeutige Zeichenkette für die Isomorphie von Bäumen mit Konfigurations-Informationen.
+     * @return Eindeutige Zeichenkette fuer die Isomorphie von Baeumen mit Konfigurations-Informationen.
      */
     public String stringGenKonfiStereo(StereoAtom from, StereoAtom to) {
         final String[] isoString = {to.getLabel()};
@@ -264,7 +264,7 @@ public class StringGenerator {
             return to.getLabel();
         } else {
             //Falls Doppelbindung wird die Ordnung ihrer Liste beibehalten.
-            //Falls Einfachbindung wird die groeßte Zeichenkette in der zirkularen Liste generiert.
+            //Falls Einfachbindung wird die groesste Zeichenkette in der zirkularen Liste generiert.
             if (from.getBoundingType(to).equals("=")) {
                 isoString[0] = new StringBuilder().append(isoString[0]).append(getSimpleList(childStrings)).toString();
             } else {
@@ -277,10 +277,10 @@ public class StringGenerator {
 
 
     /**
-     * Generiert die groeßte Zeichenkette der Elemente in einer zirkulare Liste.
+     * Generiert die groesste Zeichenkette der Elemente in einer zirkulare Liste.
      *
      * @param strings Liste der Strings.
-     * @return groeßt moegliche Zeichenkette in der zirkularen Liste.
+     * @return groesst moegliche Zeichenkette in der zirkularen Liste.
      */
     private String getCircularMaxString(ArrayList<String> strings) {
         Set<String> candidates = new HashSet<>();
@@ -294,7 +294,7 @@ public class StringGenerator {
             candidates.add(candidat);
         }
 
-        //groeßte Zeichenkette der Kandidaten.
+        //groesste Zeichenkette der Kandidaten.
         return Collections.max(candidates);
     }
 
